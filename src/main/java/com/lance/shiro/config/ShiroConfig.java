@@ -54,6 +54,7 @@ public class ShiroConfig {
 		bean.setFilters(filters);
 		
 		Map<String, String> chains = Maps.newHashMap();
+		chains.put("/echo", "anon"); //add for echo connection
 		chains.put("/login", "anon");
 		chains.put("/unauthor", "anon");
 		chains.put("/logout", "logout");

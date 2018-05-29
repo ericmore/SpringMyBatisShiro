@@ -25,6 +25,7 @@ public class URLPermissionsFilter extends PermissionsAuthorizationFilter{
 	public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
 		String curUrl = getRequestUrl(request);
 		Subject subject = SecurityUtils.getSubject();
+		if(StringUtils.contains(curUrl,"echo"))return true;
 		if(subject.getPrincipal() == null 
 				|| StringUtils.endsWithAny(curUrl, ".js",".css",".html")
 				|| StringUtils.endsWithAny(curUrl, ".jpg",".png",".gif", ".jpeg")

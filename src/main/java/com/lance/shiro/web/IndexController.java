@@ -14,7 +14,9 @@ public class IndexController {
 	public String index() {
 		return "index.jsp";
 	}
-	
+
+
+
 	/**
 	 * unauthor
 	 * @return

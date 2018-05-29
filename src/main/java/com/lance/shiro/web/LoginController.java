@@ -9,11 +9,16 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
+@RestController
 public class LoginController {
 
+	@RequestMapping(value="echo", method=RequestMethod.GET)
+	public String echo() {
+		return "echo";
+	}
 	/**
 	 * Go login.jsp
 	 * @return
