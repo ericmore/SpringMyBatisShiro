@@ -9,6 +9,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,8 +42,8 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value="login", method=RequestMethod.POST)
-	public Map<String, String> login(@RequestBody UserInfo user, HttpServletRequest request, RedirectAttributes rediect) {
-        Map<String, String> ret = new HashMap<>();
+	public ResponseEntity login(@RequestBody UserInfo user, HttpServletRequest request, RedirectAttributes rediect) {
+        String ret = "";
 	    String account = user.getAccount();
 		String password = user.getPassword();
 		
@@ -54,10 +55,10 @@ public class LoginController {
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 			rediect.addFlashAttribute("errorText", "您的账号或密码输入错误!");
-            ret.put("auth-status", "fail");
+			ret = "fail";
 		}
-        ret.put("auth-status", "pass");
-		return ret;
+		ret = "pass";
+		return ResponseEntity.ok(ret);
 
 	}
 	
