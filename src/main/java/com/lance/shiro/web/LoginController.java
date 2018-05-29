@@ -2,19 +2,26 @@ package com.lance.shiro.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.lance.shiro.entity.UserInfo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class LoginController {
-
+	private Logger log = LogManager.getLogger(getClass());
 	@RequestMapping(value="echo", method=RequestMethod.GET)
 	public String echo() {
 		return "echo";
@@ -23,9 +30,9 @@ public class LoginController {
 	 * Go login.jsp
 	 * @return
 	 */
-	@RequestMapping(value="login", method=RequestMethod.GET)
+	@RequestMapping("login")
 	public String login() {
-		return "login.jsp";
+		return "login.html";
 	}
 	
 	/**
@@ -34,20 +41,24 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value="login", method=RequestMethod.POST)
-	public String login(HttpServletRequest request, RedirectAttributes rediect) {
-		String account = request.getParameter("account");
-		String password = request.getParameter("password");
+	public Map<String, String> login(@RequestBody UserInfo user, HttpServletRequest request, RedirectAttributes rediect) {
+        Map<String, String> ret = new HashMap<>();
+	    String account = user.getAccount();
+		String password = user.getPassword();
 		
 		UsernamePasswordToken upt = new UsernamePasswordToken(account, password);
 		Subject subject = SecurityUtils.getSubject();
 		try {
 			subject.login(upt);
+			log.debug(user.getAccount()+" login success!");
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 			rediect.addFlashAttribute("errorText", "您的账号或密码输入错误!");
-			return "redirect:/login";
+            ret.put("auth-status", "fail");
 		}
-		return "redirect:/index";
+        ret.put("auth-status", "pass");
+		return ret;
+
 	}
 	
 	/**
