@@ -1,0 +1,26 @@
+[
+    {
+        "Date": "20180102",
+        "BuildingAddress": "bbbb",
+        "ClientSurname": "adf",
+        "Lot": "sdf",
+        "Commissionin": "1000$",
+        "DepositTaken": "Taken"
+    },
+    {
+        "Date": "20180105",
+        "BuildingAddress": "cccc",
+        "ClientSurname": "adf",
+        "Lot": "sdf",
+        "Commissionin": "1000$",
+        "DepositTaken": "Taken"
+    },
+    {
+        "Date": "20180101",
+        "BuildingAddress": "sdf",
+        "ClientSurname": "adf",
+        "Lot": "sdf",
+        "Commissionin": "1000$",
+        "DepositTaken": "Taken"
+    }
+]

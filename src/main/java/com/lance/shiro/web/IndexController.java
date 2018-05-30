@@ -10,20 +10,21 @@ public class IndexController {
 	 * Go Index
 	 * @return
 	 */
-	@RequestMapping(value={"", "/", "index"})
+	@RequestMapping(value={"", "/", "index","login-required","login-success","unauthorized"})
 	public String index() {
 		return "index.html";
 	}
 
 
-	/**
-	 * unauthor
-	 * @return
-	 */
-	@RequestMapping("unauthor")
-	public String unauthor() {
-		return "unauthor.jsp";
-	}
+
+//	/**
+//	 * unauthor
+//	 * @return
+//	 */
+//	@RequestMapping("unauthorized")
+//	public String unauthor() {
+//		return "index.html";
+//	}
 	
 	/**
 	 * reports

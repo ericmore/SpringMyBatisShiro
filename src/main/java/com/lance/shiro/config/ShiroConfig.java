@@ -45,13 +45,13 @@ public class ShiroConfig {
 	public ShiroFilterFactoryBean shiroFilter(){
 		ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
 		bean.setSecurityManager(securityManager());
-		bean.setLoginUrl("/login-required");
+		bean.setLoginUrl("/a");
 //		// 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
 //		shiroFilterFactoryBean.setLoginUrl(loginUrl);
 //		// 登录成功后要跳转的连接
-		bean.setSuccessUrl("/login-success");
+		bean.setSuccessUrl("/b");
 //		shiroFilterFactoryBean.setUnauthorizedUrl(unauthorizedUrl);
-		bean.setUnauthorizedUrl("/unauthorized");
+		bean.setUnauthorizedUrl("/c");
 		
 		Map<String, Filter>filters = Maps.newHashMap();
 		filters.put("perms", urlPermissionsFilter());
@@ -59,15 +59,17 @@ public class ShiroConfig {
 		bean.setFilters(filters);
 		
 		Map<String, String> chains = Maps.newHashMap();
+		chains.put("/**","anon");
+//		chains.put("/index**","anon");
 		chains.put("/login", "anon");
 		chains.put("/echo", "anon"); //add for echo connection
-		chains.put("/unauthor", "anon");
+		chains.put("/unauthorized", "anon");
 		chains.put("/logout", "logout");
 		chains.put("/base/**", "anon");
 		chains.put("/css/**", "anon");
 		chains.put("/layer/**", "anon");
 		chains.put("/common/**","anon");  //common only allow login
-		chains.put("/**", "authc,perms");
+//		chains.put("/**", "authc,perms");
 		bean.setFilterChainDefinitionMap(chains);
 		return bean;
 	}
