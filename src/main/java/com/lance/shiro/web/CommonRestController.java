@@ -1,8 +1,12 @@
 package com.lance.shiro.web;
 
 
+import com.lance.shiro.entity.UserInfo;
+import com.lance.shiro.service.UserServiceImpl;
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/common")
 public class CommonRestController {
 
+    @Autowired
+    private UserServiceImpl userService;
 
     @RequestMapping("/current-user")
     public Object login() {
         Subject subject = SecurityUtils.getSubject();
-        Object user = subject.getPrincipal();
-        return user;
+        String user = ObjectUtils.toString(subject.getPrincipal());
+        UserInfo realUser = userService.findByAccount(user);
+        return realUser;
     }
 }
 
