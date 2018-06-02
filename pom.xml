@@ -131,11 +131,27 @@
 					<groupId>commons-logging</groupId>
 				</exclusion>
 			</exclusions>
-		</dependency>
+		</dependency>  
 	</dependencies>
 
-	<build>
-		<finalName>spring-boot-shiro-redis</finalName>
+	<build> 
+		<finalName>spring-boot-shiro-redis</finalName> 
+		<plugins>   
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+			    <artifactId>spring-boot-maven-plugin</artifactId>
+			    <dependencies>
+			        <dependency>
+			            <groupId>org.springframework</groupId>
+			            <artifactId>springloaded</artifactId>
+			            <version>1.2.7.RELEASE</version>
+			        </dependency>
+			    </dependencies>
+			    <configuration>
+			    	<fork>true</fork>
+			    </configuration>
+            </plugin>
+        </plugins>  
 	</build>
 
 	<repositories>

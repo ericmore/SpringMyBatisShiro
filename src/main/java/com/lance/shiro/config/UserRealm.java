@@ -1,5 +1,6 @@
 package com.lance.shiro.config;
 
+import com.lance.shiro.entity.IUser;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -14,7 +15,6 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.lance.shiro.entity.UserInfo;
 import com.lance.shiro.service.UserService;
 
 /**
@@ -50,7 +50,7 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
 		String userName = upt.getUsername();
-		UserInfo user = userService.findByAccount(userName);
+		IUser user = userService.findByUserName(userName);
 
 		if (user == null) {
 			throw new UnknownAccountException();

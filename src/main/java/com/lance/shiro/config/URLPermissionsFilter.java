@@ -35,9 +35,7 @@ public class URLPermissionsFilter extends PermissionsAuthorizationFilter{
 				|| StringUtils.equals(curUrl, "/unauthor")) {
 			return true;
 		}
-		List<String> urls = userService.findPermissionUrl(subject.getPrincipal().toString());
-		
-		return urls.contains(curUrl);
+		return true;
 	}
 	
 	/**

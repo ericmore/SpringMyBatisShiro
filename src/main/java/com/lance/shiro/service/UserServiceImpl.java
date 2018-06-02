@@ -1,64 +1,56 @@
 package com.lance.shiro.service;
 
-import java.util.List;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.lance.shiro.entity.ModuleInfo;
-import com.lance.shiro.entity.UserInfo;
+import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
+
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserMapper userMapper;
-	@Autowired
-	private ModuleService moduleService;
-
 	/**
-	 * 根据账号Account查询当前用户
-	 * @param account
-	 * @return
+	 * 登录
+	 * 根据用户名和密码进行查询
 	 */
-	public UserInfo findByAccount(String account) {
-		return userMapper.findByAccount(account);
+	@Override
+	public IUser login(String username, String password) {
+		return userMapper.findByUserNameAndPassword(username, password);
+	}
+	/**
+	 * 注册
+	 * 增加用户
+	 */
+	@Override
+	public int register(IUser user) {
+		return userMapper.addUser(user);
+	}
+	/**
+	 * 根据用户名查询
+	 */
+	@Override
+	public IUser findByUserName(String username) {
+		return userMapper.findByUserName(username);
 	}
 
 	/**
 	 * 获取资源集合
-	 * @param account
+	 * @param username
 	 * @return
 	 */
-	public Set<String> findPermissions(String account) {
+	public Set<String> findPermissions(String username) {
 		Set<String> set = Sets.newHashSet();
-		UserInfo user = findByAccount(account);
-		List<ModuleInfo>modules = moduleService.findModuleByUserId(user.getId());
-		
-		for(ModuleInfo info: modules) {
-			set.add(info.getModuleKey());
-		}
+		IUser user = findByUserName(username);
+		set.add(user.getRole());
 		return set;
 	}
 
-	/**
-	 * 获取URL权限
-	 * @param account
-	 * @return
-	 */
-	public List<String> findPermissionUrl(String account) {
-		List<String> list = Lists.newArrayList();
-		UserInfo user = findByAccount(account);
-		List<ModuleInfo>modules = moduleService.findModuleByUserId(user.getId());
-		
-		for(ModuleInfo info: modules) {
-			if(info.getModuleType() == ModuleInfo.URL_TYPE) {
-				list.add(info.getModulePath());
-			}
-		}
-		return list;
-	}
+
 }

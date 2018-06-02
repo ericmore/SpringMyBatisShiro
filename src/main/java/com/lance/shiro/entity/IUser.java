@@ -9,7 +9,7 @@ import java.sql.Date;
 public class IUser {
 
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private String id;
+    private int id;
     @Column(name = "personalID",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String personalID;
     @Column(name = "username",type = MySqlTypeConstant.VARCHAR,length = 80)
@@ -56,11 +56,11 @@ public class IUser {
     private Date updateTime;
 
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
