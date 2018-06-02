@@ -14,7 +14,7 @@ public class IRegion {
     private String code;
     @Column(name = "name",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String name;
-    @Column(name = "parentCode",type = MySqlTypeConstant.VARCHAR,length = 32)
+    @Column(name = "parentCode",type = MySqlTypeConstant.VARCHAR,length = 64)
     private String parentCode;
     @Column(name = "status",type = MySqlTypeConstant.VARCHAR,length = 4)
     private String status;
