@@ -2,6 +2,7 @@ package com.lance.shiro.web;
 
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.service.UserService;
+import com.lance.shiro.utils.UserStatus;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -32,6 +33,9 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody IUser user) {
+        if(!UserStatus.validate(user.getStatus())){
+            return error("Status not valid!" + user.getStatus());
+        }
         String username = user.getUsername();
         // 如果数据库中没有该用户，可以注册，否则跳转页面
         if (userService.findByUserName(username) == null) {
@@ -115,6 +119,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam ArrayList<String> id) {
+        //TODO 这边要判断下传进来的id数组的长度和最后update sql返回的row是否match，如果不match需要返回成功了几条，失败了几条记录，同时往log里记录问题（后期维护需要）
         userService.deleteAllByIds(id);
         return success("Operation success!");
     }
@@ -125,6 +130,9 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity update(@RequestBody  IUser user) {
+        if(!UserStatus.validate(user.getStatus())){
+            return error("Status not valid!" + user.getStatus());
+        }
         user = userService.update(user);
         return success("Operation success!",user);
     }
