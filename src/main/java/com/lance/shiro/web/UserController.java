@@ -37,10 +37,10 @@ public class UserController extends BaseController {
         if (userService.findByUserName(username) == null) {
             // 添加用户
             userService.register(user);
-            return success("保存成功！", user);
+            return success("Operation success!", user);
         } else {
             // 注册失败
-            return error("用户名已存在!");
+            return error("Username already exists!");
         }
 
     }
@@ -60,10 +60,10 @@ public class UserController extends BaseController {
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword(), rememberMe);
             subject.login(token); // 登录
             user = userService.findByUserName(user.getUsername());
-            return success("登录成功!",user);
+            return success("Operation success!",user);
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return error("您的账号或密码输入错误!");
+            return error("Your account or password was entered incorrectly!");
         }
 
     }
@@ -77,7 +77,7 @@ public class UserController extends BaseController {
     public ResponseEntity logout() {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
-        return success("登出成功！");
+        return success("Operation success!");
     }
 
     /**
@@ -91,9 +91,9 @@ public class UserController extends BaseController {
         if(subject.isAuthenticated()){
             String username =  SecurityUtils.getSubject().getPrincipal().toString();
             IUser user = userService.findByUserName(username);
-            return success("获取成功！", user);
+            return success("Operation success!", user);
         }else{
-            return success("没有登录信息！");
+            return success("No login information！");
         }
 
     }
@@ -106,7 +106,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam ArrayList<String> role) {
         ArrayList<IUser> list = userService.findAllByRoles(role);
-        return success("操作成功！", list);
+        return success("Operation success!", list);
     }
 
 
@@ -117,7 +117,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam ArrayList<String> id) {
         userService.deleteAllByIds(id);
-        return success("操作成功！");
+        return success("Operation success!");
     }
 
     /**
@@ -127,7 +127,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity update(@RequestBody  IUser user) {
         user = userService.update(user);
-        return success("操作成功！",user);
+        return success("Operation success!",user);
     }
 
 }

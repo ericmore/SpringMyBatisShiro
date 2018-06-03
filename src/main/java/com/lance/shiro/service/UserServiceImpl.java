@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
+import org.springframework.util.DigestUtils;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -88,7 +89,10 @@ public class UserServiceImpl implements UserService {
 		user.setUsername(oUser.getUsername());
 		user.setCreateTime(oUser.getCreateTime());
 		user.setUpdateTime(new Date(Calendar.getInstance().getTimeInMillis()));
-		if(user.getPassword().equals("") || user.getPassword() == null){
+		if(user.getPassword() != null && !user.getPassword().equals("") && !user.getPassword().equals(oUser.getPassword())){
+			String password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+			user.setPassword( password ) ;
+		}else{
 			user.setPassword( oUser.getPassword()) ;
 		}
 		userMapper.update(user);
