@@ -54,6 +54,8 @@ public class IUser {
     private Date createTime;
     @Column(name = "updateTime",type = MySqlTypeConstant.DATETIME,length = 80)
     private Date updateTime;
+    @Column(name = "status",type = MySqlTypeConstant.VARCHAR,length = 20,defaultValue = "inactive")
+    private String status;
 
 
     public int getId() {
@@ -243,5 +245,13 @@ public class IUser {
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this);
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

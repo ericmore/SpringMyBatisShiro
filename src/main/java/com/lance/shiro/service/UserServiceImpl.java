@@ -2,6 +2,7 @@ package com.lance.shiro.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 
@@ -50,6 +54,45 @@ public class UserServiceImpl implements UserService {
 		IUser user = findByUserName(username);
 		set.add(user.getRole());
 		return set;
+	}
+
+
+	/**
+	 * 通过role获取用户列表
+	 * @param role
+	 * @return
+	 */
+	@Override
+	public ArrayList<IUser> findAllByRoles(List<String> role){
+		String roles = "'"+ StringUtils.join(role, "','")+"'";
+		ArrayList<IUser> list = userMapper.findAllByRoles(roles);
+		return list;
+	}
+
+	/**
+	 * 删除用户
+	 * @param id
+	 */
+	@Override
+	public int deleteAllByIds(List<String> id){
+		return userMapper.deleteAllByIds(id);
+	}
+
+	/**
+	 * 修改用户
+	 * @param user
+	 */
+	@Override
+	public IUser update(IUser user){
+		IUser oUser = userMapper.get(user.getId());
+		user.setUsername(oUser.getUsername());
+		user.setCreateTime(oUser.getCreateTime());
+		user.setUpdateTime(new Date(Calendar.getInstance().getTimeInMillis()));
+		if(user.getPassword().equals("") || user.getPassword() == null){
+			user.setPassword( oUser.getPassword()) ;
+		}
+		userMapper.update(user);
+		return user;
 	}
 
 

@@ -9,19 +9,17 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.ServletRequestUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 
 /**
  * Created by bingyun on 2018-06-02.
  */
 @RestController
-@RequestMapping("/rest/user/")
+@RequestMapping("/rest/user")
 public class UserController extends BaseController {
 
     //注入userService
@@ -29,8 +27,7 @@ public class UserController extends BaseController {
     private UserService userService;
 
     /**
-     * Go login.jsp
-     *
+     *Register
      * @return
      */
     @RequestMapping(value = "register", method = RequestMethod.POST)
@@ -46,11 +43,11 @@ public class UserController extends BaseController {
             return error("用户名已存在!");
         }
 
-
     }
 
+
     /**
-     * Go login
+     * login
      *
      * @param request
      * @return
@@ -84,7 +81,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * Exit
+     * Current
      *
      * @return
      */
@@ -100,4 +97,37 @@ public class UserController extends BaseController {
         }
 
     }
+
+
+    /**
+     *list
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity list(@RequestParam ArrayList<String> role) {
+        ArrayList<IUser> list = userService.findAllByRoles(role);
+        return success("操作成功！", list);
+    }
+
+
+    /**
+     *delete
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@RequestParam ArrayList<String> id) {
+        userService.deleteAllByIds(id);
+        return success("操作成功！");
+    }
+
+    /**
+     *update
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity update(@RequestBody  IUser user) {
+        user = userService.update(user);
+        return success("操作成功！",user);
+    }
+
 }
