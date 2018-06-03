@@ -62,7 +62,8 @@ public class UserController extends BaseController {
             boolean rememberMe = ServletRequestUtils.getBooleanParameter(request, "rememberMe", false);
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword(), rememberMe);
             subject.login(token); // 登录
-            return success("登录成功!");
+            user = userService.findByUserName(user.getUsername());
+            return success("登录成功!",user);
         } catch (AuthenticationException e) {
             e.printStackTrace();
             return error("您的账号或密码输入错误!");
@@ -87,9 +88,16 @@ public class UserController extends BaseController {
      *
      * @return
      */
-    @RequestMapping(value = "current ", method = RequestMethod.GET)
+    @RequestMapping(value = "current-user", method = RequestMethod.GET)
     public ResponseEntity current() {
-        IUser user = (IUser) SecurityUtils.getSubject().getPrincipal();
-        return success("获取成功！", user);
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isAuthenticated()){
+            String username =  SecurityUtils.getSubject().getPrincipal().toString();
+            IUser user = userService.findByUserName(username);
+            return success("获取成功！", user);
+        }else{
+            return success("没有登录信息！");
+        }
+
     }
 }
