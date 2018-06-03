@@ -104,11 +104,10 @@ public class UserController extends BaseController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam ArrayList<String> role) {
+    public ResponseEntity list(@RequestParam(name="role",required=false) ArrayList<String> role) {
         ArrayList<IUser> list = userService.findAllByRoles(role);
         return success("Operation success!", list);
     }
-
 
     /**
      *delete

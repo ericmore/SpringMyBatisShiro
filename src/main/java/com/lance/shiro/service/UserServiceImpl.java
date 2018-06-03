@@ -65,8 +65,13 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public ArrayList<IUser> findAllByRoles(List<String> role){
-		String roles = "'"+ StringUtils.join(role, "','")+"'";
-		ArrayList<IUser> list = userMapper.findAllByRoles(roles);
+		ArrayList<IUser> list;
+		if(role !=null && role.size()>0){
+			String roles = "'"+ StringUtils.join(role, "','")+"'";
+			list = userMapper.findAllByRoles(roles);
+		}else{
+			list= userMapper.findAll();
+		}
 		return list;
 	}
 

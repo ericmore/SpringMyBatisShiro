@@ -22,18 +22,17 @@ public interface UserMapper {
     IUser findByUserName(String username);
 
     //根据role查询
-//    @Select("<script>"
-//            + "SELECT * FROM i_user WHERE  status != 'deleted' and role IN "
-//            + "<foreach item='item' index='index' collection='roles' open='(' separator=',' close=')'>"
-//            + "#{item}"
-//            + "</foreach>"
-//            + "</script>")
-    @Select("SELECT* FROM i_user where status != 'deleted' and  role in (${roles})  ")
+    @Select("SELECT* FROM i_user where status = 'active' and  role in (${roles})  ")
     ArrayList<IUser> findAllByRoles(@Param("roles") String roles);
+
+    //查询所以用户
+    @Select("SELECT* FROM i_user where status = 'active'  ")
+    ArrayList<IUser> findAll();
+
 
     //删除用户
     @Update("<script>"
-            + "update i_user set status='deleted' where status != 'deleted' and id IN "
+            + "update i_user set status='deleted' where status = 'deleted' and id IN "
             + "<foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'>"
             + "#{item}"
             + "</foreach>"
