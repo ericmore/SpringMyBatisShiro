@@ -3,7 +3,6 @@ package com.lance.shiro.web;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -12,7 +11,6 @@ import java.util.HashMap;
  * Created by bingyun on 2018-06-02.
  */
 @RestController
-@RequestMapping("/rest/user/")
 public class BaseController {
     public Logger log = LogManager.getLogger(getClass());
 
@@ -33,7 +31,7 @@ public class BaseController {
     }
 
     public static ResponseEntity result(Boolean success, String msg, Object data) {
-        HashMap<String, Object> re = new HashMap<String, Object>();
+        HashMap<String, Object> re = new HashMap<>();
         re.put("success", success);
         re.put("msg", msg);
         re.put("data", data);
