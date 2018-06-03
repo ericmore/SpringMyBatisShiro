@@ -35,6 +35,6 @@ public class BaseController {
         re.put("success", success);
         re.put("msg", msg);
         re.put("data", data);
-        return ResponseEntity.ok(re);
+        return success? ResponseEntity.ok(re) :ResponseEntity.badRequest().body(re);
     }
 }
