@@ -3,6 +3,8 @@ package com.lance.shiro.web;
 
 import com.lance.shiro.entity.IRegion;
 import com.lance.shiro.service.CommonService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rest/common/")
 public class CommonController extends BaseController {
-
     @Autowired
     private CommonService commonService;
 
@@ -29,19 +30,7 @@ public class CommonController extends BaseController {
      */
     @RequestMapping(value = "country", method = RequestMethod.GET)
     public ResponseEntity country() {
-        List<Map<String, String>> mapList = new ArrayList<>();
-        try {
-            List<IRegion> iRegionList = commonService.findCountry();
-            for (IRegion iRegion : iRegionList) {
-                Map<String, String> map = new HashMap<>();
-                map.put("code", iRegion.getCode());
-                map.put("name", iRegion.getName());
-                mapList.add(map);
-            }
-        } catch (Exception e) {
-
-        }
-        return ResponseEntity.ok(mapList);
+        return ResponseEntity.ok(commonService.findCountry());
     }
 
     /**
@@ -51,19 +40,7 @@ public class CommonController extends BaseController {
      */
     @RequestMapping(value = "state", method = RequestMethod.GET)
     public ResponseEntity state(@RequestParam("country") String country) {
-        List<Map<String, String>> mapList = new ArrayList<>();
-        try {
-            List<IRegion> iRegionList = commonService.findState(country);
-            for (IRegion iRegion : iRegionList) {
-                Map<String, String> map = new HashMap<>();
-                map.put("code", iRegion.getCode());
-                map.put("name", iRegion.getName());
-                mapList.add(map);
-            }
-        } catch (Exception e) {
-
-        }
-        return ResponseEntity.ok(mapList);
+        return ResponseEntity.ok(commonService.findState(country));
     }
 
 
@@ -74,19 +51,7 @@ public class CommonController extends BaseController {
      */
     @RequestMapping(value = "city", method = RequestMethod.GET)
     public ResponseEntity city(@RequestParam("country") String country, @RequestParam("state") String state) {
-        List<Map<String, String>> mapList = new ArrayList<>();
-        try {
-            List<IRegion> iRegionList = commonService.findCity(country, state);
-            for (IRegion iRegion : iRegionList) {
-                Map<String, String> map = new HashMap<>();
-                map.put("code", iRegion.getCode());
-                map.put("name", iRegion.getName());
-                mapList.add(map);
-            }
-        } catch (Exception e) {
-
-        }
-        return ResponseEntity.ok(mapList);
+        return ResponseEntity.ok(commonService.findCity(country,state));
     }
 
 }

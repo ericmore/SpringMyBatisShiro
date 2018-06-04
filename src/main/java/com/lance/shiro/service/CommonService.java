@@ -1,16 +1,16 @@
 package com.lance.shiro.service;
 
-import com.lance.shiro.entity.IRegion;
-
 import java.util.List;
+import java.util.Map;
 
 public interface CommonService {
+
     /**
      * find country
      *
      * @return
      */
-    List<IRegion> findCountry();
+    List<Map<String, String>> findCountry();
 
     /**
      * find state
@@ -18,7 +18,7 @@ public interface CommonService {
      * @param country
      * @return
      */
-    List<IRegion> findState(String country);
+    List<Map<String, String>> findState(String country);
 
     /**
      * find city
@@ -26,5 +26,5 @@ public interface CommonService {
      * @param state
      * @return
      */
-    List<IRegion> findCity(String country, String state);
+    List<Map<String, String>> findCity(String country, String state);
 }
