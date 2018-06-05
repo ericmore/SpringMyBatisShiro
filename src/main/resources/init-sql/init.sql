@@ -4,7 +4,7 @@ Date: 2016-06-01 23:44:23
 
 SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
--- Records of t_user 用户名和密码一样
+-- Records of i_user 用户名和密码一样
 -- ----------------------------
 INSERT INTO `i_user` VALUES ('1', '3000000001', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'ad',
                              'mi', 'n', 'admin', '', '000', 'admin@126.com', 'male', 19, '189776655',
@@ -39,3 +39,9 @@ INSERT INTO `i_user` VALUES ('9', '5000000003', 'customer2', '5ce4d191fd14ac85a1
 
 #https://raw.githubusercontent.com/loureirorg/city-state/master/lib/db/GeoLite2-City-Locations-en.csv
 
+
+-- ----------------------------
+-- Records of i_commonConfig
+-- ----------------------------
+INSERT INTO `i_commonConfig` VALUES(1,'dev','rootFilePath','d:/');
+INSERT INTO `i_commonConfig` VALUES(2,'dev','rootHttpPath','http://localhost/');
