@@ -10,14 +10,12 @@ import java.util.List;
 @Mapper
 public interface CommonMapper {
 
-    @Select("select code,name from i_region where parentCode = '0' and status = '0' ")
+    @Select("select distinct  country_iso_code,country_name from i_region\n")
     List<IRegion> findCountry();
 
-    @Select("select code,name from i_region where parentCode=#{country} and status = '0' order by code asc ")
+    @Select("select distinct subdivision_1_iso_code, subdivision_1_name from i_region where country_iso_code='AU' and subdivision_1_iso_code is not null order by subdivision_1_iso_code asc")
     List<IRegion> findState(String country);
 
-    @Select("select t.code,t.name from i_region t where t.parentCode in (select tt.code from i_region tt" +
-            " where tt.parentCode=#{country} and tt.status = '0') " +
-            "and t.parentCode=#{state} and t.status = '0'  order by t.code asc ")
+    @Select("select distinct city_name from i_region where country_iso_code=#{country} and city_name is not null and subdivision_1_iso_code=#{state} ")
     List<IRegion> findCity(@Param("country")String country,@Param("state")String state);
 }
