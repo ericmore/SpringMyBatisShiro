@@ -43,7 +43,7 @@ public interface UserMapper {
     @Update("update i_user set personalID=#{personalID},username=#{username},password=#{password},firstName=#{firstName},middleName=#{middleName},lastName=#{lastName},role=#{role},code=#{code},referID=#{referID},email=#{email},sex=#{sex},age=#{age},mobile=#{mobile},country=#{country},state=#{state},city=#{city},street=#{street},position=#{position},company=#{company},experience=#{experience},updateTime=now(),status=#{status} where id=#{id}")
     int  update(IUser user);
 
-    //更新
+    //获取
     @Select("select * from i_user where id = #{id} ")
     IUser get(@Param("id") int id);
 

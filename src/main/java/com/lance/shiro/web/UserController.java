@@ -37,7 +37,6 @@ public class UserController extends BaseController {
             return error("Status not valid!" + user.getStatus());
         }
         String username = user.getUsername();
-        // 如果数据库中没有该用户，可以注册，否则跳转页面
         if (userService.findByUserName(username) == null) {
             // 添加用户
             userService.register(user);
@@ -119,7 +118,6 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam ArrayList<String> id) {
-        //TODO 这边要判断下传进来的id数组的长度和最后update sql返回的row是否match，如果不match需要返回成功了几条，失败了几条记录，同时往log里记录问题（后期维护需要）
         userService.deleteAllByIds(id);
         return success("Operation success!");
     }
