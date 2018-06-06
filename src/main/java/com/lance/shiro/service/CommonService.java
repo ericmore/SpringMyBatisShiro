@@ -68,4 +68,19 @@ public interface CommonService {
      * @return
      */
     IAttachment updateFiles(MultipartFile file, IAttachment attachment);
+
+    /**
+     *
+     * @param belongToID
+     * @param belongToCategory
+     * @return
+     */
+    List<IAttachment> findListAttachmentByBelong(String belongToID, String belongToCategory);
+    /**
+     *
+     * @param belongToID
+     * @param belongToCategory
+     * @return
+     */
+   int deleteListAttachmentByBelong(String belongToID, String belongToCategory);
 }

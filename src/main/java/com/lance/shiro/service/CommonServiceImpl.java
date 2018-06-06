@@ -253,4 +253,22 @@ public class CommonServiceImpl implements CommonService {
         }
         return null;
     }
+
+    @Override
+    public List<IAttachment> findListAttachmentByBelong(String belongToID, String belongToCategory) {
+        return commonMapper.findListAttachmentByBelong(belongToID, belongToCategory);
+    }
+
+    @Override
+    public int deleteListAttachmentByBelong(String belongToID, String belongToCategory) {
+        List<IAttachment> iAttachments = commonMapper.findListAttachmentByBelong(belongToID, belongToCategory);
+        for (IAttachment iAttachment : iAttachments) {
+            commonMapper.deleteAttachment(iAttachment.getId());
+            File file = new File(iAttachment.getRealPath());
+            if (file.isFile()) {
+                file.delete();
+            }
+        }
+        return 0;
+    }
 }

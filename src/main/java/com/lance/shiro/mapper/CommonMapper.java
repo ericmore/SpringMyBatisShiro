@@ -37,5 +37,9 @@ public interface CommonMapper {
     int deleteAttachment(int id);
 
     @Update("update i_attachment set filePath=#{filePath},fileName=#{fileName},extension=#{extension},fileSize=#{fileSize},description=#{description},contentType=#{contentType},createUser=#{createUser},realPath=#{realPath}  where id=#{id}")
-    int  updateAttachment(IAttachment attachment);
+    int updateAttachment(IAttachment attachment);
+
+    @Select("select * from i_attachment where status = '0' and belongToID=#{belongToID} and belongToCategory=#{belongToCategory}")
+    List<IAttachment> findListAttachmentByBelong(@Param("belongToID") String belongToID, @Param("belongToCategory") String belongToCategory);
+
 }
