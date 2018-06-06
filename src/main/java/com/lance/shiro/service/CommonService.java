@@ -3,6 +3,7 @@ package com.lance.shiro.service;
 import com.lance.shiro.entity.IAttachment;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,8 +48,24 @@ public interface CommonService {
     String findRootFilePath();
 
     /**
-     *
+     * @param id
+     * @param module
      * @return
      */
-    List<IAttachment> findAllAttachment();
+    List<IAttachment> findListAttachment(ArrayList<String> id, String module);
+
+    /**
+     * @param id
+     * @param module
+     */
+    int deleteListAttachment(ArrayList<String> id, String module);
+
+    /**
+     * update files
+     *
+     * @param file
+     * @param attachment
+     * @return
+     */
+    IAttachment updateFiles(MultipartFile file, IAttachment attachment);
 }

@@ -24,6 +24,18 @@ public interface CommonMapper {
     @SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     int addAttachment(IAttachment attachment);
 
-    @Select("select * from i_attachment where status = 0 ")
+    @Select("select * from i_attachment where status = '0' ")
     List<IAttachment> findAllAttachment();
+
+    @Select("SELECT * FROM i_attachment where status = '0' and  id in (${ids}) ")
+    List<IAttachment> findListAttachmentByIds(@Param("ids") String ids);
+
+    @Select("SELECT * FROM i_attachment where status = '0' and  module like CONCAT('%',#{module},'%') ")
+    List<IAttachment> findListAttachmentByModule(String module);
+
+    @Update("update i_attachment set status = '1'  where id=#{id}")
+    int deleteAttachment(int id);
+
+    @Update("update i_attachment set filePath=#{filePath},fileName=#{fileName},extension=#{extension},fileSize=#{fileSize},description=#{description},contentType=#{contentType},createUser=#{createUser},realPath=#{realPath}  where id=#{id}")
+    int  updateAttachment(IAttachment attachment);
 }
