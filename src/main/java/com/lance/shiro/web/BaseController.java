@@ -3,14 +3,15 @@ package com.lance.shiro.web;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 /**
  * Created by bingyun on 2018-06-02.
  */
-@RestController
+@ControllerAdvice
 public class BaseController {
     public Logger log = LogManager.getLogger(getClass());
 
@@ -36,5 +37,15 @@ public class BaseController {
         re.put("msg", msg);
         re.put("data", data);
         return success? ResponseEntity.ok(re) :ResponseEntity.badRequest().body(re);
+    }
+
+
+    @ExceptionHandler(value = Exception.class)
+    @ResponseBody
+    public ResponseEntity defaultErrorHandler(HttpServletRequest req, Exception e)  {
+        //打印异常信息：
+        log.error(req.getRequestURL());
+        log.error(e);
+        return error(e.getMessage(),e);
     }
 }
