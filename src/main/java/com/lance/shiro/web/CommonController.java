@@ -61,7 +61,7 @@ public class CommonController extends BaseController {
 
 
     /**
-     * find country
+     * post attachment
      *
      * @return
      */
@@ -81,7 +81,7 @@ public class CommonController extends BaseController {
             String module = request.getParameter("module");
             attachment.setModule(module);
             List<IAttachment> attachments = commonService.uploadFiles(files, attachment);
-            if (null == attachment) {
+            if (null == attachments) {
                 return error("Upload File Exception,Pls contact administrators !");
             } else {
                 return success("Operation success!", attachments);
@@ -92,14 +92,14 @@ public class CommonController extends BaseController {
     }
 
     /**
-     * getAttachment
+     * show Attachment
      *
      * @param filename
      * @return
      */
     @RequestMapping(method = RequestMethod.GET, value = "/attachment/{filename:.+}")
     @ResponseBody
-    public ResponseEntity getAttachment(@PathVariable String filename) {
+    public ResponseEntity showAttachment(@PathVariable String filename) {
         try {
             String rootFilePath = commonService.findRootFilePath();
             return ResponseEntity.ok(resourceLoader.getResource("file:" + Paths.get(rootFilePath + "attachment/", filename).toString()));
@@ -107,6 +107,21 @@ public class CommonController extends BaseController {
             return error("notFound the File,Pls contact administrators!");
         }
     }
+
+    /**
+     * find all attachment
+     *
+     * @return
+     */
+    @RequestMapping(value = "attachment", method = RequestMethod.GET)
+    public ResponseEntity gAttachment() {
+        try {
+            return success("Operation success!", commonService.findAllAttachment());
+        } catch (Exception e) {
+            return error("Find All Attachment Exception,Pls contact administrators!");
+        }
+    }
+
 
 
 }

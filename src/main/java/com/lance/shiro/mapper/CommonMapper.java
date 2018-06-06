@@ -19,10 +19,11 @@ public interface CommonMapper {
     List<IRegion> findCity(@Param("country") String country, @Param("state") String state);
 
     //增加用户
-    @Insert("insert into i_attachment(filePath,fileName,extension,fileSize,belongToID,belongToCategory,description,contentType,createUser,createTime,module) " +
-            "values(#{filePath},#{fileName},#{extension},#{fileSize},#{belongToID},#{belongToCategory},#{description},#{contentType},#{createUser},now(),#{module})")
+    @Insert("insert into i_attachment(filePath,fileName,extension,fileSize,belongToID,belongToCategory,description,contentType,createUser,createTime,module,realPath,status) " +
+            "values(#{filePath},#{fileName},#{extension},#{fileSize},#{belongToID},#{belongToCategory},#{description},#{contentType},#{createUser},now(),#{module},#{realPath},#{status})")
     @SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     int addAttachment(IAttachment attachment);
 
-
+    @Select("select * from i_attachment where status = 0 ")
+    List<IAttachment> findAllAttachment();
 }
