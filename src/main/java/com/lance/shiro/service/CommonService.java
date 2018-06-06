@@ -25,6 +25,7 @@ public interface CommonService {
 
     /**
      * find city
+     *
      * @param country
      * @param state
      * @return
@@ -33,6 +34,7 @@ public interface CommonService {
 
     /**
      * upload files
+     *
      * @param files
      * @param attachment
      * @return
@@ -40,8 +42,13 @@ public interface CommonService {
     List<IAttachment> uploadFiles(List<MultipartFile> files, IAttachment attachment);
 
     /**
-     *
      * @return
      */
     String findRootFilePath();
+
+    /**
+     *
+     * @return
+     */
+    List<IAttachment> findAllAttachment();
 }

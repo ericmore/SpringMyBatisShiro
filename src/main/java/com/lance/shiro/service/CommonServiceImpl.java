@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -82,6 +83,7 @@ public class CommonServiceImpl implements CommonService {
     @Override
     public List<IAttachment> uploadFiles(List<MultipartFile> files, IAttachment attachment) {
         try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             List<IAttachment> iAttachments = new ArrayList<>();
             List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs("rootFilePath");
             List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs("rootHttpPath");
@@ -92,22 +94,29 @@ public class CommonServiceImpl implements CommonService {
                 dir.mkdirs();
             }
             for (MultipartFile file : files) {
+                IAttachment temp = new IAttachment();
                 if (!file.isEmpty()) {
                     String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                     String fileName = UUID.randomUUID().toString();
                     String fileFullName = String.format("%s%s", fileName, suffix);
                     String fileSize = String.valueOf(file.getSize());
                     String contentType = file.getContentType();
-                    attachment.setFilePath(rootHttpPath + fileFullName);
-                    attachment.setFileName(fileName);
-                    attachment.setExtension(suffix);
-                    attachment.setFileSize(fileSize);
-                    attachment.setContentType(contentType);
-                    int attachmentId = commonMapper.addAttachment(attachment);
-                    attachment.setId(attachmentId);
+                    temp.setFilePath(rootHttpPath + fileFullName);
+                    temp.setFileName(fileName);
+                    temp.setExtension(suffix);
+                    temp.setFileSize(fileSize);
+                    temp.setBelongToID(attachment.getBelongToID());
+                    temp.setBelongToCategory(attachment.getBelongToCategory());
+                    temp.setDescription(attachment.getDescription());
+                    temp.setContentType(contentType);
+                    temp.setCreateUser(attachment.getCreateUser());
+                    temp.setRealPath(uploadPath + fileFullName);
+                    temp.setStatus("0");
+                    temp.setCreateTime(formatter.format(new Date()));
+                    commonMapper.addAttachment(temp);
                     File fileInfo = new File(String.format("%s%s", uploadPath, fileFullName));
                     org.apache.commons.io.FileUtils.writeByteArrayToFile(fileInfo, file.getBytes());
-                    iAttachments.add(attachment);
+                    iAttachments.add(temp);
                 }
             }
             return iAttachments;
@@ -121,5 +130,10 @@ public class CommonServiceImpl implements CommonService {
     public String findRootFilePath() {
         List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs("rootFilePath");
         return rootFilePaths.get(0).getcValue();
+    }
+
+    @Override
+    public List<IAttachment> findAllAttachment() {
+        return commonMapper.findAllAttachment();
     }
 }
