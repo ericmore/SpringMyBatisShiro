@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by bingyun on 2018-06-05.
@@ -34,9 +35,9 @@ public class ContentController extends BaseController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity add(@RequestBody IContent content) {
-        contentService.save(content);
-        return success("Operation success!", content);
+    public ResponseEntity add(@RequestBody ArrayList<IContent> content) {
+        ArrayList<Map> acontents = contentService.save(content);
+        return success("Operation success!", acontents);
     }
 
     /**
@@ -44,9 +45,9 @@ public class ContentController extends BaseController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody  IContent content) {
-        contentService.save(content);
-        return success("Operation success!",content);
+    public ResponseEntity update(@RequestBody  ArrayList<IContent> content) {
+        ArrayList<Map> acontents = contentService.save(content);
+        return success("Operation success!",acontents);
     }
 
     /**
@@ -54,8 +55,8 @@ public class ContentController extends BaseController {
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity query(@RequestParam String module) {
-        IContent content = contentService.findByModule(module);
+    public ResponseEntity query(@RequestParam ArrayList<String> module) {
+        ArrayList<Map> content = contentService.findByModule(module);
         return success("Operation success!",content);
     }
 }

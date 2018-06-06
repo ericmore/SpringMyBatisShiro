@@ -46,6 +46,7 @@ public class BaseController {
         //打印异常信息：
         log.error(req.getRequestURL());
         log.error(e);
+        e.printStackTrace();
         return error(e.getMessage(),e);
     }
 }

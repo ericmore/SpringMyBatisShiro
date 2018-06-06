@@ -5,14 +5,20 @@ import com.lance.shiro.entity.IUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface ContentService {
 
     //保存
-    IContent save(IContent content);
+    ArrayList<Map> save(ArrayList<IContent> contents);
+    //保存
+    Map save(IContent content);
 
     //查询
-    IContent findByModule(String module);
+    ArrayList<Map> findByModule(ArrayList<String> modules);
+
+    //查询
+    Map findByModule(String module);
 
 }

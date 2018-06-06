@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by bingyun on 2018-06-02.
@@ -37,10 +38,10 @@ public class UserController extends BaseController {
             return error("Status not valid!" + user.getStatus());
         }
         String username = user.getUsername();
-        if (userService.findByUserName(username) == null) {
+        if (userService.ckeckByUserName(username) == null) {
             // 添加用户
-            userService.register(user);
-            return success("Operation success!", user);
+            Map muser = userService.register(user);
+            return success("Operation success!", muser);
         } else {
             // 注册失败
             return error("Username already exists!");
@@ -62,8 +63,8 @@ public class UserController extends BaseController {
             boolean rememberMe = ServletRequestUtils.getBooleanParameter(request, "rememberMe", false);
             UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword(), rememberMe);
             subject.login(token); // 登录
-            user = userService.findByUserName(user.getUsername());
-            return success("Operation success!",user);
+            Map muser = userService.findByUserName(user.getUsername());
+            return success("Operation success!",muser);
         } catch (AuthenticationException e) {
             e.printStackTrace();
             return error("Your account or password was entered incorrectly!");
@@ -93,7 +94,7 @@ public class UserController extends BaseController {
         Subject subject = SecurityUtils.getSubject();
         if(subject.isAuthenticated()){
             String username =  SecurityUtils.getSubject().getPrincipal().toString();
-            IUser user = userService.findByUserName(username);
+            Map user = userService.findByUserName(username);
             return success("Operation success!", user);
         }else{
             return success("No login information！");
@@ -108,7 +109,7 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(name="role",required=false) ArrayList<String> role) {
-        ArrayList<IUser> list = userService.findAllByRoles(role);
+        ArrayList<Map> list = userService.findAllByRoles(role);
         return success("Operation success!", list);
     }
 
@@ -131,8 +132,8 @@ public class UserController extends BaseController {
         if(!UserStatus.validate(user.getStatus())){
             return error("Status not valid!" + user.getStatus());
         }
-        user = userService.update(user);
-        return success("Operation success!",user);
+        Map muser  = userService.update(user);
+        return success("Operation success!",muser);
     }
 
 }

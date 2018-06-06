@@ -17,6 +17,9 @@ import org.springframework.stereotype.Component;
 
 import com.lance.shiro.service.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * 验证用户登录
  * 
@@ -50,7 +53,7 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
 		String userName = upt.getUsername();
-		IUser user = userService.findByUserName(userName);
+		IUser user = userService.ckeckByUserName(userName);
 
 		if (user == null) {
 			throw new UnknownAccountException();
