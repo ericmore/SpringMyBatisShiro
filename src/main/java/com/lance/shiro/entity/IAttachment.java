@@ -9,7 +9,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 public class IAttachment {
     @Column(name = "id", type = MySqlTypeConstant.INT, length = 11, isKey = true, isAutoIncrement = true)
     private int id;
-    @Column(name = "filePath", type = MySqlTypeConstant.VARCHAR, length = 128)
+    @Column(name = "filePath", type = MySqlTypeConstant.VARCHAR, length = 256)
     private String filePath;
     @Column(name = "fileName", type = MySqlTypeConstant.VARCHAR, length = 128)
     private String fileName;
@@ -35,6 +35,8 @@ public class IAttachment {
     private String realPath;
     @Column(name = "status", type = MySqlTypeConstant.VARCHAR, length = 4)
     private String status;
+    @Column(name = "originalFilename", type = MySqlTypeConstant.VARCHAR, length = 256)
+    private String originalFilename;
 
     public int getId() {
         return id;
@@ -146,6 +148,14 @@ public class IAttachment {
 
     public void setRealPath(String realPath) {
         this.realPath = realPath;
+    }
+
+    public String getOriginalFilename() {
+        return originalFilename;
+    }
+
+    public void setOriginalFilename(String originalFilename) {
+        this.originalFilename = originalFilename;
     }
 
     @Override

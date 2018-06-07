@@ -128,6 +128,7 @@ public class CommonServiceImpl implements CommonService {
                     temp.setRealPath(uploadPath + fileFullName);
                     temp.setStatus("0");
                     temp.setCreateTime(formatter.format(new Date()));
+                    temp.setOriginalFilename(file.getOriginalFilename());
                     commonMapper.addAttachment(temp);
                     File fileInfo = new File(String.format("%s%s", uploadPath, fileFullName));
                     org.apache.commons.io.FileUtils.writeByteArrayToFile(fileInfo, file.getBytes());
@@ -212,7 +213,7 @@ public class CommonServiceImpl implements CommonService {
             }
 
             // 创建新文件
-            if (!file.isEmpty()) {
+            if (null!= file && !file.isEmpty()) {
                 // 后缀
                 String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                 // 新文件名
@@ -227,6 +228,7 @@ public class CommonServiceImpl implements CommonService {
                 temp.setFileName(fileName);
                 temp.setExtension(suffix);
                 temp.setFileSize(fileSize);
+                temp.setOriginalFilename(file.getOriginalFilename());
                 if (null != attachment.getDescription())
                     temp.setDescription(attachment.getDescription());
                 temp.setContentType(contentType);

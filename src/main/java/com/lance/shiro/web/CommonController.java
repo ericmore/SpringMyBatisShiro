@@ -70,26 +70,31 @@ public class CommonController extends BaseController {
     @RequestMapping(value = "attachment", method = RequestMethod.POST)
     public ResponseEntity postAttachment(HttpServletRequest request) {
         try {
-            List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-            IAttachment attachment = new IAttachment();
-            String belongToID = request.getParameter("belongToID");
-            attachment.setBelongToID(belongToID);
-            String belongToCategory = request.getParameter("belongToCategory");
-            attachment.setBelongToCategory(belongToCategory);
-            String description = request.getParameter("description") == null ? "" : request.getParameter("description");
-            attachment.setDescription(description);
-            String createUser = request.getParameter("createUser") == null ? "" : request.getParameter("createUser");
-            attachment.setCreateUser(createUser);
-            String module = request.getParameter("module") == null ? "" : request.getParameter("module");
-            attachment.setModule(module);
-            List<IAttachment> attachments = commonService.uploadFiles(files, attachment);
-            if (null == attachments) {
-                return error("Upload File Exception,Pls Contact Administrators !");
+            // 判断是否有附件
+            if (request instanceof MultipartHttpServletRequest) {
+                List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+                IAttachment attachment = new IAttachment();
+                String belongToID = request.getParameter("belongToID");
+                attachment.setBelongToID(belongToID);
+                String belongToCategory = request.getParameter("belongToCategory");
+                attachment.setBelongToCategory(belongToCategory);
+                String description = request.getParameter("description") == null ? "" : request.getParameter("description");
+                attachment.setDescription(description);
+                String createUser = request.getParameter("createUser") == null ? "" : request.getParameter("createUser");
+                attachment.setCreateUser(createUser);
+                String module = request.getParameter("module") == null ? "" : request.getParameter("module");
+                attachment.setModule(module);
+                List<IAttachment> attachments = commonService.uploadFiles(files, attachment);
+                if (null == attachments) {
+                    return error("Upload Attachment Exception,Pls Contact Administrators !");
+                } else {
+                    return success("Operation success!", attachments);
+                }
             } else {
-                return success("Operation success!", attachments);
+                return error("No Attachment!");
             }
         } catch (Exception e) {
-            return error("NO Upload Attachment!");
+            return error("Upload Attachment Exception,Pls Contact Administrators!");
         }
     }
 
@@ -145,12 +150,12 @@ public class CommonController extends BaseController {
      * @return
      */
     @RequestMapping(value = "attachment", method = RequestMethod.PUT)
-    public ResponseEntity updateAttachment(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+    public ResponseEntity updateAttachment(@RequestParam(value = "file", required = false) MultipartFile file, HttpServletRequest request) {
         try {
             IAttachment attachment = new IAttachment();
             String id = request.getParameter("id");
             if (StringUtils.isBlank(id)) {
-                return error("Recode ID Is NUll ,Pls Contact Administrators !");
+                return error("Recode ID Is Null ,Pls Contact Administrators !");
             }
             attachment.setId(Integer.valueOf(id));
             String description = request.getParameter("description");
