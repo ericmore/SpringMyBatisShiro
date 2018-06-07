@@ -76,11 +76,11 @@ public class CommonController extends BaseController {
             attachment.setBelongToID(belongToID);
             String belongToCategory = request.getParameter("belongToCategory");
             attachment.setBelongToCategory(belongToCategory);
-            String description = request.getParameter("description");
+            String description = request.getParameter("description") == null ? "" : request.getParameter("description");
             attachment.setDescription(description);
-            String createUser = request.getParameter("createUser");
+            String createUser = request.getParameter("createUser") == null ? "" : request.getParameter("createUser");
             attachment.setCreateUser(createUser);
-            String module = request.getParameter("module");
+            String module = request.getParameter("module") == null ? "" : request.getParameter("module");
             attachment.setModule(module);
             List<IAttachment> attachments = commonService.uploadFiles(files, attachment);
             if (null == attachments) {
@@ -89,7 +89,7 @@ public class CommonController extends BaseController {
                 return success("Operation success!", attachments);
             }
         } catch (Exception e) {
-            return error("Upload Attachment Exception,Pls Contact Administrators!");
+            return error("NO Upload Attachment!");
         }
     }
 
