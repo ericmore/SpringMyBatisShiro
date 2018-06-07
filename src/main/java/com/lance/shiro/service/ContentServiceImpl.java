@@ -59,7 +59,10 @@ public class ContentServiceImpl implements ContentService {
 		ArrayList<Map> contents = new ArrayList<Map>();
 		for (int i = 0,size = modules.size(); i < size; i++) {
 			String module = modules.get(i);
-			contents.add(findByModule(module));
+			Map ret = findByModule(module);
+			if(ret != null){
+				contents.add(ret);
+			}
 		}
 		return contents;
 	}
@@ -67,8 +70,13 @@ public class ContentServiceImpl implements ContentService {
 	@Override
 	public Map findByModule(String module) {
 		IContent content = contentMapper.findByModule(module);
-		Map mcontent = setAttachment(content);
-		return mcontent;
+		if(null == content)
+			return null;
+		else{
+			Map mcontent = setAttachment(content);
+			return mcontent;
+		}
+
 	}
 
 	private IContent checkByModule(String module) {

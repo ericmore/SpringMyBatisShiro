@@ -136,7 +136,7 @@ public class CommonServiceImpl implements CommonService {
             }
             return iAttachments;
         } catch (Exception e) {
-
+            log.error(e);
         }
         return null;
     }

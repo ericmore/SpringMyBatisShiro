@@ -43,5 +43,5 @@ INSERT INTO `i_user` VALUES ('9', '5000000003', 'customer2', '5ce4d191fd14ac85a1
 -- ----------------------------
 -- Records of i_commonConfig
 -- ----------------------------
-INSERT INTO `i_commonConfig` VALUES(1,'dev','rootFilePath','d:/');
-INSERT INTO `i_commonConfig` VALUES(2,'dev','rootHttpPath','http://localhost/');
+INSERT INTO i_commonconfig ( env, cKey, cValue) VALUES ( 'dev', 'rootHttpPath', 'http://localhost/');
+INSERT INTO i_commonconfig ( env, cKey, cValue) VALUES ( 'dev', 'rootFilePath', 'd:/');
