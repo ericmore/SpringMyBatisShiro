@@ -37,11 +37,10 @@ INSERT INTO `i_user` VALUES ('9', '5000000003', 'customer2', '5ce4d191fd14ac85a1
                              'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
 
 
-#https://raw.githubusercontent.com/loureirorg/city-state/master/lib/db/GeoLite2-City-Locations-en.csv
-
 
 -- ----------------------------
 -- Records of i_commonConfig
 -- ----------------------------
-INSERT INTO i_commonconfig ( env, cKey, cValue) VALUES ( 'dev', 'rootHttpPath', 'http://localhost/');
-INSERT INTO i_commonconfig ( env, cKey, cValue) VALUES ( 'dev', 'rootFilePath', 'd:/');
+
+INSERT INTO `i_commonconfig` (  env, cKey, cValue) VALUES ( 'dev', 'rootHttpPath', 'http://localhost/');
+INSERT INTO `i_commonconfig` (  env, cKey, cValue) VALUES ( 'dev', 'rootFilePath', 'd:/');

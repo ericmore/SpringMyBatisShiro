@@ -9,9 +9,9 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 public class ICommonConfig {
     @Column(name = "id", type = MySqlTypeConstant.INT, length = 11, isKey = true, isAutoIncrement = true)
     private int id;
-    @Column(name = "env", type = MySqlTypeConstant.VARCHAR, length = 128)
+    @Column(name = "env", type = MySqlTypeConstant.VARCHAR,  length = 128)
     private String env;
-    @Column(name = "cKey", type = MySqlTypeConstant.VARCHAR, length = 32)
+    @Column(name = "cKey", type = MySqlTypeConstant.VARCHAR, isUnique = true, length = 32)
     private String cKey;
     @Column(name = "cValue", type = MySqlTypeConstant.VARCHAR, length = 32)
     private String cValue;

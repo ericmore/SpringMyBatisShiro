@@ -18,9 +18,9 @@ public interface CommonMapper {
     @Select("select distinct city_name from i_region where country_iso_code=#{country} and city_name is not null and subdivision_1_iso_code=#{state} ")
     List<IRegion> findCity(@Param("country") String country, @Param("state") String state);
 
-    //增加用户
-    @Insert("insert into i_attachment(filePath,fileName,extension,fileSize,belongToID,belongToCategory,description,contentType,createUser,createTime,module,realPath,status) " +
-            "values(#{filePath},#{fileName},#{extension},#{fileSize},#{belongToID},#{belongToCategory},#{description},#{contentType},#{createUser},now(),#{module},#{realPath},#{status})")
+    //插入附件
+    @Insert("insert into i_attachment(filePath,fileName,extension,fileSize,belongToID,belongToCategory,description,contentType,createUser,createTime,module,realPath,status,originalFilename) " +
+            "values(#{filePath},#{fileName},#{extension},#{fileSize},#{belongToID},#{belongToCategory},#{description},#{contentType},#{createUser},now(),#{module},#{realPath},#{status},#{originalFilename})")
     @SelectKey(statement = "select LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = int.class)
     int addAttachment(IAttachment attachment);
 
