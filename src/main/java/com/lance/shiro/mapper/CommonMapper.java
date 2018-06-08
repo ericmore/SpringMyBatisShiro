@@ -33,7 +33,7 @@ public interface CommonMapper {
     @Select("SELECT * FROM i_attachment where status = '0' and  module like CONCAT('%',#{module},'%') ")
     List<IAttachment> findListAttachmentByModule(String module);
 
-    @Update("update i_attachment set status = '1'  where id=#{id}")
+    @Update("DELETE FROM i_attachment where id=#{id}")
     int deleteAttachment(int id);
 
     @Update("update i_attachment set filePath=#{filePath},fileName=#{fileName},extension=#{extension},fileSize=#{fileSize},description=#{description},contentType=#{contentType},createUser=#{createUser},realPath=#{realPath}  where id=#{id}")

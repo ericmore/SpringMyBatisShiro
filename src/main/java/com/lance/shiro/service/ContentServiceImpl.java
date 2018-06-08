@@ -2,6 +2,7 @@ package com.lance.shiro.service;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.lance.shiro.config.ConstantVariable;
 import com.lance.shiro.entity.IAttachment;
 import com.lance.shiro.entity.IContent;
 import com.lance.shiro.mapper.ContentMapper;
@@ -87,7 +88,7 @@ public class ContentServiceImpl implements ContentService {
 	private Map setAttachment(IContent content){
 		Map mcontent = ConvertUtils.beanToMap(content);
 		String id = String.valueOf(content.getId());
-		mcontent.put("attachments",commonService.findListAttachmentByBelong( id , "content_attachments"));
+		mcontent.put("attachments",commonService.findListAttachmentByBelong( id , ConstantVariable.BELONG_TO_CATEGORY_CONTENT_ATTACHMENTS));
 		return mcontent;
 	}
 
