@@ -88,7 +88,7 @@ public class ContentServiceImpl implements ContentService {
 	private Map setAttachment(IContent content){
 		Map mcontent = ConvertUtils.beanToMap(content);
 		String id = String.valueOf(content.getId());
-		mcontent.put("attachments",commonService.findListAttachmentByBelong( id , ConstantVariable.BELONG_TO_CATEGORY_CONTENT_ATTACHMENTS));
+		mcontent.put(ConstantVariable.BELONG_TO_CATEGORY_CONTENT_ATTACHMENTS,commonService.findListAttachmentByBelong( id , ConstantVariable.BELONG_TO_CATEGORY_CONTENT_ATTACHMENTS));
 		return mcontent;
 	}
 

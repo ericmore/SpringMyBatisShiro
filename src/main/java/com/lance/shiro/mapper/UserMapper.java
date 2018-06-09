@@ -32,7 +32,7 @@ public interface UserMapper {
 
     //删除用户
     @Update("<script>"
-            + "update i_user set status='deleted' where status !='deleted' and id IN "
+            + "update i_user set status='deleted',updateTime = now() where status !='deleted' and id IN "
             + "<foreach item='item' index='index' collection='ids' open='(' separator=',' close=')'>"
             + "#{item}"
             + "</foreach>"
