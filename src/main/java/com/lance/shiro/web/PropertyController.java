@@ -1,8 +1,10 @@
 package com.lance.shiro.web;
 
+import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.entity.IPropertyList;
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.service.PropertyListService;
+import com.lance.shiro.service.PropertyService;
 import com.lance.shiro.service.UserService;
 import com.lance.shiro.utils.UserStatus;
 import org.apache.shiro.SecurityUtils;
@@ -23,22 +25,22 @@ import java.util.Map;
  * Created by bingyun on 2018-06-08.
  */
 @RestController
-@RequestMapping("/rest/propertyList")
-public class PropertyListController extends BaseController {
+@RequestMapping("/rest/property")
+public class PropertyController extends BaseController {
 
-    //注入PropertyListService
+    //注入PropertyService
     @Autowired
-    private PropertyListService propertyListService;
+    private PropertyService propertyService;
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable("id") int id) {
-        Map obj = propertyListService.get(id);
+        Map obj = propertyService.get(id);
         return success("Operation success!", obj);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity add(@RequestBody IPropertyList propertyList) {
-        Map obj = propertyListService.save(propertyList);
+    public ResponseEntity add(@RequestBody IProperty property) {
+        Map obj = propertyService.save(property);
         return success("Operation success!", obj);
     }
 
@@ -48,13 +50,26 @@ public class PropertyListController extends BaseController {
      */
     @RequestMapping(value = "", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam ArrayList<Integer> id) {
-        propertyListService.deleteAllByIds(id);
+        propertyService.deleteAllByIds(id);
         return success("Operation success!");
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity query( @RequestParam(name="city",required=false) ArrayList<String> city) {
-        ArrayList<Map> list = propertyListService.findAllByCitys(city);
+    @RequestMapping(value = "propertyList", method = RequestMethod.GET)
+    public ResponseEntity findAllByPropertyList( @RequestParam(name="id",required=false) ArrayList<Integer> id) {
+        ArrayList<Map> list = propertyService.findAllByPropertyLists(id);
         return success("Operation success!", list);
     }
+
+    @RequestMapping(value = "agent", method = RequestMethod.GET)
+    public ResponseEntity findAllByAgent( @RequestParam(name="id",required=false) ArrayList<Integer> id) {
+        ArrayList<Map> list = propertyService.findAllByAgents(id);
+        return success("Operation success!", list);
+    }
+
+    @RequestMapping(value = "owner", method = RequestMethod.GET)
+    public ResponseEntity findAllByOwner( @RequestParam(name="id",required=false) ArrayList<Integer> id) {
+        ArrayList<Map> list = propertyService.findAllByOwners(id);
+        return success("Operation success!", list);
+    }
+
 }

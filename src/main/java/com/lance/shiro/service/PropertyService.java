@@ -14,4 +14,16 @@ public interface PropertyService {
 
     Map get(int id);
 
+    Map save(IProperty propertyList);
+
+    void deleteAllByIds(ArrayList<Integer> ids);
+
+    void delete(Integer id);
+
+    ArrayList<Map> findAllByPropertyLists(ArrayList<Integer> propertyListId);
+
+    ArrayList<Map> findAllByAgents(ArrayList<Integer> agentId);
+
+    ArrayList<Map> findAllByOwners(ArrayList<Integer> ownerId);
+
 }

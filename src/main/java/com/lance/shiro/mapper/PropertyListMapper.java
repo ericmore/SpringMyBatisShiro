@@ -14,7 +14,7 @@ public interface PropertyListMapper {
     @Options(useGeneratedKeys=true,keyProperty="id")
     public int add(IPropertyList propertyList);
 
-    @Update("update i_property_list set buildingName = #{buildingName},buildingAddress = #{buildingAddress},city = #{city},state = #{state},country = #{country},x = #{x},y = #{y},buildingOverview = #{buildingOverview},features = #{features},date = #{date},updateTime = now(),status = 'active' where id=#{id} ")
+    @Update("update i_property_list set buildingName = #{buildingName},buildingAddress = #{buildingAddress},city = #{city},state = #{state},country = #{country},x = #{x},y = #{y},buildingOverview = #{buildingOverview},features = #{features},date = #{date},updateTime = now() where id=#{id} ")
     int  update(IPropertyList propertyList);
 
     @Select("select * from i_property_list where id=#{id}")
@@ -27,10 +27,20 @@ public interface PropertyListMapper {
 
     //根据city查询
     @Select("SELECT * FROM i_property_list where status = 'active' and  city in (${citys})  ")
+    @Results({
+            @Result(property="id",column="id"),
+            @Result(property="lotTypeList",column="id",javaType=List.class,
+                    many=@Many(select="com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+    })
     ArrayList<IPropertyList> findAllByCitys(@Param("citys") String citys);
 
     //查询所以用户
     @Select("SELECT* FROM i_property_list where status = 'active'  ")
+    @Results({
+            @Result(property="id",column="id"),
+            @Result(property="lotTypeList",column="id",javaType=List.class,
+                    many=@Many(select="com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+    })
     ArrayList<IPropertyList> findAll();
 
     @Update("update i_property_list set status = 'inactive',updateTime = now()  where id=#{id} ")

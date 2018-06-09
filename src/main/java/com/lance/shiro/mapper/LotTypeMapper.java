@@ -18,11 +18,6 @@ public interface LotTypeMapper{
     int  update(ILotType lotType);
 
     @Select("select * from i_lot_type where id=#{id}")
-//    @Results({
-//             @Result(property="id",column="id"),
-//            @Result(property="propertyList",column="propertyListId",javaType=IPropertyList.class,
-//                    one=@One(select="com.lance.shiro.mapper.PropertyListMapper.get"))
-//    })
     public ILotType get(int id);
 
     @Select("select * from i_lot_type where propertyListId=#{propertyListId} and status = 'active'")

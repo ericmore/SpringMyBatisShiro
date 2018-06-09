@@ -105,8 +105,8 @@ public class PropertyListServiceImpl implements PropertyListService {
 	public ArrayList<Map> findAllByCitys(List<String> city) {
 		ArrayList<IPropertyList> list;
 		if(city !=null && city.size()>0){
-			String roles = "'"+ StringUtils.join(city, "','")+"'";
-			list = propertyListMapper.findAllByCitys(roles);
+			String citys = "'"+ StringUtils.join(city, "','")+"'";
+			list = propertyListMapper.findAllByCitys(citys);
 		}else{
 			list= propertyListMapper.findAll();
 		}
