@@ -60,7 +60,7 @@ public interface PropertyMapper {
             @Result(property = "owner", column = "ownerId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
     })
-    ArrayList<IProperty> findAllByPropertyList(@Param("attributes") String propertyListId);
+    ArrayList<IProperty> findAllByPropertyList(@Param("attributes") String attributes);
 
     //根据Agent查询
     @Select("SELECT * FROM i_property where  agentId in (${agentId})  ")

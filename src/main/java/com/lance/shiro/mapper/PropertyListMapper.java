@@ -45,4 +45,15 @@ public interface PropertyListMapper {
     public void delete(int id);
 
 
+    @Update("update i_property_list set ${attributes}  ,updateTime = now() where id=#{id} ")
+    int updateAttribute(@Param("id") int id, @Param("attributes") String attributes);
+
+    @Select("SELECT * FROM i_property_list where ${attributes}  ")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "lotTypeList", column = "id", javaType = List.class,
+                    many = @Many(select = "com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+    })
+    ArrayList<IPropertyList> findAllByAttr(@Param("attributes") String attributes);
+
 }
