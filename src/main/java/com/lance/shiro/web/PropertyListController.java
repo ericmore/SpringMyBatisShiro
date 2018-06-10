@@ -1,21 +1,11 @@
 package com.lance.shiro.web;
 
 import com.lance.shiro.entity.IPropertyList;
-import com.lance.shiro.entity.IUser;
 import com.lance.shiro.service.PropertyListService;
-import com.lance.shiro.service.UserService;
-import com.lance.shiro.utils.UserStatus;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -43,7 +33,8 @@ public class PropertyListController extends BaseController {
     }
 
     /**
-     *delete
+     * delete
+     *
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.DELETE)
@@ -53,7 +44,7 @@ public class PropertyListController extends BaseController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity query( @RequestParam(name="city",required=false) ArrayList<String> city) {
+    public ResponseEntity query(@RequestParam(name = "city", required = false) ArrayList<String> city) {
         ArrayList<Map> list = propertyListService.findAllByCitys(city);
         return success("Operation success!", list);
     }

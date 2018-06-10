@@ -1,23 +1,11 @@
 package com.lance.shiro.web;
 
 import com.lance.shiro.entity.IProperty;
-import com.lance.shiro.entity.IPropertyList;
-import com.lance.shiro.entity.IUser;
-import com.lance.shiro.service.PropertyListService;
 import com.lance.shiro.service.PropertyService;
-import com.lance.shiro.service.UserService;
-import com.lance.shiro.utils.UserStatus;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -45,7 +33,8 @@ public class PropertyController extends BaseController {
     }
 
     /**
-     *delete
+     * delete
+     *
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.DELETE)
@@ -55,19 +44,20 @@ public class PropertyController extends BaseController {
     }
 
     @RequestMapping(value = "propertyList", method = RequestMethod.GET)
-    public ResponseEntity findAllByPropertyList( @RequestParam(name="id",required=false) ArrayList<Integer> id) {
+    public ResponseEntity findAllByPropertyList(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
         ArrayList<Map> list = propertyService.findAllByPropertyLists(id);
         return success("Operation success!", list);
     }
 
+
     @RequestMapping(value = "agent", method = RequestMethod.GET)
-    public ResponseEntity findAllByAgent( @RequestParam(name="id",required=false) ArrayList<Integer> id) {
+    public ResponseEntity findAllByAgent(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
         ArrayList<Map> list = propertyService.findAllByAgents(id);
         return success("Operation success!", list);
     }
 
     @RequestMapping(value = "owner", method = RequestMethod.GET)
-    public ResponseEntity findAllByOwner( @RequestParam(name="id",required=false) ArrayList<Integer> id) {
+    public ResponseEntity findAllByOwner(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
         ArrayList<Map> list = propertyService.findAllByOwners(id);
         return success("Operation success!", list);
     }

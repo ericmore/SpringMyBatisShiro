@@ -1,21 +1,18 @@
 package com.lance.shiro.mapper;
+
 import com.lance.shiro.entity.ILotType;
-import com.lance.shiro.entity.IPropertyList;
-import com.lance.shiro.entity.IUser;
 import org.apache.ibatis.annotations.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Mapper
-public interface LotTypeMapper{
+public interface LotTypeMapper {
     @Insert("insert into i_lot_type (bedroomCount,bathRoomCount,parkingCount,price,qty,notes,propertyListId,createTime,updateTime,status) values(#{bedroomCount},#{bathRoomCount},#{parkingCount},#{price},#{qty},#{notes},#{propertyListId},now(),now(),'active')")
-    @Options(useGeneratedKeys=true,keyProperty="id")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
     public void add(ILotType lotType);
 
     @Update("update i_lot_type set bedroomCount=#{bedroomCount},bathRoomCount=#{bathRoomCount},parkingCount=#{parkingCount},price=#{price},qty=#{qty},notes=#{notes},propertyListId=#{propertyListId},updateTime = now(),status = 'active' where id=#{id}")
-    int  update(ILotType lotType);
+    int update(ILotType lotType);
 
     @Select("select * from i_lot_type where id=#{id}")
     public ILotType get(int id);
