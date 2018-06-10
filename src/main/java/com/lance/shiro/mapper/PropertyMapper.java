@@ -35,7 +35,20 @@ public interface PropertyMapper {
     public IProperty get(int id);
 
     //根据PropertyList查询
-    @Select("SELECT * FROM i_property where  propertyListId in (${propertyListId})  ")
+//    @Select("SELECT * FROM i_property where  propertyListId in (${propertyListId})  ")
+//    @Results({
+//            @Result(property = "id", column = "id"),
+//            @Result(property = "agent", column = "agentId", javaType = IUser.class,
+//                    one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
+//            @Result(property = "propertyList", column = "propertyListId", javaType = IPropertyList.class,
+//                    one = @One(select = "com.lance.shiro.mapper.PropertyListMapper.get")),
+//            @Result(property = "lotType", column = "lotTypeId", javaType = ILotType.class,
+//                    one = @One(select = "com.lance.shiro.mapper.LotTypeMapper.get")),
+//            @Result(property = "owner", column = "ownerId", javaType = IUser.class,
+//                    one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
+//    })
+//    ArrayList<IProperty> findAllByPropertyList(@Param("propertyListId") String propertyListId);
+    @Select("SELECT * FROM i_property where ${attributes} ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
@@ -47,8 +60,7 @@ public interface PropertyMapper {
             @Result(property = "owner", column = "ownerId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
     })
-    ArrayList<IProperty> findAllByPropertyList(@Param("propertyListId") String propertyListId);
-
+    ArrayList<IProperty> findAllByPropertyList(@Param("attributes") String propertyListId);
 
     //根据Agent查询
     @Select("SELECT * FROM i_property where  agentId in (${agentId})  ")
@@ -96,4 +108,6 @@ public interface PropertyMapper {
     ArrayList<IProperty> findAll();
 
 
+    @Update("update i_property set ${attributes}  ,updateTime = now() where id=#{id} ")
+    int updateAttribute(@Param("id") int id, @Param("attributes") String attributes);
 }

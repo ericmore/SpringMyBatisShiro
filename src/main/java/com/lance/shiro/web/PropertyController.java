@@ -43,10 +43,20 @@ public class PropertyController extends BaseController {
         return success("Operation success!");
     }
 
+//    @RequestMapping(value = "propertyList", method = RequestMethod.GET)
+//    public ResponseEntity findAllByPropertyList(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
+//        ArrayList<Map> list = propertyService.findAllByPropertyLists(id);
+//        return success("Operation success!", list);
+//    }
+
     @RequestMapping(value = "propertyList", method = RequestMethod.GET)
-    public ResponseEntity findAllByPropertyList(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
-        ArrayList<Map> list = propertyService.findAllByPropertyLists(id);
-        return success("Operation success!", list);
+    public ResponseEntity findAllByPropertyList(@RequestParam Map<String, String> reqMap) {
+        try {
+            ArrayList<Map> list = propertyService.findAllByPropertyLists(reqMap);
+            return success("Operation success!", list);
+        } catch (Exception e) {
+            return error("GET PropertyList Exception,Pls Contact Administrators!");
+        }
     }
 
 
@@ -60,6 +70,25 @@ public class PropertyController extends BaseController {
     public ResponseEntity findAllByOwner(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
         ArrayList<Map> list = propertyService.findAllByOwners(id);
         return success("Operation success!", list);
+    }
+
+    /**
+     * update Attribute
+     *
+     * @return
+     */
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity put(@PathVariable("id") int id, @RequestParam Map<String, String> reqMap) {
+        try {
+            if (null != reqMap) {
+                IProperty iProperty = propertyService.updateAttribute(id, reqMap);
+                return success("Operation success!", iProperty);
+            } else {
+                return success("Operation success!", null);
+            }
+        } catch (Exception e) {
+            return error("update Attribute Exception,Pls Contact Administrators!");
+        }
     }
 
 }

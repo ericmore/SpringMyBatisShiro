@@ -15,10 +15,13 @@ public interface PropertyService {
 
     void delete(Integer id);
 
-    ArrayList<Map> findAllByPropertyLists(ArrayList<Integer> propertyListId);
+//    ArrayList<Map> findAllByPropertyLists(ArrayList<Integer> propertyListId);
 
     ArrayList<Map> findAllByAgents(ArrayList<Integer> agentId);
 
     ArrayList<Map> findAllByOwners(ArrayList<Integer> ownerId);
 
+    ArrayList<Map> findAllByPropertyLists(Map<String, String> reqMap);
+
+    IProperty updateAttribute(int id, Map<String, String> reqMap);
 }

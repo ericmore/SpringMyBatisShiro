@@ -1,5 +1,6 @@
 package com.lance.shiro.service;
 
+import com.gitee.sunchenbin.mybatis.actable.manager.common.BaseMysqlCRUDManager;
 import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.mapper.PropertyMapper;
 import com.lance.shiro.utils.ConvertUtils;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,6 +23,9 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private BaseMysqlCRUDManager baseMysqlCRUDManager;
 
 
     @Override
@@ -48,17 +53,17 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
 
-    @Override
-    public ArrayList<Map> findAllByPropertyLists(ArrayList<Integer> propertyListId) {
-        ArrayList<IProperty> list;
-        if (propertyListId != null && propertyListId.size() > 0) {
-            String propertyListIds = "'" + StringUtils.join(propertyListId, "','") + "'";
-            list = propertyMapper.findAllByPropertyList(propertyListIds);
-        } else {
-            list = propertyMapper.findAll();
-        }
-        return setAttachmentForList(list);
-    }
+//    @Override
+//    public ArrayList<Map> findAllByPropertyLists(ArrayList<Integer> propertyListId) {
+//        ArrayList<IProperty> list;
+//        if (propertyListId != null && propertyListId.size() > 0) {
+//            String propertyListIds = "'" + StringUtils.join(propertyListId, "','") + "'";
+//            list = propertyMapper.findAllByPropertyList(propertyListIds);
+//        } else {
+//            list = propertyMapper.findAll();
+//        }
+//        return setAttachmentForList(list);
+//    }
 
     @Override
     public ArrayList<Map> findAllByAgents(ArrayList<Integer> agentId) {
@@ -81,9 +86,66 @@ public class PropertyServiceImpl implements PropertyService {
         } else {
             list = propertyMapper.findAll();
         }
+//        List<Test> query = baseMysqlCRUDManager.query(test);
         return setAttachmentForList(list);
     }
-    
+
+    /**
+     * @param reqMap
+     * @return
+     */
+    @Override
+    public ArrayList<Map> findAllByPropertyLists(Map<String, String> reqMap) {
+        ArrayList<IProperty> list;
+        if (null != reqMap) {
+            IProperty iProperty = new IProperty();
+            Field fields[] = iProperty.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                String keyName = fields[i].getName();
+                if (null != reqMap.get(keyName)) {
+                    sb.append("  ").append(keyName).append("=").append("'").append(reqMap.get(keyName)).append("'").append("  ").append("and");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                list = propertyMapper.findAllByPropertyList(s.substring(0, s.length() - 3));
+            } else {
+                list = propertyMapper.findAll();
+            }
+        } else {
+            list = propertyMapper.findAll();
+        }
+        return setAttachmentForList(list);
+    }
+
+    /**
+     * @param id
+     * @param reqMap
+     * @return
+     */
+    @Override
+    public IProperty updateAttribute(int id, Map<String, String> reqMap) {
+        IProperty iProperty = propertyMapper.get(id);
+        if (null != iProperty) {
+            Field fields[] = iProperty.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                String keyName = fields[i].getName();
+                if (null != reqMap.get(keyName)) {
+                    sb.append("  ").append(keyName).append("=").append("'").append(reqMap.get(keyName)).append("'").append("  ").append(",");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                propertyMapper.updateAttribute(iProperty.getId(), s.substring(0, s.length() - 1));
+                iProperty = propertyMapper.get(id);
+                return iProperty;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public void delete(Integer id) {
