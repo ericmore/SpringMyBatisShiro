@@ -24,7 +24,7 @@ public interface PropertyListMapper {
     public IPropertyList get(int id);
 
     //根据city查询
-    @Select("SELECT * FROM i_property_list where status = 'active' and  city in (${citys})  ")
+    @Select("SELECT * FROM i_property_list where  city in (${citys})  ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,
@@ -33,7 +33,7 @@ public interface PropertyListMapper {
     ArrayList<IPropertyList> findAllByCitys(@Param("citys") String citys);
 
     //查询所以用户
-    @Select("SELECT* FROM i_property_list where status = 'active'  ")
+    @Select("SELECT* FROM i_property_list where 1=1 ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,

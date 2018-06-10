@@ -35,7 +35,7 @@ public interface PropertyMapper {
     public IProperty get(int id);
 
     //根据PropertyList查询
-    @Select("SELECT * FROM i_property where status = 'active' and  propertyListId in (${propertyListId})  ")
+    @Select("SELECT * FROM i_property where  propertyListId in (${propertyListId})  ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
@@ -51,7 +51,7 @@ public interface PropertyMapper {
 
 
     //根据Agent查询
-    @Select("SELECT * FROM i_property where status = 'active' and  agentId in (${agentId})  ")
+    @Select("SELECT * FROM i_property where  agentId in (${agentId})  ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
@@ -66,7 +66,7 @@ public interface PropertyMapper {
     ArrayList<IProperty> findAllByAgent(@Param("agentId") String agentId);
 
     //根据Owner查询
-    @Select("SELECT * FROM i_property where status = 'active' and  ownerId in (${ownerId})  ")
+    @Select("SELECT * FROM i_property where ownerId in (${ownerId})  ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
@@ -81,7 +81,7 @@ public interface PropertyMapper {
     ArrayList<IProperty> findAllByOwner(@Param("ownerId") String ownerId);
 
     //查询
-    @Select("SELECT* FROM i_property where status = 'active'  ")
+    @Select("SELECT* FROM i_property where 1=1  ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
