@@ -108,7 +108,7 @@ public class CommonServiceImpl implements CommonService {
                     // 后缀
                     String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                     // 新文件名
-                    String fileName = UUID.randomUUID().toString();
+                    String fileName = file.getOriginalFilename().substring(0, file.getOriginalFilename().lastIndexOf(".")) + UUID.randomUUID().toString();
                     // 文件名+ 后缀
                     String fileFullName = String.format("%s%s", fileName, suffix);
                     // 文件大小
