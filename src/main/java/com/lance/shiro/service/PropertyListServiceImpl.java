@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +110,69 @@ public class PropertyListServiceImpl implements PropertyListService {
         for (int i = 0, size = list.size(); i < size; i++) {
             Map maPropertyList = setAttachment(list.get(i));
             aPropertyLists.add(maPropertyList);
+        }
+        return aPropertyLists;
+    }
+
+    /**
+     * @param id
+     * @param reqMap
+     * @return
+     */
+    @Override
+    public IPropertyList updateAttribute(int id, Map<String, String> reqMap) {
+        IPropertyList iPropertyList = propertyListMapper.get(id);
+        if (null != iPropertyList) {
+            Field fields[] = iPropertyList.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                String keyName = fields[i].getName();
+                if (null != reqMap.get(keyName)) {
+                    sb.append("  ").append(keyName).append("=").append("'").append(reqMap.get(keyName)).append("'").append("  ").append(",");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                propertyListMapper.updateAttribute(iPropertyList.getId(), s.substring(0, s.length() - 1));
+                iPropertyList = propertyListMapper.get(id);
+                return iPropertyList;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param reqMap
+     * @return
+     */
+    @Override
+    public ArrayList<Map> findAllByAttr(Map<String, String> reqMap) {
+        ArrayList<IPropertyList> list;
+        if (null != reqMap) {
+            IPropertyList iPropertyList = new IPropertyList();
+            Field fields[] = iPropertyList.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                String keyName = fields[i].getName();
+                if (null != reqMap.get(keyName)) {
+                    sb.append("  ").append(keyName).append("=").append("'").append(reqMap.get(keyName)).append("'").append("  ").append("and");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                list = propertyListMapper.findAllByAttr(s.substring(0, s.length() - 3));
+            } else {
+                list = propertyListMapper.findAll();
+            }
+        } else {
+            list = propertyListMapper.findAll();
+        }
+        ArrayList<Map> aPropertyLists = new ArrayList<>();
+        if (null != list && list.size() > 0) {
+            for (int i = 0, size = list.size(); i < size; i++) {
+                Map maPropertyList = setAttachment(list.get(i));
+                aPropertyLists.add(maPropertyList);
+            }
         }
         return aPropertyLists;
     }

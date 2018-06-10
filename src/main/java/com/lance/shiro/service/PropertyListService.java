@@ -18,4 +18,7 @@ public interface PropertyListService {
 
     ArrayList<Map> findAllByCitys(List<String> city);
 
+    IPropertyList updateAttribute(int id, Map<String, String> reqMap);
+
+    ArrayList<Map> findAllByAttr(Map<String, String> reqMap);
 }
