@@ -48,7 +48,7 @@ public class IUser {
     private String position;
     @Column(name = "company",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String company;
-    @Column(name = "experience",type = MySqlTypeConstant.DOUBLE,length = 80)
+    @Column(name = "experience",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
     private double experience;
     @Column(name = "createTime",type = MySqlTypeConstant.DATETIME,length = 80)
     private Date createTime;

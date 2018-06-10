@@ -19,6 +19,9 @@ import org.springframework.util.DigestUtils;
 import java.sql.Date;
 import java.util.*;
 
+import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_USER_ATTACHMENTS;
+import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_USER_PORTRAIT;
+
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -106,8 +109,8 @@ public class UserServiceImpl implements UserService {
 	public int deleteAllByIds(ArrayList<String> ids){
 		int count = userMapper.deleteAllByIds(ids);
 		for (String id : ids) {
-			commonService.deleteListAttachmentByBelong(id, "user_portrait");
-			commonService.deleteListAttachmentByBelong(id, "user_attachments");
+			commonService.deleteListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_PORTRAIT);
+			commonService.deleteListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS);
 		}
 		return count;
 	}
@@ -136,8 +139,8 @@ public class UserServiceImpl implements UserService {
 	private Map setAttachment(IUser user){
 		Map muser = ConvertUtils.beanToMap(user);
 		String id = String.valueOf(user.getId());
-		muser.put("user_portrait",commonService.findListAttachmentByBelong( id , "user_portrait"));
-		muser.put("user_attachments",commonService.findListAttachmentByBelong(id , "user_attachments"));
+		muser.put(BELONG_TO_CATEGORY_USER_PORTRAIT,commonService.findListAttachmentByBelong( id , BELONG_TO_CATEGORY_USER_PORTRAIT));
+		muser.put(BELONG_TO_CATEGORY_USER_ATTACHMENTS,commonService.findListAttachmentByBelong(id , BELONG_TO_CATEGORY_USER_ATTACHMENTS));
 		return muser;
 	}
 
