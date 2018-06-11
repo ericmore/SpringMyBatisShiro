@@ -45,30 +45,32 @@ public class PropertyListServiceImpl implements PropertyListService {
         }
         int pid = propertyList.getId();
         List<ILotType> lotTypeList = propertyList.getLotTypeList();
-
-        List<ILotType> oldLotTypeList = lotTypeMapper.findAllLotTypeByPropertyList(pid);
-        for (int i = 0, size = oldLotTypeList.size(); i < size; i++) {
-            boolean isDelete = true;
-            int oldId = oldLotTypeList.get(i).getId();
-            for (ILotType lotType : lotTypeList) {
-                if (oldId == lotType.getId()) {
-                    isDelete = false;
+        if(lotTypeList != null){
+            List<ILotType> oldLotTypeList = lotTypeMapper.findAllLotTypeByPropertyList(pid);
+            for (int i = 0, size = oldLotTypeList.size(); i < size; i++) {
+                boolean isDelete = true;
+                int oldId = oldLotTypeList.get(i).getId();
+                for (ILotType lotType : lotTypeList) {
+                    if (oldId == lotType.getId()) {
+                        isDelete = false;
+                    }
+                }
+                if (isDelete) {
+                    lotTypeMapper.delete(oldId);
                 }
             }
-            if (isDelete) {
-                lotTypeMapper.delete(oldId);
+
+            for (ILotType lotType : lotTypeList) {
+                if (lotType.getId() == 0) {
+                    lotType.setPropertyListId(pid);
+                    lotTypeMapper.add(lotType);
+                } else {
+                    lotType.setPropertyListId(pid);
+                    lotTypeMapper.update(lotType);
+                }
             }
         }
 
-        for (ILotType lotType : lotTypeList) {
-            if (lotType.getId() == 0) {
-                lotType.setPropertyListId(pid);
-                lotTypeMapper.add(lotType);
-            } else {
-                lotType.setPropertyListId(pid);
-                lotTypeMapper.update(lotType);
-            }
-        }
 
         Map mpropertyList = setAttachment(propertyList);
         return mpropertyList;
