@@ -70,6 +70,9 @@ public class IProperty {
     private Date createTime;
     @Column(name = "updateTime",type = MySqlTypeConstant.DATETIME,length = 80)
     private Date updateTime;
+    @Column(name = "sale_status",type = MySqlTypeConstant.VARCHAR,length = 60)
+    private String sale_status;
+
 
     public int getId() {
         return id;
@@ -86,8 +89,6 @@ public class IProperty {
     public void setAddress(String address) {
         this.address = address;
     }
-
-
 
     public int getPropertyListId() {
         return propertyListId;
@@ -152,7 +153,6 @@ public class IProperty {
     public void setManagedDoma(String managedDoma) {
         this.managedDoma = managedDoma;
     }
-
 
     public String getType() {
         return type;
@@ -328,6 +328,14 @@ public class IProperty {
 
     public void setOwner(IUser owner) {
         this.owner = owner;
+    }
+
+    public String getSale_status() {
+        return sale_status;
+    }
+
+    public void setSale_status(String sale_status) {
+        this.sale_status = sale_status;
     }
 
     @Override
