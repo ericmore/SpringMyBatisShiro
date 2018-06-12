@@ -37,11 +37,39 @@ public class PropertyListServiceImpl implements PropertyListService {
     }
 
     @Override
-    public Map save(IPropertyList propertyList) {
+    public Map save(IPropertyList propertyList) throws IllegalAccessException {
         if (propertyList.getId() == 0) {
             propertyListMapper.add(propertyList);
         } else {
-            propertyListMapper.update(propertyList);
+            Field fields[] = propertyList.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                String keyName = fields[i].getName();
+                if (null != fields[i].get(propertyList)) {
+                    // 处理double 默认0.0 问题
+                    if (keyName.equals("x")) {
+                        if (!fields[i].get(propertyList).toString().equals("0.0")) {
+                            String value = fields[i].get(propertyList).toString();
+                            sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
+                        }
+                    } else if (keyName.equals("y")) {
+                        if (!fields[i].get(propertyList).toString().equals("0.0")) {
+                            String value = fields[i].get(propertyList).toString();
+                            sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
+                        }
+                    } else {
+                        String value = fields[i].get(propertyList).toString();
+                        sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
+                    }
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                propertyListMapper.update(propertyList.getId(), s.substring(0, s.length() - 1));
+                propertyList = propertyListMapper.get(propertyList.getId());
+            }
+            // propertyListMapper.update(propertyList);
         }
         int pid = propertyList.getId();
         List<ILotType> lotTypeList = propertyList.getLotTypeList();

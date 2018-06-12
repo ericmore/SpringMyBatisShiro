@@ -28,8 +28,12 @@ public class PropertyListController extends BaseController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity add(@RequestBody IPropertyList propertyList) {
-        Map obj = propertyListService.save(propertyList);
-        return success("Operation success!", obj);
+        try {
+            Map obj = propertyListService.save(propertyList);
+            return success("Operation success!", obj);
+        } catch (Exception e) {
+            return error("Add PropertyList Exception,Pls Contact Administrators!");
+        }
     }
 
     /**
