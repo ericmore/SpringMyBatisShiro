@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -33,13 +34,8 @@ public class CommonServiceImpl implements CommonService {
     public List<Map<String, String>> findCountry() {
         List<Map<String, String>> mapList = new ArrayList<>();
         try {
-            List<IRegion> iRegionList = commonMapper.findCountry();
-            for (IRegion iRegion : iRegionList) {
-                Map<String, String> map = new HashMap<>();
-                map.put("code", iRegion.getCountry_iso_code());
-                map.put("name", iRegion.getCountry_name());
-                mapList.add(map);
-            }
+            List<String> countries = commonMapper.findCountry();
+            constructResultMap(mapList, countries);
         } catch (Exception e) {
             log.error(e);
         }
@@ -51,36 +47,38 @@ public class CommonServiceImpl implements CommonService {
     public List<Map<String, String>> findState(String country) {
         List<Map<String, String>> mapList = new ArrayList<>();
         try {
-            List<IRegion> iRegionList = commonMapper.findState(country);
-            for (IRegion iRegion : iRegionList) {
-                Map<String, String> map = new HashMap<>();
-                map.put("code", iRegion.getSubdivision_1_iso_code());
-                map.put("name", iRegion.getSubdivision_1_name());
-                mapList.add(map);
-            }
+            List<String> states = commonMapper.findState(country);
+            constructResultMap(mapList, states);
         } catch (Exception e) {
             log.error(e);
         }
         return mapList;
     }
 
+
+
     @Override
     public List<Map<String, String>> findCity(String country, String state) {
 
         List<Map<String, String>> mapList = new ArrayList<>();
         try {
-            List<IRegion> iRegionList = commonMapper.findCity(country, state);
-            for (IRegion iRegion : iRegionList) {
-                Map<String, String> map = new HashMap<>();
-                map.put("code", iRegion.getCity_name());
-                map.put("name", iRegion.getCity_name());
-                mapList.add(map);
-            }
+            List<String> cities = commonMapper.findCity(country, state);
+            constructResultMap(mapList, cities);
+
         } catch (Exception e) {
             log.error(e);
         }
         return mapList;
 
+    }
+
+    private void constructResultMap(List<Map<String, String>> mapList, List<String> states) {
+        for (String state : states) {
+            Map<String, String> map = new HashMap<>();
+            map.put("code", state);
+            map.put("name", state);
+            mapList.add(map);
+        }
     }
 
     @Override

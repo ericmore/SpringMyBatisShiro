@@ -9,14 +9,14 @@ import java.util.List;
 @Mapper
 public interface CommonMapper {
 
-    @Select("select distinct  country_iso_code,country_name from i_region ")
-    List<IRegion> findCountry();
+    @Select("select distinct  country_name from i_region ")
+    List<String> findCountry();
 
-    @Select("select distinct subdivision_1_iso_code, subdivision_1_name from i_region where country_iso_code='AU' and subdivision_1_iso_code is not null order by subdivision_1_iso_code asc")
-    List<IRegion> findState(String country);
+    @Select("select distinct subdivision_1_name from i_region where country_name=#{country} and subdivision_1_name is not null order by subdivision_1_name asc")
+    List<String> findState(@Param("country") String country);
 
-    @Select("select distinct city_name from i_region where country_iso_code=#{country} and city_name is not null and subdivision_1_iso_code=#{state} ")
-    List<IRegion> findCity(@Param("country") String country, @Param("state") String state);
+    @Select("select distinct city_name from i_region where country_name=#{country} and subdivision_1_name=#{state} and city_name is not null ")
+    List<String> findCity(@Param("country") String country, @Param("state") String state);
 
     //插入附件
     @Insert("insert into i_attachment(filePath,fileName,extension,fileSize,belongToID,belongToCategory,description,contentType,createUser,createTime,module,realPath,status,originalFilename) " +
