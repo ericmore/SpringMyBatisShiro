@@ -2,13 +2,13 @@ package com.lance.shiro.service;
 
 import com.lance.shiro.entity.IAttachment;
 import com.lance.shiro.entity.ICommonConfig;
-import com.lance.shiro.entity.IRegion;
 import com.lance.shiro.mapper.CommonConfigMapper;
 import com.lance.shiro.mapper.CommonMapper;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +27,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Autowired
     private CommonConfigMapper commonConfigMapper;
+
+    @Autowired
+    private Environment environment;
 
     @Override
     public List<Map<String, String>> findCountry() {
@@ -52,7 +55,6 @@ public class CommonServiceImpl implements CommonService {
         }
         return mapList;
     }
-
 
 
     @Override
@@ -85,9 +87,10 @@ public class CommonServiceImpl implements CommonService {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             List<IAttachment> iAttachments = new ArrayList<>();
             // 查询根目录
-            List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs("rootFilePath");
+            String environmentStr = environment.getProperty("spring.profiles.active");
+            List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootFilePath");
             // 查询访问根地址
-            List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs("rootHttpPath");
+            List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootHttpPath");
             // 上传文件的物理路径
             String uploadPath = rootFilePaths.get(0).getcValue() + "attachment/";
             // 返回前端的地址
@@ -140,7 +143,8 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public String findRootFilePath() {
-        List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs("rootFilePath");
+        String environmentStr = environment.getProperty("spring.profiles.active");
+        List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootFilePath");
         return rootFilePaths.get(0).getcValue();
     }
 
@@ -191,9 +195,10 @@ public class CommonServiceImpl implements CommonService {
             // 查询记录
             IAttachment temp = commonMapper.findListAttachmentByIds(String.valueOf(attachment.getId())).get(0);
             // 查询根目录
-            List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs("rootFilePath");
+            String environmentStr = environment.getProperty("spring.profiles.active");
+            List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootFilePath");
             // 查询访问根地址
-            List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs("rootHttpPath");
+            List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootHttpPath");
             // 上传文件的物理路径
             String uploadPath = rootFilePaths.get(0).getcValue() + "attachment/";
             // 返回前端的地址
@@ -209,7 +214,7 @@ public class CommonServiceImpl implements CommonService {
             }
 
             // 创建新文件
-            if (null!= file && !file.isEmpty()) {
+            if (null != file && !file.isEmpty()) {
                 // 后缀
                 String suffix = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                 // 新文件名
