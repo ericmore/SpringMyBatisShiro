@@ -113,7 +113,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public ArrayList<Map> findAllByPropertyLists(Map<String, String> reqMap) {
         ArrayList<IProperty> list;
-        if (null != reqMap) {
+        if (null != reqMap && reqMap.size() > 0 ) {
             IProperty iProperty = new IProperty();
             Field fields[] = iProperty.getClass().getDeclaredFields();
             StringBuffer sb = new StringBuffer();
