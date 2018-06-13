@@ -28,8 +28,13 @@ public class PropertyController extends BaseController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity add(@RequestBody IProperty property) {
-        Map obj = propertyService.save(property);
-        return success("Operation success!", obj);
+        try {
+            Map obj = propertyService.save(property);
+            return success("Operation success!", obj);
+        } catch (Exception e) {
+            return error("Add Property Exception,Pls Contact Administrators!");
+        }
+
     }
 
     /**
@@ -87,7 +92,7 @@ public class PropertyController extends BaseController {
                 return success("Operation success!", null);
             }
         } catch (Exception e) {
-            return error("update Attribute Exception,Pls Contact Administrators!");
+            return error("Update Attribute Exception,Pls Contact Administrators!");
         }
     }
 

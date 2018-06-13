@@ -35,11 +35,27 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Map save(IProperty property) {
+    public Map save(IProperty property) throws IllegalAccessException {
         if (property.getId() == 0) {
             propertyMapper.add(property);
         } else {
-            propertyMapper.update(property);
+            Field fields[] = property.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                fields[i].setAccessible(true);
+                String keyName = fields[i].getName();
+                // 处理空值和double 默认0.0 不更新数据
+                if (null != fields[i].get(property) && !fields[i].get(property).equals("0.0")) {
+                    String value = fields[i].get(property).toString();
+                    sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                propertyMapper.update(property.getId(), s.substring(0, s.length() - 1));
+                property = propertyMapper.get(property.getId());
+            }
+//            propertyMapper.update(property);
         }
         return setAttachment(property);
     }

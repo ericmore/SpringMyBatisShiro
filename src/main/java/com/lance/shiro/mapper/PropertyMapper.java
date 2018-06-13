@@ -14,8 +14,12 @@ public interface PropertyMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     public int add(IProperty property);
 
-    @Update("update i_property set address = #{address},agentId = #{agentId},propertyListId = #{propertyListId},lot = #{lot},buildingOverview = #{buildingOverview},features = #{features},purchasePrice = #{purchasePrice},sellingPrice = #{sellingPrice},weeklyRent = #{weeklyRent},managedDoma = #{managedDoma},lotTypeId = #{lotTypeId},type = #{type},textContractOfSale = #{textContractOfSale},textDepositForm = #{textDepositForm},textSolicitor = #{textSolicitor},textBillsCharges = #{textBillsCharges},textManagementAgreement = #{textManagementAgreement},textOthers = #{textOthers},purchaseDate = #{purchaseDate},commenceDate = #{commenceDate},commission_rent = #{commission_rent},commission_sale = #{commission_sale},term_of_lease = #{term_of_lease},ownerId = #{ownerId},updateTime = now() where id=#{id} ")
-    int update(IProperty property);
+//    @Update("update i_property set address = #{address},agentId = #{agentId},propertyListId = #{propertyListId},lot = #{lot},buildingOverview = #{buildingOverview},features = #{features},purchasePrice = #{purchasePrice},sellingPrice = #{sellingPrice},weeklyRent = #{weeklyRent},managedDoma = #{managedDoma},lotTypeId = #{lotTypeId},type = #{type},textContractOfSale = #{textContractOfSale},textDepositForm = #{textDepositForm},textSolicitor = #{textSolicitor},textBillsCharges = #{textBillsCharges},textManagementAgreement = #{textManagementAgreement},textOthers = #{textOthers},purchaseDate = #{purchaseDate},commenceDate = #{commenceDate},commission_rent = #{commission_rent},commission_sale = #{commission_sale},term_of_lease = #{term_of_lease},ownerId = #{ownerId},updateTime = now() where id=#{id} ")
+//    int update(IProperty property);
+
+    @Update("update i_property set ${propertyAttr} ,updateTime = now() where id=#{id} ")
+    int update(@Param("id") int id, @Param("propertyAttr") String propertyAttr);
+
 
     @Update("delete from i_property where id=#{id} ")
     public void delete(int id);
