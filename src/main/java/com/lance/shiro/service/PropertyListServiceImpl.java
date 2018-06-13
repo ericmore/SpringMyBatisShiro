@@ -46,22 +46,10 @@ public class PropertyListServiceImpl implements PropertyListService {
             for (int i = 0; i < fields.length; i++) {
                 fields[i].setAccessible(true);
                 String keyName = fields[i].getName();
-                if (null != fields[i].get(propertyList)) {
-                    // 处理double 默认0.0 问题
-                    if (keyName.equals("x")) {
-                        if (!fields[i].get(propertyList).toString().equals("0.0")) {
-                            String value = fields[i].get(propertyList).toString();
-                            sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
-                        }
-                    } else if (keyName.equals("y")) {
-                        if (!fields[i].get(propertyList).toString().equals("0.0")) {
-                            String value = fields[i].get(propertyList).toString();
-                            sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
-                        }
-                    } else {
-                        String value = fields[i].get(propertyList).toString();
-                        sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
-                    }
+                // 处理空值和double 默认0.0 不更新数据
+                if (null != fields[i].get(propertyList) && !fields[i].get(propertyList).equals("0.0")) {
+                    String value = fields[i].get(propertyList).toString();
+                    sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
                 }
             }
             if (null != sb) {
@@ -73,7 +61,7 @@ public class PropertyListServiceImpl implements PropertyListService {
         }
         int pid = propertyList.getId();
         List<ILotType> lotTypeList = propertyList.getLotTypeList();
-        if(lotTypeList != null){
+        if (lotTypeList != null) {
             List<ILotType> oldLotTypeList = lotTypeMapper.findAllLotTypeByPropertyList(pid);
             for (int i = 0, size = oldLotTypeList.size(); i < size; i++) {
                 boolean isDelete = true;

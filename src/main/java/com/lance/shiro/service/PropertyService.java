@@ -9,7 +9,7 @@ public interface PropertyService {
 
     Map get(int id);
 
-    Map save(IProperty propertyList);
+    Map save(IProperty propertyList) throws IllegalAccessException;
 
     void deleteAllByIds(ArrayList<Integer> ids);
 
