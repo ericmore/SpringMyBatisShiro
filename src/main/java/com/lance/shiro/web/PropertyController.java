@@ -27,13 +27,11 @@ public class PropertyController extends BaseController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity add(@RequestBody IProperty property) {
-        try {
+    public ResponseEntity add(@RequestBody IProperty property) throws IllegalAccessException {
+
             Map obj = propertyService.save(property);
             return success("Operation success!", obj);
-        } catch (Exception e) {
-            return error("Add Property Exception,Pls Contact Administrators!");
-        }
+
 
     }
 
@@ -54,8 +52,8 @@ public class PropertyController extends BaseController {
 //        return success("Operation success!", list);
 //    }
 
-    @RequestMapping(value = "propertyList", method = RequestMethod.GET)
-    public ResponseEntity findAllByPropertyList(@RequestParam Map<String, String> reqMap) {
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity findAll(@RequestParam Map<String, String> reqMap) {
         try {
             ArrayList<Map> list = propertyService.findAllByPropertyLists(reqMap);
             return success("Operation success!", list);
@@ -65,17 +63,17 @@ public class PropertyController extends BaseController {
     }
 
 
-    @RequestMapping(value = "agent", method = RequestMethod.GET)
-    public ResponseEntity findAllByAgent(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
-        ArrayList<Map> list = propertyService.findAllByAgents(id);
-        return success("Operation success!", list);
-    }
-
-    @RequestMapping(value = "owner", method = RequestMethod.GET)
-    public ResponseEntity findAllByOwner(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
-        ArrayList<Map> list = propertyService.findAllByOwners(id);
-        return success("Operation success!", list);
-    }
+//    @RequestMapping(value = "agent", method = RequestMethod.GET)
+//    public ResponseEntity findAllByAgent(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
+//        ArrayList<Map> list = propertyService.findAllByAgents(id);
+//        return success("Operation success!", list);
+//    }
+//
+//    @RequestMapping(value = "owner", method = RequestMethod.GET)
+//    public ResponseEntity findAllByOwner(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
+//        ArrayList<Map> list = propertyService.findAllByOwners(id);
+//        return success("Operation success!", list);
+//    }
 
     /**
      * update Attribute

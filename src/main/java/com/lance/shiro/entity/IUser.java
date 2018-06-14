@@ -9,7 +9,7 @@ import java.sql.Date;
 public class IUser {
 
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private int id;
+    private Integer id;
     @Column(name = "personalID",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String personalID;
     @Column(name = "username",type = MySqlTypeConstant.VARCHAR,length = 80)
@@ -33,7 +33,7 @@ public class IUser {
     @Column(name = "sex",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String sex;
     @Column(name = "age",type = MySqlTypeConstant.INT)
-    private int age;
+    private Integer age;
     @Column(name = "mobile",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String mobile;
     @Column(name = "country",type = MySqlTypeConstant.VARCHAR,length = 80)
@@ -58,11 +58,11 @@ public class IUser {
     private String status;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -154,11 +154,11 @@ public class IUser {
         this.sex = sex;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 

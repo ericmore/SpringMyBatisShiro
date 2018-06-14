@@ -5,12 +5,13 @@ import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "i_property_list")
 public class IPropertyList {
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private int id;
+    private Integer id;
     @Column(name = "buildingName",type = MySqlTypeConstant.VARCHAR,length = 200)
     private String buildingName;
     @Column(name = "buildingAddress",type = MySqlTypeConstant.VARCHAR,length = 200)
@@ -38,13 +39,13 @@ public class IPropertyList {
     @Column(name = "updateTime",type = MySqlTypeConstant.DATETIME,length = 80)
     private Date updateTime;
 
-    public List<ILotType> lotTypeList;
+    public List lotTypeList;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -152,11 +153,11 @@ public class IPropertyList {
         this.updateTime = updateTime;
     }
 
-    public List<ILotType> getLotTypeList() {
+    public List getLotTypeList() {
         return lotTypeList;
     }
 
-    public void setLotTypeList(List<ILotType> lotTypeList) {
+    public void setLotTypeList(List lotTypeList) {
         this.lotTypeList = lotTypeList;
     }
 

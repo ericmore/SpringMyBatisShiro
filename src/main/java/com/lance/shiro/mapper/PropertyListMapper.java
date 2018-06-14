@@ -8,7 +8,7 @@ import java.util.List;
 
 @Mapper
 public interface PropertyListMapper {
-    @Insert("insert into i_property_list (buildingName,buildingAddress,city,state,country,x,y,buildingOverview,features,date,createTime,updateTime,status) values(#{buildingName},#{buildingAddress},#{city},#{state},#{country},#{x},#{y},#{buildingOverview},#{features},#{date},now(),now(),'active')")
+    @Insert("insert into i_property_list (buildingName,buildingAddress,city,state,country,x,y,buildingOverview,features,date,createTime,updateTime,status) values(#{buildingName},#{buildingAddress},#{city},#{state},#{country},#{x},#{y},#{buildingOverview},#{features},#{date},now(),now(),#{status})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     public int add(IPropertyList propertyList);
 
@@ -22,7 +22,7 @@ public interface PropertyListMapper {
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,
-                    many = @Many(select = "com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+                    many = @Many(select = "com.lance.shiro.mapper.PropertyMapper.findAllLotType"))
     })
     public IPropertyList get(int id);
 
@@ -31,16 +31,16 @@ public interface PropertyListMapper {
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,
-                    many = @Many(select = "com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+                    many = @Many(select = "com.lance.shiro.mapper.PropertyMapper.findAllLotType"))
     })
     ArrayList<IPropertyList> findAllByCitys(@Param("citys") String citys);
 
-    //查询所以用户
+    //查询所有用户
     @Select("SELECT* FROM i_property_list where 1=1 ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,
-                    many = @Many(select = "com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+                    many = @Many(select = "com.lance.shiro.mapper.PropertyMapper.findAllLotType"))
     })
     ArrayList<IPropertyList> findAll();
 
@@ -55,7 +55,7 @@ public interface PropertyListMapper {
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,
-                    many = @Many(select = "com.lance.shiro.mapper.LotTypeMapper.findAllLotTypeByPropertyList"))
+                    many = @Many(select = "com.lance.shiro.mapper.PropertyMapper.findAllLotType"))
     })
     ArrayList<IPropertyList> findAllByAttr(@Param("attributes") String attributes);
 

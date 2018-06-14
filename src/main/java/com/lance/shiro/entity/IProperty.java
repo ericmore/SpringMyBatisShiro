@@ -10,15 +10,14 @@ public class IProperty {
 
 
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private int id;
+    private Integer id;
     @Column(name = "address",type = MySqlTypeConstant.VARCHAR,length = 200)
     private String address;
     @Column(name = "agentId",type = MySqlTypeConstant.INT,length = 11)
-    private int agentId;
+    private Integer agentId;
     private IUser agent;
-
     @Column(name = "propertyListId",type = MySqlTypeConstant.INT,length = 11)
-    private int propertyListId;
+    private Integer propertyListId;
     private IPropertyList propertyList;
     @Column(name = "lot",type = MySqlTypeConstant.VARCHAR,length = 200)
     private String lot;
@@ -34,9 +33,6 @@ public class IProperty {
     private double weeklyRent;
     @Column(name = "managedDoma",type = MySqlTypeConstant.VARCHAR,length = 1)
     private String managedDoma;
-    @Column(name = "lotTypeId",type = MySqlTypeConstant.INT,length = 11)
-    private int lotTypeId;
-    private ILotType lotType;
     @Column(name = "type",type = MySqlTypeConstant.VARCHAR,length = 20)
     private String type;
     @Column(name = "textContractOfSale",type = MySqlTypeConstant.TEXT)
@@ -62,8 +58,21 @@ public class IProperty {
     @Column(name = "term_of_lease",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
     private double term_of_lease;
     @Column(name = "ownerId",type = MySqlTypeConstant.INT,length = 11)
-    private int ownerId;
+    private Integer ownerId;
     private IUser owner;
+
+    @Column(name = "bedroomCount",type = MySqlTypeConstant.INT,length = 11)
+    private Integer bedroomCount;
+    @Column(name = "bathRoomCount",type = MySqlTypeConstant.INT,length = 11)
+    private Integer bathRoomCount;
+    @Column(name = "parkingCount",type = MySqlTypeConstant.INT,length = 11)
+    private Integer parkingCount;
+    @Column(name = "price",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    private double price;
+    @Column(name = "notes",type = MySqlTypeConstant.VARCHAR,length = 500)
+    private String notes;
+    private Integer qty;
+
     @Column(name = "status",type = MySqlTypeConstant.VARCHAR,length = 20,defaultValue = "active")
     private String status;
     @Column(name = "createTime",type = MySqlTypeConstant.DATETIME,length = 80)
@@ -74,11 +83,11 @@ public class IProperty {
     private String sale_status;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -90,11 +99,11 @@ public class IProperty {
         this.address = address;
     }
 
-    public int getPropertyListId() {
+    public Integer getPropertyListId() {
         return propertyListId;
     }
 
-    public void setPropertyListId(int propertyListId) {
+    public void setPropertyListId(Integer propertyListId) {
         this.propertyListId = propertyListId;
     }
 
@@ -250,20 +259,60 @@ public class IProperty {
         this.term_of_lease = term_of_lease;
     }
 
-    public int getLotTypeId() {
-        return lotTypeId;
-    }
-
-    public void setLotTypeId(int lotTypeId) {
-        this.lotTypeId = lotTypeId;
-    }
-
-    public int getOwnerId() {
+    public Integer getOwnerId() {
         return ownerId;
     }
 
-    public void setOwnerId(int ownerId) {
+    public void setOwnerId(Integer ownerId) {
         this.ownerId = ownerId;
+    }
+
+    public Integer getBedroomCount() {
+        return bedroomCount;
+    }
+
+    public void setBedroomCount(Integer bedroomCount) {
+        this.bedroomCount = bedroomCount;
+    }
+
+    public Integer getBathRoomCount() {
+        return bathRoomCount;
+    }
+
+    public void setBathRoomCount(Integer bathRoomCount) {
+        this.bathRoomCount = bathRoomCount;
+    }
+
+    public Integer getParkingCount() {
+        return parkingCount;
+    }
+
+    public void setParkingCount(Integer parkingCount) {
+        this.parkingCount = parkingCount;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public Integer getQty() {
+        return qty;
+    }
+
+    public void setQty(Integer qty) {
+        this.qty = qty;
     }
 
     public String getStatus() {
@@ -290,11 +339,11 @@ public class IProperty {
         this.updateTime = updateTime;
     }
 
-    public int getAgentId() {
+    public Integer getAgentId() {
         return agentId;
     }
 
-    public void setAgentId(int agentId) {
+    public void setAgentId(Integer agentId) {
         this.agentId = agentId;
     }
 
@@ -312,14 +361,6 @@ public class IProperty {
 
     public void setPropertyList(IPropertyList propertyList) {
         this.propertyList = propertyList;
-    }
-
-    public ILotType getLotType() {
-        return lotType;
-    }
-
-    public void setLotType(ILotType lotType) {
-        this.lotType = lotType;
     }
 
     public IUser getOwner() {

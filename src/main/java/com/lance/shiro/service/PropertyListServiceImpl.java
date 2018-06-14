@@ -1,8 +1,7 @@
 package com.lance.shiro.service;
 
-import com.lance.shiro.entity.ILotType;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.lance.shiro.entity.IPropertyList;
-import com.lance.shiro.mapper.LotTypeMapper;
 import com.lance.shiro.mapper.PropertyListMapper;
 import com.lance.shiro.utils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
@@ -22,8 +21,6 @@ import static com.lance.shiro.config.ConstantVariable.*;
 public class PropertyListServiceImpl implements PropertyListService {
     @Autowired
     private PropertyListMapper propertyListMapper;
-    @Autowired
-    private LotTypeMapper lotTypeMapper;
 
     @Autowired
     private CommonService commonService;
@@ -47,7 +44,7 @@ public class PropertyListServiceImpl implements PropertyListService {
                 fields[i].setAccessible(true);
                 String keyName = fields[i].getName();
                 // 处理空值和double 默认0.0 不更新数据
-                if (null != fields[i].get(propertyList) && !fields[i].get(propertyList).equals("0.0")) {
+                if (fields[i].getAnnotation(Column.class) !=null && null != fields[i].get(propertyList) && !fields[i].get(propertyList).equals(0)) {
                     String value = fields[i].get(propertyList).toString();
                     sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
                 }
@@ -60,33 +57,6 @@ public class PropertyListServiceImpl implements PropertyListService {
             // propertyListMapper.update(propertyList);
         }
         int pid = propertyList.getId();
-        List<ILotType> lotTypeList = propertyList.getLotTypeList();
-        if (lotTypeList != null) {
-            List<ILotType> oldLotTypeList = lotTypeMapper.findAllLotTypeByPropertyList(pid);
-            for (int i = 0, size = oldLotTypeList.size(); i < size; i++) {
-                boolean isDelete = true;
-                int oldId = oldLotTypeList.get(i).getId();
-                for (ILotType lotType : lotTypeList) {
-                    if (oldId == lotType.getId()) {
-                        isDelete = false;
-                    }
-                }
-                if (isDelete) {
-                    lotTypeMapper.delete(oldId);
-                }
-            }
-
-            for (ILotType lotType : lotTypeList) {
-                if (lotType.getId() == 0) {
-                    lotType.setPropertyListId(pid);
-                    lotTypeMapper.add(lotType);
-                } else {
-                    lotType.setPropertyListId(pid);
-                    lotTypeMapper.update(lotType);
-                }
-            }
-        }
-
 
         Map mpropertyList = setAttachment(propertyList);
         return mpropertyList;
@@ -108,7 +78,6 @@ public class PropertyListServiceImpl implements PropertyListService {
     @Override
     public void delete(Integer id) {
         propertyListMapper.delete(id);
-        lotTypeMapper.deleteByPropertyList(id);
         String sid = String.valueOf(id);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_LIST_LOGO);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_LIST_MULTI_PICTURES);

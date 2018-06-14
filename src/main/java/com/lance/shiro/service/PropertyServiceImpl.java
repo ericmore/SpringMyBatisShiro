@@ -1,5 +1,6 @@
 package com.lance.shiro.service;
 
+import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.manager.common.BaseMysqlCRUDManager;
 import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.mapper.PropertyMapper;
@@ -45,7 +46,7 @@ public class PropertyServiceImpl implements PropertyService {
                 fields[i].setAccessible(true);
                 String keyName = fields[i].getName();
                 // 处理空值和double 默认0.0 不更新数据
-                if (null != fields[i].get(property) && !fields[i].get(property).equals("0.0")) {
+                if ( fields[i].getAnnotation(Column.class) !=null && null != fields[i].get(property) ) {
                     String value = fields[i].get(property).toString();
                     sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
                 }

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 @Table(name = "i_region")
 public class IRegion {
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private int id;
+    private Integer id;
     @Column(name = "geoname_id",type = MySqlTypeConstant.VARCHAR,length = 32)
     private String geoname_id;
     @Column(name = "locale_code",type = MySqlTypeConstant.VARCHAR,length = 32)

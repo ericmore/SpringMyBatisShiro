@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 @Table(name = "i_attachment")
 public class IAttachment {
     @Column(name = "id", type = MySqlTypeConstant.INT, length = 11, isKey = true, isAutoIncrement = true)
-    private int id;
+    private Integer  id;
     @Column(name = "filePath", type = MySqlTypeConstant.VARCHAR, length = 256)
     private String filePath;
     @Column(name = "fileName", type = MySqlTypeConstant.VARCHAR, length = 128)
@@ -38,11 +38,11 @@ public class IAttachment {
     @Column(name = "originalFilename", type = MySqlTypeConstant.VARCHAR, length = 256)
     private String originalFilename;
 
-    public int getId() {
+    public Integer  getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer  id) {
         this.id = id;
     }
 
