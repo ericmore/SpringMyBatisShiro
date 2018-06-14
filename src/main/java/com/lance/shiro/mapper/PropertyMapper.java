@@ -27,6 +27,9 @@ public interface PropertyMapper {
     @Select("select * from i_property where id=#{id}")
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "agentId", column = "agentId"),
+            @Result(property = "ownerId", column = "ownerId"),
+            @Result(property = "propertyListId", column = "propertyListId"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
             @Result(property = "propertyList", column = "propertyListId", javaType = IPropertyList.class,
@@ -51,6 +54,9 @@ public interface PropertyMapper {
     @Select("SELECT * FROM i_property where ${attributes} ")
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "agentId", column = "agentId"),
+            @Result(property = "ownerId", column = "ownerId"),
+            @Result(property = "propertyListId", column = "propertyListId"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
             @Result(property = "propertyList", column = "propertyListId", javaType = IPropertyList.class,
@@ -64,6 +70,9 @@ public interface PropertyMapper {
     @Select("SELECT * FROM i_property where  agentId in (${agentId})  ")
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "agentId", column = "agentId"),
+            @Result(property = "ownerId", column = "ownerId"),
+            @Result(property = "propertyListId", column = "propertyListId"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
             @Result(property = "propertyList", column = "propertyListId", javaType = IPropertyList.class,
@@ -77,6 +86,9 @@ public interface PropertyMapper {
     @Select("SELECT * FROM i_property where ownerId in (${ownerId})  ")
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "agentId", column = "agentId"),
+            @Result(property = "ownerId", column = "ownerId"),
+            @Result(property = "propertyListId", column = "propertyListId"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
             @Result(property = "propertyList", column = "propertyListId", javaType = IPropertyList.class,
@@ -90,6 +102,9 @@ public interface PropertyMapper {
     @Select("SELECT* FROM i_property where 1=1  ")
     @Results({
             @Result(property = "id", column = "id"),
+            @Result(property = "agentId", column = "agentId"),
+            @Result(property = "ownerId", column = "ownerId"),
+            @Result(property = "propertyListId", column = "propertyListId"),
             @Result(property = "agent", column = "agentId", javaType = IUser.class,
                     one = @One(select = "com.lance.shiro.mapper.UserMapper.get")),
             @Result(property = "propertyList", column = "propertyListId", javaType = IPropertyList.class,
