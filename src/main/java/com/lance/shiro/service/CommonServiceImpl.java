@@ -1,7 +1,6 @@
 package com.lance.shiro.service;
 
 import com.lance.shiro.entity.IAttachment;
-import com.lance.shiro.entity.ICommonConfig;
 import com.lance.shiro.mapper.CommonConfigMapper;
 import com.lance.shiro.mapper.CommonMapper;
 import org.apache.commons.lang.StringUtils;
@@ -87,15 +86,14 @@ public class CommonServiceImpl implements CommonService {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             List<IAttachment> iAttachments = new ArrayList<>();
             // 查询根目录
-            String environmentStr = environment.getProperty("spring.profiles.active");
-            List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootFilePath");
+            String rootFilePath = environment.getProperty("rootFilePath");
             // 查询访问根地址
-            List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootHttpPath");
+            String rootHttp = environment.getProperty("rootHttpPath");
             // 上传文件的物理路径
-            String uploadPath = rootFilePaths.get(0).getcValue() + "attachment/";
+            String uploadPath = rootFilePath + "attachment/";
             // 返回前端的地址
-            String rootHttpPath = rootHttpPaths.get(0).getcValue() + "rest/common/attachment/";
-            // 判断文件夹是否存在
+            String rootHttpPath = rootHttp + "rest/common/attachment/";
+            // 判断文件夹是否存在，创建文件夹
             File dir = new File(uploadPath);
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -143,9 +141,9 @@ public class CommonServiceImpl implements CommonService {
 
     @Override
     public String findRootFilePath() {
-        String environmentStr = environment.getProperty("spring.profiles.active");
-        List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootFilePath");
-        return rootFilePaths.get(0).getcValue();
+        // 查询根目录
+        String rootFilePath = environment.getProperty("rootFilePath");
+        return rootFilePath;
     }
 
     @Override
@@ -195,18 +193,19 @@ public class CommonServiceImpl implements CommonService {
             // 查询记录
             IAttachment temp = commonMapper.findListAttachmentByIds(String.valueOf(attachment.getId())).get(0);
             // 查询根目录
-            String environmentStr = environment.getProperty("spring.profiles.active");
-            List<ICommonConfig> rootFilePaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootFilePath");
+            String rootFilePath = environment.getProperty("rootFilePath");
             // 查询访问根地址
-            List<ICommonConfig> rootHttpPaths = commonConfigMapper.findCommonConfigs(environmentStr, "rootHttpPath");
+            String rootHttp = environment.getProperty("rootHttpPath");
             // 上传文件的物理路径
-            String uploadPath = rootFilePaths.get(0).getcValue() + "attachment/";
+            String uploadPath = rootFilePath + "attachment/";
             // 返回前端的地址
-            String rootHttpPath = rootHttpPaths.get(0).getcValue() + "rest/common/attachment/";
+            String rootHttpPath = rootHttp + "rest/common/attachment/";
+            // 创建文件夹
             File dir = new File(uploadPath);
             if (!dir.exists()) {
                 dir.mkdirs();
             }
+
             // 删除原有文件
             File tempFile = new File(temp.getRealPath());
             if (tempFile.isFile()) {
