@@ -135,7 +135,7 @@ public class PropertyListServiceImpl implements PropertyListService {
     @Override
     public ArrayList<Map> findAllByAttr(Map<String, String> reqMap) {
         ArrayList<IPropertyList> list;
-        if (null != reqMap) {
+        if (null != reqMap && reqMap.size() > 0) {
             IPropertyList iPropertyList = new IPropertyList();
             Field fields[] = iPropertyList.getClass().getDeclaredFields();
             StringBuffer sb = new StringBuffer();
