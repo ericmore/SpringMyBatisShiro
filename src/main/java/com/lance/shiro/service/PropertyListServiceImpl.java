@@ -1,6 +1,5 @@
 package com.lance.shiro.service;
 
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.lance.shiro.entity.IPropertyList;
 import com.lance.shiro.mapper.PropertyListMapper;
 import com.lance.shiro.utils.ConvertUtils;
@@ -38,26 +37,24 @@ public class PropertyListServiceImpl implements PropertyListService {
         if (propertyList.getId() == 0) {
             propertyListMapper.add(propertyList);
         } else {
-            Field fields[] = propertyList.getClass().getDeclaredFields();
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true);
-                String keyName = fields[i].getName();
-                // 处理空值和double 默认0.0 不更新数据
-                if (fields[i].getAnnotation(Column.class) !=null && null != fields[i].get(propertyList) && !fields[i].get(propertyList).equals(0)) {
-                    String value = fields[i].get(propertyList).toString();
-                    sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
-                }
-            }
-            if (null != sb) {
-                String s = sb.toString();
-                propertyListMapper.update(propertyList.getId(), s.substring(0, s.length() - 1));
-                propertyList = propertyListMapper.get(propertyList.getId());
-            }
-            // propertyListMapper.update(propertyList);
+//            Field fields[] = propertyList.getClass().getDeclaredFields();
+//            StringBuffer sb = new StringBuffer();
+//            for (int i = 0; i < fields.length; i++) {
+//                fields[i].setAccessible(true);
+//                String keyName = fields[i].getName();
+//                // 处理空值和double 默认0.0 不更新数据
+//                if (fields[i].getAnnotation(Column.class) !=null && null != fields[i].get(propertyList) && !fields[i].get(propertyList).equals(0)) {
+//                    String value = fields[i].get(propertyList).toString();
+//                    sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
+//                }
+//            }
+//            if (null != sb) {
+//                String s = sb.toString();
+//                propertyListMapper.update(propertyList.getId(), s.substring(0, s.length() - 1));
+//                propertyList = propertyListMapper.get(propertyList.getId());
+//            }
+            propertyListMapper.update(propertyList);
         }
-        int pid = propertyList.getId();
-
         Map mpropertyList = setAttachment(propertyList);
         return mpropertyList;
     }

@@ -1,6 +1,5 @@
 package com.lance.shiro.service;
 
-import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.manager.common.BaseMysqlCRUDManager;
 import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.mapper.PropertyMapper;
@@ -40,23 +39,23 @@ public class PropertyServiceImpl implements PropertyService {
         if (property.getId() == 0) {
             propertyMapper.add(property);
         } else {
-            Field fields[] = property.getClass().getDeclaredFields();
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < fields.length; i++) {
-                fields[i].setAccessible(true);
-                String keyName = fields[i].getName();
-                // 处理空值和double 默认0.0 不更新数据
-                if ( fields[i].getAnnotation(Column.class) !=null && null != fields[i].get(property) ) {
-                    String value = fields[i].get(property).toString();
-                    sb.append("  ").append(keyName).append("=").append("'").append(value).append("'").append("  ").append(",");
-                }
-            }
-            if (null != sb) {
-                String s = sb.toString();
-                propertyMapper.update(property.getId(), s.substring(0, s.length() - 1));
-                property = propertyMapper.get(property.getId());
-            }
-//            propertyMapper.update(property);
+//            Field fields[] = property.getClass().getDeclaredFields();
+//            StringBuffer sb = new StringBuffer();
+//            for (int i = 0; i < fields.length; i++) {
+//                fields[i].setAccessible(true);
+//                String keyName = fields[i].getName();
+//                // 处理空值和实体 agent，owner，propertyList
+//                if (!keyName.equals("agent") && !keyName.equals("owner") && !keyName.equals("propertyList") && !keyName.equals("qty")) {
+//                    String value = fields[i].get(property) == null ? "" : fields[i].get(property).toString();
+//                    sb.append(keyName).append("=").append("'").append(fields[i].get(property)).append("'").append(" ").append(",");
+//                }
+//            }
+//            if (null != sb) {
+//                String s = sb.toString();
+//                propertyMapper.update(property.getId(), s.substring(0, s.length() - 1));
+//                property = propertyMapper.get(property.getId());
+//            }
+            propertyMapper.update(property);
         }
         return setAttachment(property);
     }
@@ -114,7 +113,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public ArrayList<Map> findAllByPropertyLists(Map<String, String> reqMap) {
         ArrayList<IProperty> list;
-        if (null != reqMap && reqMap.size() > 0 ) {
+        if (null != reqMap && reqMap.size() > 0) {
             IProperty iProperty = new IProperty();
             Field fields[] = iProperty.getClass().getDeclaredFields();
             StringBuffer sb = new StringBuffer();
