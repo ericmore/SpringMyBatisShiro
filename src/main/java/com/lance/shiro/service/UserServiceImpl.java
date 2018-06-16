@@ -111,7 +111,7 @@ public class UserServiceImpl implements UserService {
                 String ketValue = reqMap.get(keyName);
                 if (null != reqMap.get(keyName)) {
                     if(keyName.equals("password")){
-                        ketValue = DigestUtils.md5DigestAsHex(ketValue.getBytes()) ;
+                        ketValue = md5Password(ketValue);
                     }
                     if(keyName.equals("code") && !vaildCodeRepeatAndIncludeInActive(id,ketValue)){
                         throw new Exception("Code already exists!" + ketValue);
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
             user.setCreateTime(oUser.getCreateTime());
             user.setUpdateTime(new Date(Calendar.getInstance().getTimeInMillis()));
             if (user.getPassword() != null && !user.getPassword().equals("") && !user.getPassword().equals(oUser.getPassword())) {
-                String password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+                String password = md5Password(user.getPassword());
                 user.setPassword(password);
             } else {
                 user.setPassword(oUser.getPassword());
@@ -188,6 +188,9 @@ public class UserServiceImpl implements UserService {
         user.setCode(code);
         userMapper.update(user);
         return setAttachment(user);
+    }
+    private String md5Password(String password){
+        return DigestUtils.md5DigestAsHex(password.getBytes()) ;
     }
 
     private boolean vaildReferID(String referId) {
