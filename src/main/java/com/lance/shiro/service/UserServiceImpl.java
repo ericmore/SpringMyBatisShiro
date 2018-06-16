@@ -1,20 +1,23 @@
 package com.lance.shiro.service;
 
 import com.google.common.collect.Sets;
+import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
 import com.lance.shiro.utils.ConvertUtils;
+import com.lance.shiro.utils.UserStatus;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.lang.reflect.Field;
 import java.sql.Date;
 import java.util.*;
 
-import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_USER_ATTACHMENTS;
-import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_USER_PORTRAIT;
+import static com.lance.shiro.config.ConstantVariable.*;
+import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE;
 
 @Service
 @Transactional
@@ -25,63 +28,31 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CommonService commonService;
 
-    /**
-     * 登录
-     * 根据用户名和密码进行查询
-     */
-    @Override
-    public Map login(String username, String password) {
-        IUser user = userMapper.findByUserNameAndPassword(username, password);
-        Map mUser = setAttachment(user);
-        return mUser;
-    }
 
-    /**
-     * 注册
-     * 增加用户
-     */
     @Override
-    public Map register(IUser user) {
-        userMapper.addUser(user);
-        Map mUser = setAttachment(user);
-        return mUser;
-    }
-
-    /**
-     * 根据用户名查询
-     */
-    @Override
-    public Map findByUserName(String username) {
-        Map mUser = setAttachment(ckeckByUserName(username));
-        return mUser;
+    public Map get(int id) {
+        IUser user = userMapper.get(id);
+        return setAttachment(user);
     }
 
     @Override
-    public IUser ckeckByUserName(String username) {
-        IUser mUser = userMapper.findByUserName(username);
-        return mUser;
+    public Map findByCode(String code) {
+        IUser user = ckeckByCode(code);
+        return setAttachment(user);
     }
 
-    /**
-     * 获取资源集合
-     *
-     * @param username
-     * @return
-     */
-    public Set<String> findPermissions(String username) {
+    @Override
+    public IUser ckeckByCode(String code) {
+        return userMapper.findByAttrAndStatus(" code='"+code+"' and status = 'active'");
+    }
+    @Override
+    public Set<String> findPermissions(String code) {
         Set<String> set = Sets.newHashSet();
-        IUser user = ckeckByUserName(username);
+        IUser user = ckeckByCode(code);
         set.add(user.getRole());
         return set;
     }
 
-
-    /**
-     * 通过role获取用户列表
-     *
-     * @param role
-     * @return
-     */
     @Override
     public ArrayList<Map> findAllByRoles(List<String> role) {
         ArrayList<IUser> list;
@@ -99,41 +70,154 @@ public class UserServiceImpl implements UserService {
         return aUsers;
     }
 
-    /**
-     * 删除用户
-     *
-     * @param ids
-     */
     @Override
-    public int deleteAllByIds(ArrayList<String> ids) {
-        int count = userMapper.deleteAllByIds(ids);
-        for (String id : ids) {
-            commonService.deleteListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_PORTRAIT);
-            commonService.deleteListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS);
+    public ArrayList<Map> findAllByAttr(Map<String, String> reqMap) {
+        ArrayList<IUser> list;
+        if (null != reqMap && reqMap.size() > 0) {
+            IUser obj = new IUser();
+            Field fields[] = obj.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                String keyName = fields[i].getName();
+                if (null != reqMap.get(keyName)) {
+                    sb.append("  ").append(keyName).append("=").append("'").append(reqMap.get(keyName)).append("'").append("  ").append("and");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                list = userMapper.findAllByAttr(s.substring(0, s.length() - 3));
+            } else {
+                list = userMapper.findAll();
+            }
+        } else {
+            list = userMapper.findAll();
         }
-        return count;
+        return setAttachmentForList(list);
     }
 
-    /**
-     * 修改用户
-     *
-     * @param user
-     */
     @Override
-    public Map update(IUser user) {
-        IUser oUser = userMapper.get(user.getId());
-        user.setUsername(oUser.getUsername());
-        user.setCreateTime(oUser.getCreateTime());
-        user.setUpdateTime(new Date(Calendar.getInstance().getTimeInMillis()));
-        if (user.getPassword() != null && !user.getPassword().equals("") && !user.getPassword().equals(oUser.getPassword())) {
-            String password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
-            user.setPassword(password);
-        } else {
-            user.setPassword(oUser.getPassword());
+    public void deleteAllByIds(ArrayList<Integer> id) {
+        userMapper.deleteAllByIds(id);
+    }
+
+    @Override
+    public Map updateAttribute(int id, Map<String, String> reqMap) throws Exception {
+        IUser obj  = userMapper.get(id);
+        if (null != obj) {
+            Field fields[] = obj.getClass().getDeclaredFields();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < fields.length; i++) {
+                String keyName = fields[i].getName();
+                String ketValue = reqMap.get(keyName);
+                if (null != reqMap.get(keyName)) {
+                    if(keyName.equals("password")){
+                        ketValue = DigestUtils.md5DigestAsHex(ketValue.getBytes()) ;
+                    }
+                    if(keyName.equals("code") && !vaildCodeRepeatAndIncludeInActive(id,ketValue)){
+                        throw new Exception("Code already exists!" + ketValue);
+                    }
+                    if( keyName.equals("referID") && !vaildReferID( ketValue )){
+                        throw new Exception("Refer ID does not exist!" + ketValue );
+                    }
+                    sb.append("  ").append(keyName).append("=").append("'").append(ketValue).append("'").append("  ").append(",");
+                }
+            }
+            if (null != sb) {
+                String s = sb.toString();
+                userMapper.updateAttribute(id, s.substring(0, s.length() - 1));
+                obj = userMapper.get(id);
+                return  setAttachment(obj);
+            }
         }
+        return null;
+    }
+
+    @Override
+    public Map save(IUser user) throws Exception {
+        if(!UserStatus.validate(user.getStatus())){
+            throw new Exception("Status not valid!" + user.getStatus());
+        }
+        if( !vaildReferID( user.getReferID())){
+            throw new Exception("Refer ID does not exist!" + user.getReferID());
+        }
+        if( !vaildCodeRepeatAndIncludeInActive(user.getId(),user.getCode())){
+            throw new Exception("Code already exists!" + user.getCode());
+        }
+        if (user.getId() == 0) {
+            userMapper.add(user);
+        } else {
+            IUser oUser = userMapper.get(user.getId());
+            user.setUsername(oUser.getUsername());
+            user.setCreateTime(oUser.getCreateTime());
+            user.setUpdateTime(new Date(Calendar.getInstance().getTimeInMillis()));
+            if (user.getPassword() != null && !user.getPassword().equals("") && !user.getPassword().equals(oUser.getPassword())) {
+                String password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+                user.setPassword(password);
+            } else {
+                user.setPassword(oUser.getPassword());
+            }
+            userMapper.update(user);
+        }
+        return setAttachment(user);
+    }
+
+    @Override
+    public Map approve(int id, String type) throws Exception {
+        IUser user = userMapper.get(id);
+        user.setStatus(UserStatus.ACTIVE);
+        user.setEmail( user.getFirstName()+"."+user.getLastName()+"@ipanproperty.com");
+        String code = "";
+        if(type.equals("internal")){
+            Map map = userMapper.findMaxCode(" code <= 'i8000100' ");
+            if(map!=null && map.get("code")!=null && !map.get("code").equals("") ){
+                if(map.get("code").equals("i8000100")){
+                    throw new Exception("Internal employee number is full!" );
+                }
+                code = "i" + (  Integer.parseInt(map.get("code").toString().substring(1))+1 );
+            }else{
+                code = "i8000001";
+            }
+        }else{
+            Map map = userMapper.findMaxCode(" code > 'i8000100' ");
+            if(map!=null &&  map.get("code")!=null  && !map.get("code").equals("") ){
+                code = "i" + (  Integer.parseInt(map.get("code").toString().substring(1))+1 );
+            }else{
+                code = "i8000101";
+            }
+        }
+        user.setCode(code);
         userMapper.update(user);
-        Map mUser = setAttachment(user);
-        return mUser;
+        return setAttachment(user);
+    }
+
+    private boolean vaildReferID(String referId) {
+        IUser user = userMapper.findByAttrAndStatus(" code is not null and code !='' and  code = '"+ referId +"'");
+        if(user != null){
+            return true;
+        }
+        return false;
+    }
+
+
+    private boolean vaildCodeRepeatAndIncludeInActive(int id ,String value) {
+        String sql =  "code is not null and code !='' and code ='"+value+"' " ;
+        if(id>0){
+            sql += " and id != " + id;
+        }
+        IUser user = userMapper.findByAttrAndStatus(sql);
+        if(user == null){
+            return true;
+        }
+        return false;
+    }
+
+    private ArrayList<Map> setAttachmentForList(ArrayList<IUser> list) {
+        ArrayList<Map> aObjs = new ArrayList<Map>();
+        for (int i = 0, size = list.size(); i < size; i++) {
+            Map mapObj = setAttachment(list.get(i));
+            aObjs.add(mapObj);
+        }
+        return aObjs;
     }
 
     private Map setAttachment(IUser user) {
@@ -143,5 +227,4 @@ public class UserServiceImpl implements UserService {
         muser.put(BELONG_TO_CATEGORY_USER_ATTACHMENTS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS));
         return muser;
     }
-
 }

@@ -1,5 +1,6 @@
 package com.lance.shiro.web;
 
+import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.service.UserService;
 import com.lance.shiro.utils.UserStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,28 +31,6 @@ public class UserController extends BaseController {
     private UserService userService;
 
     /**
-     *Register
-     * @return
-     */
-    @RequestMapping(value = "register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody IUser user) {
-        if(!UserStatus.validate(user.getStatus())){
-            return error("Status not valid!" + user.getStatus());
-        }
-        String username = user.getUsername();
-        if (userService.ckeckByUserName(username) == null) {
-            // 添加用户
-            Map muser = userService.register(user);
-            return success("Operation success!", muser);
-        } else {
-            // 注册失败
-            return error("Username already exists!");
-        }
-
-    }
-
-
-    /**
      * login
      *
      * @param request
@@ -61,9 +41,9 @@ public class UserController extends BaseController {
         try {
             Subject subject = SecurityUtils.getSubject();
             boolean rememberMe = ServletRequestUtils.getBooleanParameter(request, "rememberMe", false);
-            UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword(), rememberMe);
+            UsernamePasswordToken token = new UsernamePasswordToken(user.getCode(), user.getPassword(), rememberMe);
             subject.login(token); // 登录
-            Map muser = userService.findByUserName(user.getUsername());
+            Map muser = userService.findByCode(user.getCode());
             return success("Operation success!",muser);
         } catch (AuthenticationException e) {
             e.printStackTrace();
@@ -93,47 +73,88 @@ public class UserController extends BaseController {
     public ResponseEntity current() {
         Subject subject = SecurityUtils.getSubject();
         if(subject.isAuthenticated()){
-            String username =  SecurityUtils.getSubject().getPrincipal().toString();
-            Map user = userService.findByUserName(username);
+            String code =  SecurityUtils.getSubject().getPrincipal().toString();
+            Map user = userService.findByCode(code);
             return success("Operation success!", user);
         }else{
-            return success("No login information！");
+            return error("No login information！");
         }
-
-    }
-
-
-    /**
-     *list
-     * @return
-     */
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(name="role",required=false) ArrayList<String> role) {
-        ArrayList<Map> list = userService.findAllByRoles(role);
-        return success("Operation success!", list);
     }
 
     /**
-     *delete
+     * delete
+     *
      * @return
      */
     @RequestMapping(value = "", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@RequestParam ArrayList<String> id) {
+    public ResponseEntity delete(@RequestParam ArrayList<Integer> id) {
         userService.deleteAllByIds(id);
         return success("Operation success!");
     }
 
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    public ResponseEntity get(@PathVariable("id") int id) {
+        Map obj = userService.get(id);
+        return success("Operation success!", obj);
+    }
     /**
-     *update
+     *Register
      * @return
      */
+    @RequestMapping(value = "register", method = RequestMethod.POST)
+    public ResponseEntity register(@RequestBody IUser user) throws Exception {
+        Map muser = userService.save(user);
+        return success("Operation success!", muser);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity add(@RequestBody IUser user) throws Exception {
+        Map obj = userService.save(user);
+        return success("Operation success!", obj);
+    }
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody  IUser user) {
-        if(!UserStatus.validate(user.getStatus())){
-            return error("Status not valid!" + user.getStatus());
+    public ResponseEntity edit(@RequestBody IUser user) throws Exception {
+        Map obj = userService.save(user);
+        return success("Operation success!", obj);
+    }
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    public ResponseEntity put(@PathVariable("id") int id, @RequestParam Map<String, String> reqMap)  throws Exception {
+        if (null != reqMap) {
+            Map obj = userService.updateAttribute(id, reqMap);
+            return success("Operation success!", obj);
+        } else {
+            return success("Operation success!", null);
         }
-        Map muser  = userService.update(user);
-        return success("Operation success!",muser);
+    }
+    @RequestMapping(value = "approve/{id}", method = RequestMethod.PUT)
+    public ResponseEntity approve(@PathVariable("id") int id, @RequestParam String type)  throws Exception{
+        Map obj = userService.approve(id,type);
+        return success("Operation success!", obj);
+    }
+
+    @RequestMapping(value = "subuser/{referID}", method = RequestMethod.GET)
+    public ResponseEntity subuser(@PathVariable("referID") String referID) {
+        HashMap<String, String> reqMap = new HashMap<String, String>();
+        reqMap.put("referID",referID);
+        ArrayList<Map> list = userService.findAllByAttr(reqMap);
+        return success("Operation success!", list);
+
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity findAll(@RequestParam Map<String, String> reqMap) {
+        ArrayList<Map> list = userService.findAllByAttr(reqMap);
+        return success("Operation success!", list);
+    }
+    /**
+     *roles
+     * @return
+     */
+    @RequestMapping(value = "role", method = RequestMethod.GET)
+    public ResponseEntity findByRole(@RequestParam(name="role",required=false) ArrayList<String> role) {
+        ArrayList<Map> list = userService.findAllByRoles(role);
+        return success("Operation success!", list);
     }
 
 }

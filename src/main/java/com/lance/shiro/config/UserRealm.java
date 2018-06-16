@@ -53,7 +53,7 @@ public class UserRealm extends AuthorizingRealm {
 	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 		UsernamePasswordToken upt = (UsernamePasswordToken) token;
 		String userName = upt.getUsername();
-		IUser user = userService.ckeckByUserName(userName);
+		IUser user = userService.ckeckByCode(userName);
 
 		if (user == null) {
 			throw new UnknownAccountException();
