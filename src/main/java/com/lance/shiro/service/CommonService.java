@@ -14,7 +14,7 @@ public interface CommonService {
      *
      * @return
      */
-    List<Map<String, String>> findCountry();
+    List<String> findCountry();
 
     /**
      * find state
@@ -22,7 +22,7 @@ public interface CommonService {
      * @param country
      * @return
      */
-    List<Map<String, String>> findState(String country);
+    List<String> findState(String country);
 
     /**
      * find city
@@ -31,7 +31,7 @@ public interface CommonService {
      * @param state
      * @return
      */
-    List<Map<String, String>> findCity(String country, String state);
+    List<String> findCity(String country, String state);
 
     /**
      * upload files
