@@ -31,54 +31,20 @@ public class CommonServiceImpl implements CommonService {
     private Environment environment;
 
     @Override
-    public List<Map<String, String>> findCountry() {
-        List<Map<String, String>> mapList = new ArrayList<>();
-        try {
-            List<String> countries = commonMapper.findCountry();
-            constructResultMap(mapList, countries);
-        } catch (Exception e) {
-            log.error(e);
-        }
-
-        return mapList;
+    public List<String> findCountry() {
+        return commonMapper.findCountry();
     }
 
     @Override
-    public List<Map<String, String>> findState(String country) {
-        List<Map<String, String>> mapList = new ArrayList<>();
-        try {
-            List<String> states = commonMapper.findState(country);
-            constructResultMap(mapList, states);
-        } catch (Exception e) {
-            log.error(e);
-        }
-        return mapList;
+    public List<String> findState(String country) {
+       return commonMapper.findState(country);
     }
-
 
     @Override
-    public List<Map<String, String>> findCity(String country, String state) {
-
-        List<Map<String, String>> mapList = new ArrayList<>();
-        try {
-            List<String> cities = commonMapper.findCity(country, state);
-            constructResultMap(mapList, cities);
-
-        } catch (Exception e) {
-            log.error(e);
-        }
-        return mapList;
-
+    public List<String> findCity(String country, String state) {
+        return commonMapper.findCity(country, state);
     }
 
-    private void constructResultMap(List<Map<String, String>> mapList, List<String> states) {
-        for (String state : states) {
-            Map<String, String> map = new HashMap<>();
-            map.put("code", state);
-            map.put("name", state);
-            mapList.add(map);
-        }
-    }
 
     @Override
     public List<IAttachment> uploadFiles(List<MultipartFile> files, IAttachment attachment) {
