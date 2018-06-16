@@ -12,11 +12,12 @@ public interface PropertyListMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     public int add(IPropertyList propertyList);
 
-   // @Update("update i_property_list set buildingName = #{buildingName},buildingAddress = #{buildingAddress},city = #{city},state = #{state},country = #{country},x = #{x},y = #{y},buildingOverview = #{buildingOverview},features = #{features},date = #{date},updateTime = now() where id=#{id} ")
-   // int update(IPropertyList propertyList);
+    @Update("update i_property_list set buildingName = #{buildingName},buildingAddress = #{buildingAddress},city = #{city},state = #{state},country = #{country},x = #{x},y = #{y}," +
+            "buildingOverview = #{buildingOverview},features = #{features},date = #{date},status = #{status},updateTime = now() where id=#{id} ")
+    int update(IPropertyList propertyList);
 
-    @Update("update i_property_list set ${propertyList}  ,updateTime = now() where id=#{id} ")
-    int update(@Param("id") int id, @Param("propertyList") String propertyList);
+//    @Update("update i_property_list set ${propertyList}  ,updateTime = now() where id=#{id} ")
+//    int update(@Param("id") int id, @Param("propertyList") String propertyList);
 
     @Select("select * from i_property_list where id=#{id}")
     @Results({
