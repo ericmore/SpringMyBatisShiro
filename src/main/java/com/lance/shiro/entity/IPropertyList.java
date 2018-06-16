@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "i_property_list")
 public class IPropertyList {
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private Integer id;
+    private int id;
     @Column(name = "buildingName",type = MySqlTypeConstant.VARCHAR,length = 200)
     private String buildingName;
     @Column(name = "buildingAddress",type = MySqlTypeConstant.VARCHAR,length = 200)
@@ -41,11 +41,11 @@ public class IPropertyList {
 
     public List lotTypeList;
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

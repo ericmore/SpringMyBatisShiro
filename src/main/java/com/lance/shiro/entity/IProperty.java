@@ -10,7 +10,7 @@ public class IProperty {
 
 
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private Integer id;
+    private int id;
     @Column(name = "address",type = MySqlTypeConstant.VARCHAR,length = 200)
     private String address;
     @Column(name = "agentId",type = MySqlTypeConstant.INT,length = 11)
@@ -83,11 +83,11 @@ public class IProperty {
     private String sale_status;
 
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 

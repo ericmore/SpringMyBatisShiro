@@ -9,7 +9,7 @@ import java.sql.Date;
 public class IUser {
 
     @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
-    private Integer id;
+    private int id;
     @Column(name = "personalID",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String personalID;
     @Column(name = "username",type = MySqlTypeConstant.VARCHAR,length = 80)
@@ -30,6 +30,8 @@ public class IUser {
     private String referID;
     @Column(name = "email",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String email;
+    @Column(name = "privateEmail",type = MySqlTypeConstant.VARCHAR,length = 80)
+    private String privateEmail;
     @Column(name = "sex",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String sex;
     @Column(name = "age",type = MySqlTypeConstant.INT)
@@ -54,15 +56,15 @@ public class IUser {
     private Date createTime;
     @Column(name = "updateTime",type = MySqlTypeConstant.DATETIME,length = 80)
     private Date updateTime;
-    @Column(name = "status",type = MySqlTypeConstant.VARCHAR,length = 20,defaultValue = "inactive")
+    @Column(name = "status",type = MySqlTypeConstant.VARCHAR,length = 20)
     private String status;
 
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -144,6 +146,14 @@ public class IUser {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPrivateEmail() {
+        return privateEmail;
+    }
+
+    public void setPrivateEmail(String privateEmail) {
+        this.privateEmail = privateEmail;
     }
 
     public String getSex() {
