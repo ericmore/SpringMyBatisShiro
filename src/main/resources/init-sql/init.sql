@@ -6,44 +6,21 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 -- Records of i_user 用户名和密码一样
 -- ----------------------------
-INSERT INTO `i_user` VALUES ('1', '3000000001', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'ad',
-                             'mi', 'n', 'admin', '', '000', 'admin@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-INSERT INTO `i_user` VALUES ('2', '3000000002', 'admin1', 'e00cf25ad42683b3df678c61f42c6bda', 'ad',
-                             'mi', 'n', 'admin', '', '001', 'admin@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-INSERT INTO `i_user` VALUES ('3', '3000000003', 'admin2', 'c84258e9c39059a89ab77d846ddab909', 'ad',
-                             'mi', 'n', 'admin', '', '002', 'admin@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-
-INSERT INTO `i_user` VALUES ('4', '4000000001', 'agent', 'b33aed8f3134996703dc39f9a7c95783', 'ad',
-                             'mi', 'n', 'agent', '', '003', 'agent@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-INSERT INTO `i_user` VALUES ('5', '4000000002', 'agent1', '83a87fd756ab57199c0bb6d5e11168cb', 'ad',
-                             'mi', 'n', 'agent', '', '004', 'agent@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-INSERT INTO `i_user` VALUES ('6', '4000000003', 'agent2', 'b1a4a6b01cc297d4677c4ca6656e14d7', 'ad',
-                             'mi', 'n', 'agent', '', '005', 'agent@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-
-INSERT INTO `i_user` VALUES ('7', '5000000001', 'customer', '91ec1f9324753048c0096d036a694f86', 'ad',
-                             'mi', 'n', 'customer', '', '006', 'customer@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-INSERT INTO `i_user` VALUES ('8', '5000000002', 'customer1', 'ffbc4675f864e0e9aab8bdf7a0437010', 'ad',
-                             'mi', 'n', 'customer', '', '007', 'customer@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-INSERT INTO `i_user` VALUES ('9', '5000000003', 'customer2', '5ce4d191fd14ac85a1469fb8c29b7a7b', 'ad',
-                             'mi', 'n', 'customer', '', '008', 'customer@126.com', 'male', 19, '189776655',
-                             'Australia', 'Queensland', 'Brisbane', 'street', 'add', 'company1', 12, now(), now(),'active');
-
-
-
+INSERT INTO ipan.i_user (id, personalID, username, password, firstName, middleName, lastName, role, code, referID, email, privateEmail, sex, age, mobile, country, state, city, street, position, company, experience, createTime, updateTime, status) VALUES (2, '', '', '7694f4a66316e53c8cdd9d9954bd611d', 'q', '', 'q', 'admin', 'i8000101', '1', '', null, '', 22, '', null, null, null, '', '', '', 0, '2018-06-16 17:43:28', '2018-06-16 17:43:28', 'active');
+INSERT INTO ipan.i_user (id, personalID, username, password, firstName, middleName, lastName, role, code, referID, email, privateEmail, sex, age, mobile, country, state, city, street, position, company, experience, createTime, updateTime, status) VALUES (4, '', '', '7694f4a66316e53c8cdd9d9954bd611d', 'q', '', '', 'agent', 'i8000113', 'i8000110', 'q.@ipanproperty.com', null, '', 22, '', null, null, null, '', '', '', 0, '2018-06-16 17:56:05', '2018-06-16 20:59:36', 'active');
+INSERT INTO ipan.i_user (id, personalID, username, password, firstName, middleName, lastName, role, code, referID, email, privateEmail, sex, age, mobile, country, state, city, street, position, company, experience, createTime, updateTime, status) VALUES (5, '', '', '7694f4a66316e53c8cdd9d9954bd611d', 'q', '', 'q', 'agent', 'i8000111', '1', '', null, '', 22, '', null, null, null, '', '', '', 0, '2018-06-16 17:57:07', '2018-06-16 19:04:37', 'active');
+INSERT INTO ipan.i_user (id, personalID, username, password, firstName, middleName, lastName, role, code, referID, email, privateEmail, sex, age, mobile, country, state, city, street, position, company, experience, createTime, updateTime, status) VALUES (6, '', '', '7694f4a66316e53c8cdd9d9954bd611d', 'q', '', 'pendName', 'agent', 'i8000110', 'i8000101', '', 'q', '', 22, '', null, null, null, '', '', '', 0, '2018-06-16 18:00:01', '2018-06-16 18:00:01', 'pending');
+INSERT INTO ipan.i_user (id, personalID, username, password, firstName, middleName, lastName, role, code, referID, email, privateEmail, sex, age, mobile, country, state, city, street, position, company, experience, createTime, updateTime, status) VALUES (7, '', '', '7694f4a66316e53c8cdd9d9954bd611d', 'q', '', 'q', 'customer', 'i8000201', '1', '', null, '', 22, '', null, null, null, '', '', '', 0, '2018-06-16 17:43:28', '2018-06-16 17:43:28', 'active');
 -- ----------------------------
--- Records of i_commonConfig
+-- Records of i_content
 -- ----------------------------
-
-INSERT INTO `i_commonconfig` (env, cKey, cValue) VALUES ( 'dev', 'rootHttpPath', 'http://localhost/');
-INSERT INTO `i_commonconfig` (env, cKey, cValue) VALUES ( 'dev', 'rootFilePath', 'd:/');
-
-INSERT INTO `i_commonconfig` (env, cKey, cValue) VALUES ( 'prod', 'rootHttpPath', 'http://localhost/');
-INSERT INTO `i_commonconfig` (env, cKey, cValue) VALUES ( 'prod', 'rootFilePath', 'var/');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (1, 'user_guide', null, '', null, null, '2018-06-08 20:41:09', '2018-06-17 20:04:41');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (2, 'training_module', null, '', null, null, '2018-06-08 20:41:09', '2018-06-17 20:04:41');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (3, 'user_agreement', null, '', null, null, '2018-06-08 20:41:09', '2018-06-17 20:04:41');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (4, 'agent_resources_instructions', null, '', null, null, '2018-06-09 20:35:27', '2018-06-09 20:42:27');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (5, 'expression_of_interest', null, '', null, null, '2018-06-09 20:35:27', '2018-06-09 20:42:27');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (6, 'contract_of_sale', null, '', null, null, '2018-06-09 20:35:27', '2018-06-09 20:42:27');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (7, 'deposit_form', null, '', null, null, '2018-06-09 20:35:27', '2018-06-09 20:42:27');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (8, 'solicitor_contract', null, '', null, null, '2018-06-09 20:35:27', '2018-06-09 20:42:27');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (9, 'management_agreement', null, '', null, null, '2018-06-09 20:35:27', '2018-06-09 20:42:27');
+INSERT INTO ipan.i_content (id, module, title, content1, content2, content3, createTime, updateTime) VALUES (10, 'FQAs', null, '', null, null, '2018-06-09 20:46:16', '2018-06-13 22:55:34');

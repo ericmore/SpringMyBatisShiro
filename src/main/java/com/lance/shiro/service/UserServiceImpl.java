@@ -222,9 +222,11 @@ public class UserServiceImpl implements UserService {
 
     private Map setAttachment(IUser user) {
         Map muser = ConvertUtils.beanToMap(user);
-        String id = String.valueOf(user.getId());
-        muser.put(BELONG_TO_CATEGORY_USER_PORTRAIT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_PORTRAIT));
-        muser.put(BELONG_TO_CATEGORY_USER_ATTACHMENTS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS));
+        if(user != null){
+            String id = String.valueOf(user.getId());
+            muser.put(BELONG_TO_CATEGORY_USER_PORTRAIT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_PORTRAIT));
+            muser.put(BELONG_TO_CATEGORY_USER_ATTACHMENTS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS));
+        }
         return muser;
     }
 }
