@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Mapper
 public interface PropertyMapper {
@@ -125,5 +126,11 @@ public interface PropertyMapper {
 
     @Select("SELECT bedroomCount,bathRoomCount,parkingCount,price,group_concat(distinct notes SEPARATOR '\\r\\n') notes,count(1) qty FROM i_property where propertyListId = #{propertyListId} " +
             " group by bedroomCount,bathRoomCount,parkingCount,price,propertyListId ")
-    ArrayList<HashMap<String,Object>> findAllLotType(int propertyListId);
+    ArrayList<HashMap<String, Object>> findAllLotType(int propertyListId);
+
+    @Select("select count(1) as totalCommisionUnit,IFNULL (sum(commission_rent),0) as monthlyCommission from i_property where agentId = #{userId} and ownerId is not null and type = 'rent' ")
+    Map<String, String> findAgentPropertyManagement(String userId);
+
+    @Select("select count(1) as totalCommisionUnit,IFNULL (sum(commission_sale),0) as totalCommission from i_property where agentId = #{userId} and ownerId is not null and type = 'sale' ")
+    Map<String,String> findAgentSalesyRecord(String userId);
 }
