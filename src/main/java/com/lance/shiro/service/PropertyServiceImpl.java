@@ -170,7 +170,7 @@ public class PropertyServiceImpl implements PropertyService {
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_COS_DOCUMENT);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_DEPOSIT_FORM_DOCUMENT);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_BILL_CHARGES);
-        commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DUCOMENT);
+        commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_OTHERS);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE);
     }
@@ -190,7 +190,7 @@ public class PropertyServiceImpl implements PropertyService {
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_COS_DOCUMENT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_COS_DOCUMENT));
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_DEPOSIT_FORM_DOCUMENT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_DEPOSIT_FORM_DOCUMENT));
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_BILL_CHARGES, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_BILL_CHARGES));
-        mproperty.put(BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DUCOMENT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DUCOMENT));
+        mproperty.put(BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT));
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_OTHERS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_OTHERS));
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE));
         return mproperty;

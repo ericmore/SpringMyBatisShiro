@@ -25,7 +25,7 @@ public class ConstantVariable {
     //property_bill_charges
     public static String BELONG_TO_CATEGORY_PROPERTY_BILL_CHARGES = "property_bill_charges";
     //property_management_agreement_ducoment
-    public static String BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DUCOMENT = "property_management_agreement_ducoment";
+    public static String BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT = "property_management_agreement_document";
     //property_others
     public static String BELONG_TO_CATEGORY_PROPERTY_OTHERS = "property_others";
     //property_main_image
