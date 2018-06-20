@@ -57,8 +57,8 @@ public class IProperty {
     private double commission_rent;
     @Column(name = "total_commission_sale", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double total_commission_sale;
-    @Column(name = "current_commision_sale", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
-    private double current_commision_sale;
+    @Column(name = "current_commission_sale", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
+    private double current_commission_sale;
     @Column(name = "term_of_lease", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double term_of_lease;
     @Column(name = "ownerId", type = MySqlTypeConstant.INT, length = 11)
@@ -255,12 +255,12 @@ public class IProperty {
         this.total_commission_sale = total_commission_sale;
     }
 
-    public double getCurrent_commision_sale() {
-        return current_commision_sale;
+    public double getCurrent_commission_sale() {
+        return current_commission_sale;
     }
 
-    public void setCurrent_commision_sale(double current_commision_sale) {
-        this.current_commision_sale = current_commision_sale;
+    public void setCurrent_commission_sale(double current_commission_sale) {
+        this.current_commission_sale = current_commission_sale;
     }
 
     public double getTerm_of_lease() {

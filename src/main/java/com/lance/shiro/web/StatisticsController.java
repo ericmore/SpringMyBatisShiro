@@ -43,4 +43,33 @@ public class StatisticsController extends BaseController {
         }
     }
 
+    /**
+     * 返回所有referID=i800xxx的agent所卖掉的房子
+     *
+     * @return
+     */
+    @RequestMapping(value = "property", method = RequestMethod.GET)
+    public ResponseEntity property(@RequestParam("referid") String referid) {
+        try {
+            return ResponseEntity.ok(statisticsService.findAgentProperty(referid));
+        } catch (Exception e) {
+            return error("find All Agent Sales List Error,Pls Contact Administrators!");
+        }
+    }
+
+
+    /**
+     * 返回所有referID=i800xxx的user
+     *
+     * @return
+     */
+    @RequestMapping(value = "user", method = RequestMethod.GET)
+    public ResponseEntity user(@RequestParam("referid") String referid) {
+        try {
+            return ResponseEntity.ok(statisticsService.findAllAgentByReferId(referid));
+        } catch (Exception e) {
+            return error("find All Agent List Error,Pls Contact Administrators!");
+        }
+    }
+
 }
