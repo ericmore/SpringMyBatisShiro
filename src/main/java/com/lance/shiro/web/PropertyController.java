@@ -28,11 +28,8 @@ public class PropertyController extends BaseController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity add(@RequestBody IProperty property) throws IllegalAccessException {
-
             Map obj = propertyService.save(property);
             return success("Operation success!", obj);
-
-
     }
 
     /**
@@ -46,12 +43,6 @@ public class PropertyController extends BaseController {
         return success("Operation success!");
     }
 
-//    @RequestMapping(value = "propertyList", method = RequestMethod.GET)
-//    public ResponseEntity findAllByPropertyList(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
-//        ArrayList<Map> list = propertyService.findAllByPropertyLists(id);
-//        return success("Operation success!", list);
-//    }
-
     @RequestMapping(value = "", method = RequestMethod.GET)
     public ResponseEntity findAll(@RequestParam Map<String, String> reqMap) {
         try {
@@ -62,18 +53,6 @@ public class PropertyController extends BaseController {
         }
     }
 
-
-//    @RequestMapping(value = "agent", method = RequestMethod.GET)
-//    public ResponseEntity findAllByAgent(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
-//        ArrayList<Map> list = propertyService.findAllByAgents(id);
-//        return success("Operation success!", list);
-//    }
-//
-//    @RequestMapping(value = "owner", method = RequestMethod.GET)
-//    public ResponseEntity findAllByOwner(@RequestParam(name = "id", required = false) ArrayList<Integer> id) {
-//        ArrayList<Map> list = propertyService.findAllByOwners(id);
-//        return success("Operation success!", list);
-//    }
 
     /**
      * update Attribute

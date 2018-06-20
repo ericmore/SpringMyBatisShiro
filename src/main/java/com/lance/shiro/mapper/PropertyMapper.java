@@ -11,20 +11,24 @@ import java.util.Map;
 
 @Mapper
 public interface PropertyMapper {
-    @Insert("insert into i_property (bedroomCount,bathRoomCount,parkingCount,price,notes,address,agentId,propertyListId,lot,buildingOverview,features,purchasePrice,sellingPrice,weeklyRent,managedDoma,type,textContractOfSale,textDepositForm,textSolicitor,textBillsCharges,textManagementAgreement,textOthers,purchaseDate,commenceDate,commission_rent,commission_sale,term_of_lease,ownerId,createTime,updateTime,status) values(#{bedroomCount},#{bathRoomCount},#{parkingCount},#{price},#{notes},#{address},#{agentId},#{propertyListId},#{lot},#{buildingOverview},#{features},#{purchasePrice},#{sellingPrice},#{weeklyRent},#{managedDoma},#{type},#{textContractOfSale},#{textDepositForm},#{textSolicitor},#{textBillsCharges},#{textManagementAgreement},#{textOthers},#{purchaseDate},#{commenceDate},#{commission_rent},#{commission_sale},#{term_of_lease},#{ownerId},now(),now(),#{status})")
+    @Insert("insert into i_property (bedroomCount,bathRoomCount,parkingCount,price,notes,address,agentId,propertyListId,lot,buildingOverview,features," +
+            "purchasePrice,sellingPrice,weeklyRent,managedDoma,type,textContractOfSale,textDepositForm,textSolicitor,textBillsCharges," +
+            "textManagementAgreement,textOthers,purchaseDate,commenceDate,commission_rent,total_commission_sale,current_commision_sale,term_of_lease," +
+            "ownerId,createTime,updateTime,status) values(#{bedroomCount},#{bathRoomCount},#{parkingCount},#{price},#{notes},#{address}," +
+            "#{agentId},#{propertyListId},#{lot},#{buildingOverview},#{features},#{purchasePrice},#{sellingPrice},#{weeklyRent},#{managedDoma}," +
+            "#{type},#{textContractOfSale},#{textDepositForm},#{textSolicitor},#{textBillsCharges},#{textManagementAgreement},#{textOthers}," +
+            "#{purchaseDate},#{commenceDate},#{commission_rent},#{total_commission_sale},#{current_commision_sale},#{term_of_lease},#{ownerId}," +
+            "now(),now(),#{status})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     public int add(IProperty property);
 
     @Update("update i_property set address = #{address},agentId = #{agentId},propertyListId = #{propertyListId},lot = #{lot},buildingOverview = #{buildingOverview},features = #{features},purchasePrice = #{purchasePrice}" +
             ",sellingPrice = #{sellingPrice},weeklyRent = #{weeklyRent},managedDoma = #{managedDoma},type = #{type},textContractOfSale = #{textContractOfSale},textDepositForm = #{textDepositForm}," +
             "textSolicitor = #{textSolicitor},textBillsCharges = #{textBillsCharges},textManagementAgreement = #{textManagementAgreement},textOthers = #{textOthers},purchaseDate = #{purchaseDate}," +
-            "commenceDate = #{commenceDate},commission_rent = #{commission_rent},commission_sale = #{commission_sale},term_of_lease = #{term_of_lease},ownerId = #{ownerId},bedroomCount= #{bedroomCount}," +
+            "commenceDate = #{commenceDate},commission_rent = #{commission_rent},total_commission_sale = #{total_commission_sale},current_commision_sale = #{current_commision_sale}," +
+            "term_of_lease = #{term_of_lease},ownerId = #{ownerId},bedroomCount= #{bedroomCount}," +
             "bathRoomCount=#{bathRoomCount},parkingCount=#{parkingCount},price=#{price},notes=#{notes},status=#{status},sale_status=#{sale_status},updateTime = now() where id=#{id} ")
     int update(IProperty property);
-
-//    @Update("update i_property set ${propertyAttr} ,updateTime = now() where id=#{id} ")
-//    int update(@Param("id") int id, @Param("propertyAttr") String propertyAttr);
-
 
     @Update("delete from i_property where id=#{id} ")
     public void delete(int id);
@@ -131,6 +135,6 @@ public interface PropertyMapper {
     @Select("select count(1) as totalCommisionUnit,IFNULL (sum(commission_rent),0) as monthlyCommission from i_property where agentId = #{userId} and ownerId is not null and type = 'rent' ")
     Map<String, String> findAgentPropertyManagement(String userId);
 
-    @Select("select count(1) as totalCommisionUnit,IFNULL (sum(commission_sale),0) as totalCommission from i_property where agentId = #{userId} and ownerId is not null and type = 'sale' ")
+    @Select("select count(1) as totalCommisionUnit,IFNULL (sum(total_commission_sale),0) as totalCommission from i_property where agentId = #{userId} and ownerId is not null and type = 'sale' ")
     Map<String,String> findAgentSalesyRecord(String userId);
 }

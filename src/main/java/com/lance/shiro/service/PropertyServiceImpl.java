@@ -68,19 +68,6 @@ public class PropertyServiceImpl implements PropertyService {
         }
     }
 
-
-//    @Override
-//    public ArrayList<Map> findAllByPropertyLists(ArrayList<Integer> propertyListId) {
-//        ArrayList<IProperty> list;
-//        if (propertyListId != null && propertyListId.size() > 0) {
-//            String propertyListIds = "'" + StringUtils.join(propertyListId, "','") + "'";
-//            list = propertyMapper.findAllByPropertyList(propertyListIds);
-//        } else {
-//            list = propertyMapper.findAll();
-//        }
-//        return setAttachmentForList(list);
-//    }
-
     @Override
     public ArrayList<Map> findAllByAgents(ArrayList<Integer> agentId) {
         ArrayList<IProperty> list;

@@ -4,82 +4,86 @@ import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Table;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import java.sql.Date;
+
 @Table(name = "i_property")
 public class IProperty {
 
 
-    @Column(name = "id",type = MySqlTypeConstant.INT,length = 11,isKey = true,isAutoIncrement = true)
+    @Column(name = "id", type = MySqlTypeConstant.INT, length = 11, isKey = true, isAutoIncrement = true)
     private int id;
-    @Column(name = "address",type = MySqlTypeConstant.VARCHAR,length = 200)
+    @Column(name = "address", type = MySqlTypeConstant.VARCHAR, length = 200)
     private String address;
-    @Column(name = "agentId",type = MySqlTypeConstant.INT,length = 11)
+    @Column(name = "agentId", type = MySqlTypeConstant.INT, length = 11)
     private Integer agentId;
     private IUser agent;
-    @Column(name = "propertyListId",type = MySqlTypeConstant.INT,length = 11)
+    @Column(name = "propertyListId", type = MySqlTypeConstant.INT, length = 11)
     private Integer propertyListId;
     private IPropertyList propertyList;
-    @Column(name = "lot",type = MySqlTypeConstant.VARCHAR,length = 200)
+    @Column(name = "lot", type = MySqlTypeConstant.VARCHAR, length = 200)
     private String lot;
-    @Column(name = "buildingOverview",type = MySqlTypeConstant.TEXT)
+    @Column(name = "buildingOverview", type = MySqlTypeConstant.TEXT)
     private String buildingOverview;
-    @Column(name = "features",type = MySqlTypeConstant.TEXT)
+    @Column(name = "features", type = MySqlTypeConstant.TEXT)
     private String features;
-    @Column(name = "purchasePrice",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    @Column(name = "purchasePrice", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double purchasePrice;
-    @Column(name = "sellingPrice",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    @Column(name = "sellingPrice", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double sellingPrice;
-    @Column(name = "weeklyRent",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    @Column(name = "weeklyRent", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double weeklyRent;
-    @Column(name = "managedDoma",type = MySqlTypeConstant.VARCHAR,length = 1)
+    @Column(name = "managedDoma", type = MySqlTypeConstant.VARCHAR, length = 1)
     private String managedDoma;
-    @Column(name = "type",type = MySqlTypeConstant.VARCHAR,length = 20)
+    @Column(name = "type", type = MySqlTypeConstant.VARCHAR, length = 20)
     private String type;
-    @Column(name = "textContractOfSale",type = MySqlTypeConstant.TEXT)
+    @Column(name = "textContractOfSale", type = MySqlTypeConstant.TEXT)
     private String textContractOfSale;
-    @Column(name = "textDepositForm",type = MySqlTypeConstant.TEXT)
+    @Column(name = "textDepositForm", type = MySqlTypeConstant.TEXT)
     private String textDepositForm;
-    @Column(name = "textSolicitor",type = MySqlTypeConstant.TEXT)
+    @Column(name = "textSolicitor", type = MySqlTypeConstant.TEXT)
     private String textSolicitor;
-    @Column(name = "textBillsCharges",type = MySqlTypeConstant.TEXT)
+    @Column(name = "textBillsCharges", type = MySqlTypeConstant.TEXT)
     private String textBillsCharges;
-    @Column(name = "textManagementAgreement",type = MySqlTypeConstant.TEXT)
+    @Column(name = "textManagementAgreement", type = MySqlTypeConstant.TEXT)
     private String textManagementAgreement;
-    @Column(name = "textOthers",type = MySqlTypeConstant.TEXT)
+    @Column(name = "textOthers", type = MySqlTypeConstant.TEXT)
     private String textOthers;
-    @Column(name = "purchaseDate",type = MySqlTypeConstant.DATETIME,length = 80)
+    @Column(name = "purchaseDate", type = MySqlTypeConstant.DATETIME, length = 80)
     private Date purchaseDate;
-    @Column(name = "commenceDate",type = MySqlTypeConstant.DATETIME,length = 80)
+    @Column(name = "commenceDate", type = MySqlTypeConstant.DATETIME, length = 80)
     private Date commenceDate;
-    @Column(name = "commission_rent",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    @Column(name = "commission_rent", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double commission_rent;
-    @Column(name = "commission_sale",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
-    private double commission_sale;
-    @Column(name = "term_of_lease",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    @Column(name = "total_commission_sale", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
+    private double total_commission_sale;
+    @Column(name = "current_commision_sale", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
+    private double current_commision_sale;
+    @Column(name = "term_of_lease", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double term_of_lease;
-    @Column(name = "ownerId",type = MySqlTypeConstant.INT,length = 11)
+    @Column(name = "ownerId", type = MySqlTypeConstant.INT, length = 11)
     private Integer ownerId;
     private IUser owner;
 
-    @Column(name = "bedroomCount",type = MySqlTypeConstant.INT,length = 11)
+    @Column(name = "bedroomCount", type = MySqlTypeConstant.INT, length = 11)
     private Integer bedroomCount;
-    @Column(name = "bathRoomCount",type = MySqlTypeConstant.INT,length = 11)
+    @Column(name = "bathRoomCount", type = MySqlTypeConstant.INT, length = 11)
     private Integer bathRoomCount;
-    @Column(name = "parkingCount",type = MySqlTypeConstant.INT,length = 11)
+    @Column(name = "parkingCount", type = MySqlTypeConstant.INT, length = 11)
     private Integer parkingCount;
-    @Column(name = "price",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
+    @Column(name = "price", type = MySqlTypeConstant.DOUBLE, length = 10, decimalLength = 2)
     private double price;
-    @Column(name = "notes",type = MySqlTypeConstant.VARCHAR,length = 500)
+    @Column(name = "notes", type = MySqlTypeConstant.VARCHAR, length = 500)
     private String notes;
     private Integer qty;
 
-    @Column(name = "status",type = MySqlTypeConstant.VARCHAR,length = 20,defaultValue = "active")
+    @Column(name = "status", type = MySqlTypeConstant.VARCHAR, length = 20, defaultValue = "active")
     private String status;
-    @Column(name = "createTime",type = MySqlTypeConstant.DATETIME,length = 80)
+    @Column(name = "createTime", type = MySqlTypeConstant.DATETIME, length = 80)
     private Date createTime;
-    @Column(name = "updateTime",type = MySqlTypeConstant.DATETIME,length = 80)
+    @Column(name = "updateTime", type = MySqlTypeConstant.DATETIME, length = 80)
     private Date updateTime;
-    @Column(name = "sale_status",type = MySqlTypeConstant.VARCHAR,length = 60)
+    @Column(name = "sale_status", type = MySqlTypeConstant.VARCHAR, length = 60)
     private String sale_status;
 
 
@@ -243,12 +247,20 @@ public class IProperty {
         this.commission_rent = commission_rent;
     }
 
-    public double getCommission_sale() {
-        return commission_sale;
+    public double getTotal_commission_sale() {
+        return total_commission_sale;
     }
 
-    public void setCommission_sale(double commission_sale) {
-        this.commission_sale = commission_sale;
+    public void setTotal_commission_sale(double total_commission_sale) {
+        this.total_commission_sale = total_commission_sale;
+    }
+
+    public double getCurrent_commision_sale() {
+        return current_commision_sale;
+    }
+
+    public void setCurrent_commision_sale(double current_commision_sale) {
+        this.current_commision_sale = current_commision_sale;
     }
 
     public double getTerm_of_lease() {
