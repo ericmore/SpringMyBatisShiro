@@ -6,6 +6,7 @@ import com.lance.shiro.entity.IUser;
 import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -127,6 +128,9 @@ public interface PropertyMapper {
     @Update("update i_property set ${attributes}  ,updateTime = now() where id=#{id} ")
     int updateAttribute(@Param("id") int id, @Param("attributes") String attributes);
 
+    @Select("SELECT bedroomCount,bathRoomCount,parkingCount,price,group_concat(distinct notes SEPARATOR '\\r\\n') notes,count(1) qty FROM i_property where propertyListId = #{propertyListId} " +
+            " group by bedroomCount,bathRoomCount,parkingCount,price,propertyListId ")
+    ArrayList<HashMap<String, Object>> findAllLotType(int propertyListId);
 
     @Select("select count(1) as totalCommisionUnit,IFNULL (sum(commission_rent),0) as monthlyCommission from i_property where agentId = #{userId} and ownerId is not null and type = 'rent' ")
     Map<String, String> findAgentPropertyManagement(String userId);

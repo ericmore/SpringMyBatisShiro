@@ -37,7 +37,7 @@ public interface PropertyListMapper {
     ArrayList<IPropertyList> findAllByCitys(@Param("citys") String citys);
 
     //查询所有用户
-    @Select("SELECT* FROM i_property_list where 1=1 ")
+    @Select("SELECT * FROM i_property_list where 1=1 ")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "lotTypeList", column = "id", javaType = List.class,
