@@ -73,4 +73,18 @@ public class PropertyController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "{id}", method = RequestMethod.PATCH)
+    public ResponseEntity patch(@PathVariable("id") int id, @RequestBody() Map<String, String> reqMap){
+        try {
+            if (null != reqMap) {
+                IProperty iProperty = propertyService.updateAttribute(id, reqMap);
+                return success("Operation success!", iProperty);
+            } else {
+                return success("Operation success!", null);
+            }
+        } catch (Exception e) {
+            return error("Update Attribute Exception,Pls Contact Administrators!");
+        }
+    }
+
 }
