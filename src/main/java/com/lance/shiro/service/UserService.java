@@ -29,6 +29,8 @@ public interface UserService {
 
     Map updateAttribute(int id, Map<String, String> reqMap) throws Exception;
 
-    Map approve(int id,String type) throws Exception;
+    Map apply(int id) throws Exception;
+
+    Map approve(int id, String type) throws Exception;
 
 }

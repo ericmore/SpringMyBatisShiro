@@ -56,12 +56,6 @@ public class UMailService{
     @Autowired
     private RestTemplate restTemplate;
 
-    public List searchMailBox(String mailAccount) {
-        String url = "http://" + mailServer + "/webmail/api.php?do=getMailbox";
-
-        return null;
-    }
-
     /**
      * <pre>
      * username：	域管理员的账号（非空）
@@ -90,7 +84,7 @@ public class UMailService{
      * </pre>
      *
      */
-    public Map<String, String> addMailBox(String username, String realname, String password, Map<String,String> otherParams) {
+    public Map<String, String> addMailBox(String username, String realname, String password) throws Exception {
         String url =mailApi+"?do=addMailbox";
 
         Map<String, String> ret = new HashMap<String, String>();
@@ -118,12 +112,16 @@ public class UMailService{
         map.add("password", adminPassword);
         map.add("domain", mailDomain);
         map.add("realname", realname);
+        logger.debug(url);
+        logger.debug(map);
         String responseText = restTemplate.postForObject(url, map, String.class);
         logger.debug(responseText);
         ret = parseSimpleResult(responseText);
-        ret.put("mail",username+"@"+mailDomain);
-
-        return ret;
+        if(ret!=null && ret.containsKey("status") && ret.get("status").equals("0")){
+            return ret;
+        }else{
+            throw new Exception("Create email error!");
+        }
     }
 
     /**
@@ -131,7 +129,7 @@ public class UMailService{
      * @param username
      * @return
      */
-    public Map<String, String> delMailbox(String username) {
+    public Map<String, String> delMailbox(String username) throws Exception {
         String url =mailApi+"?do=delMailbox";
 
         Map<String, String> ret = new HashMap<String, String>();
@@ -148,10 +146,16 @@ public class UMailService{
         map.add("username", mailAdmin);
         map.add("password", adminPassword);
         map.add("domain", mailDomain);
+        logger.debug(url);
+        logger.debug(map);
         String responseText = restTemplate.postForObject(url, map, String.class);
         logger.debug(responseText);
         ret = parseSimpleResult(responseText);
-        return ret;
+        if(ret!=null && ret.containsKey("status") && ret.get("status").equals("0")){
+            return ret;
+        }else{
+            throw new Exception("Delete email error!");
+        }
     }
 
     /**
@@ -159,7 +163,7 @@ public class UMailService{
      * @param subject
      * @param body
      */
-    public Map<String,String> sendManagerMail(String to,String subject,String body) {
+    public Map<String,String> sendManagerMail(String to,String subject,String body) throws Exception {
         Map<String, String> ret = new HashMap<String, String>();
         if(StringUtils.isBlank(to))
         {
@@ -183,19 +187,16 @@ public class UMailService{
         String url=mailApi+"?do=sendMail";
         System.out.println(map);
         System.out.println(url);
+        logger.debug(url);
+        logger.debug(map);
         String responseText = restTemplate.postForObject(url, map, String.class);
         logger.debug(responseText);
         ret = parseSimpleResult(responseText);
-        return ret;
-    }
-
-    public void getMailbox(String keyword)
-    {
-        Map<String,String> map=new HashMap<String,String>();
-    }
-
-    public void deleteMailbox(String mailAccount) {
-
+        if(ret!=null && ret.containsKey("status") && ret.get("status").equals("0")){
+            return ret;
+        }else{
+            throw new Exception("Send email error!");
+        }
     }
 
     private Map<String, String> parseSimpleResult(String text) {

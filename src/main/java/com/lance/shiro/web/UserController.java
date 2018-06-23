@@ -127,6 +127,13 @@ public class UserController extends BaseController {
             return success("Operation success!", null);
         }
     }
+
+    @RequestMapping(value = "apply/{id}", method = RequestMethod.PUT)
+    public ResponseEntity apply(@PathVariable("id") int id)  throws Exception{
+        Map obj = userService.apply(id);
+        return success("Operation success!", obj);
+    }
+
     @RequestMapping(value = "approve/{id}", method = RequestMethod.PUT)
     public ResponseEntity approve(@PathVariable("id") int id, @RequestParam String type)  throws Exception{
         Map obj = userService.approve(id,type);
