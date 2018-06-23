@@ -206,7 +206,7 @@ public class UMailService{
             ret = (Map<String, String>) ConvertUtils.xml2map(doc.getRootElement());
         } catch (DocumentException e) {
             // TODO Auto-generated catch block 
-            log.error(e);
+            logger.error(e);
             e.printStackTrace();
             return null;
         }
