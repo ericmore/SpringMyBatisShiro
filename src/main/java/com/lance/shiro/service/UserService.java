@@ -21,6 +21,8 @@ public interface UserService {
 
     ArrayList<Map> findAllByRoles(List<String> role);
 
+    IUser findExternalByCode(String code);
+
     ArrayList<Map> findAllByAttr(Map<String, String> reqMap);
 
     void deleteAllByIds(ArrayList<Integer> id);
@@ -29,6 +31,8 @@ public interface UserService {
 
     Map updateAttribute(int id, Map<String, String> reqMap) throws Exception;
 
-    Map approve(int id,String type) throws Exception;
+    Map apply(int id) throws Exception;
+
+    Map approve(int id, String type) throws Exception;
 
 }

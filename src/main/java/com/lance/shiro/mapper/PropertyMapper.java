@@ -15,10 +15,10 @@ public interface PropertyMapper {
     @Insert("insert into i_property (bedroomCount,bathRoomCount,parkingCount,price,notes,address,agentId,propertyListId,lot,buildingOverview,features," +
             "purchasePrice,sellingPrice,weeklyRent,managedDoma,type,textContractOfSale,textDepositForm,textSolicitor,textBillsCharges," +
             "textManagementAgreement,textOthers,purchaseDate,commenceDate,commission_rent,total_commission_sale,current_commission_sale,term_of_lease," +
-            "ownerId,createTime,updateTime,status) values(#{bedroomCount},#{bathRoomCount},#{parkingCount},#{price},#{notes},#{address}," +
+            "ownerId,sale_note,sale_status,createTime,updateTime,status) values(#{bedroomCount},#{bathRoomCount},#{parkingCount},#{price},#{notes},#{address}," +
             "#{agentId},#{propertyListId},#{lot},#{buildingOverview},#{features},#{purchasePrice},#{sellingPrice},#{weeklyRent},#{managedDoma}," +
             "#{type},#{textContractOfSale},#{textDepositForm},#{textSolicitor},#{textBillsCharges},#{textManagementAgreement},#{textOthers}," +
-            "#{purchaseDate},#{commenceDate},#{commission_rent},#{total_commission_sale},#{current_commission_sale},#{term_of_lease},#{ownerId}," +
+            "#{purchaseDate},#{commenceDate},#{commission_rent},#{total_commission_sale},#{current_commission_sale},#{term_of_lease},#{ownerId},#{sale_note},#{sale_status}," +
             "now(),now(),#{status})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     public int add(IProperty property);
@@ -28,7 +28,7 @@ public interface PropertyMapper {
             "textSolicitor = #{textSolicitor},textBillsCharges = #{textBillsCharges},textManagementAgreement = #{textManagementAgreement},textOthers = #{textOthers},purchaseDate = #{purchaseDate}," +
             "commenceDate = #{commenceDate},commission_rent = #{commission_rent},total_commission_sale = #{total_commission_sale},current_commission_sale = #{current_commission_sale}," +
             "term_of_lease = #{term_of_lease},ownerId = #{ownerId},bedroomCount= #{bedroomCount}," +
-            "bathRoomCount=#{bathRoomCount},parkingCount=#{parkingCount},price=#{price},notes=#{notes},status=#{status},sale_status=#{sale_status},updateTime = now() where id=#{id} ")
+            "bathRoomCount=#{bathRoomCount},parkingCount=#{parkingCount},price=#{price},notes=#{notes},status=#{status},sale_status=#{sale_status},sale_note=#{sale_note},updateTime = now() where id=#{id} ")
     int update(IProperty property);
 
     @Update("delete from i_property where id=#{id} ")

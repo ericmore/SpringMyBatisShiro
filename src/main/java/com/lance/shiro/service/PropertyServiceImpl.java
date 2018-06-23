@@ -160,6 +160,7 @@ public class PropertyServiceImpl implements PropertyService {
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_OTHERS);
         commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE);
+        commonService.deleteListAttachmentByBelong(sid, BELONG_TO_CATEGORY_PROPERTY_BANK_CARD_PICTURE);
     }
 
     private ArrayList<Map> setAttachmentForList(ArrayList<IProperty> list) {
@@ -180,6 +181,7 @@ public class PropertyServiceImpl implements PropertyService {
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_MANAGEMENT_AGREEMENT_DOCUMENT));
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_OTHERS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_OTHERS));
         mproperty.put(BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE));
+        mproperty.put(BELONG_TO_CATEGORY_PROPERTY_BANK_CARD_PICTURE, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_PROPERTY_BANK_CARD_PICTURE));
         return mproperty;
     }
 }

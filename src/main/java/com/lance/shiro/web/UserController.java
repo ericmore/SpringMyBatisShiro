@@ -127,6 +127,13 @@ public class UserController extends BaseController {
             return success("Operation success!", null);
         }
     }
+
+    @RequestMapping(value = "apply/{id}", method = RequestMethod.PUT)
+    public ResponseEntity apply(@PathVariable("id") int id)  throws Exception{
+        Map obj = userService.apply(id);
+        return success("Operation success!", obj);
+    }
+
     @RequestMapping(value = "approve/{id}", method = RequestMethod.PUT)
     public ResponseEntity approve(@PathVariable("id") int id, @RequestParam String type)  throws Exception{
         Map obj = userService.approve(id,type);
@@ -155,6 +162,12 @@ public class UserController extends BaseController {
     public ResponseEntity findByRole(@RequestParam(name="role",required=false) ArrayList<String> role) {
         ArrayList<Map> list = userService.findAllByRoles(role);
         return success("Operation success!", list);
+    }
+
+    @RequestMapping(value = "external", method = RequestMethod.GET)
+    public ResponseEntity findByRole(@RequestParam(name="code") String code) {
+        IUser user = userService.findExternalByCode(code);
+        return success("Operation success!", user);
     }
 
 }

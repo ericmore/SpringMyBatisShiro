@@ -6,11 +6,14 @@ import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
 import com.lance.shiro.utils.ConvertUtils;
 import com.lance.shiro.utils.UserStatus;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -28,6 +31,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CommonService commonService;
 
+    @Autowired
+    private UMailService uMailService;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value("${mail.domain}")
+    private String mailDomain;
+
+    @Value("${mail.defaultPassword}")
+    private String defaultPassword;
+
+    @Value("${mail.manager.username}")
+    private String mailManager;
 
     @Override
     public Map get(int id) {
@@ -70,6 +87,7 @@ public class UserServiceImpl implements UserService {
         return aUsers;
     }
 
+
     @Override
     public ArrayList<Map> findAllByAttr(Map<String, String> reqMap) {
         ArrayList<IUser> list;
@@ -96,8 +114,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteAllByIds(ArrayList<Integer> id) {
-        userMapper.deleteAllByIds(id);
+    public void deleteAllByIds(ArrayList<Integer> ids) {
+        userMapper.deleteAllByIds(ids);
+        for(int id : ids){
+            IUser user = userMapper.get(id);
+            deleteMail(user);
+        }
     }
 
     @Override
@@ -162,10 +184,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map apply(int id) throws Exception {
+        IUser user = userMapper.get(id);
+        if(!user.getStatus().equals(UserStatus.DRAFT)){
+            throw new Exception("Not "+UserStatus.DRAFT+" status cannot be applied!");
+        }
+        user.setStatus(UserStatus.PENDING);
+        userMapper.update(user);
+        sendApplyMail(user);
+        return setAttachment(user);
+    }
+
+
+    @Override
     public Map approve(int id, String type) throws Exception {
         IUser user = userMapper.get(id);
+        if(!user.getStatus().equals(UserStatus.PENDING)){
+            throw new Exception("Not "+UserStatus.PENDING+" status cannot be Approval!");
+        }
         user.setStatus(UserStatus.ACTIVE);
-        user.setEmail( user.getFirstName()+"."+user.getLastName()+"@ipanproperty.com");
+        String email = createMail(user);
+        user.setEmail(email);
         String code = "";
         if(type.equals("internal")){
             Map map = userMapper.findMaxCode(" code <= 'i8000100' ");
@@ -231,5 +270,81 @@ public class UserServiceImpl implements UserService {
             muser.put(BELONG_TO_CATEGORY_USER_ATTACHMENTS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS));
         }
         return muser;
+    }
+
+
+
+    private void deleteMail(IUser user){
+        try {
+            if( !StringUtils.isBlank( user.getEmail() ) ) {
+                Map<String, String> ret = uMailService.delMailbox(user.getEmail().replaceAll("@" + mailDomain, ""));
+            }
+        }catch (Exception ex){ }
+    }
+
+    private String createMail(IUser user) throws Exception {
+        String email = ( user.getFirstName()+"."+user.getLastName() ).replaceAll(" ","");
+        int cMap = userMapper.findCountByAttr("  email regexp '^"+email+"([0-9]*)@"+mailDomain+"$'  ");
+        if(cMap>0  ) {
+            email += cMap ;
+        }
+        Map<String, String> ret = uMailService.addMailBox(email,user.getFirstName()+" "+user.getLastName(),defaultPassword);
+        email += "@" + mailDomain ;
+        user.setEmail(email);
+
+        sendApproveMail(user);
+
+        return  email ;
+    }
+
+    private void sendApplyMail(IUser user){
+        try {
+            String subject = "Dear "+user.getFirstName() +" "+ user.getLastName()+", Welcome To the iPAN!";
+            String body = "<div>Welcome to the international Property Agent network(iPAN)</div>";
+            body += "<div>Please confirm your detail below</div>";
+            body += "<div>Mobile Number:" + (user.getMobile()==null?"none":user.getMobile()) + "</div>";
+            body += "<div>Country/Region:" + user.getCountry() + "</div>";
+            body += "<div>State/Province:" + (user.getState()==null?"none":user.getState()) + "</div>";
+            body += "<div>City:" + (user.getCity()==null?"none":user.getCity()) + "</div>";
+            body += "<div>Street:" + (user.getStreet()==null?"none":user.getStreet()) + "</div>";
+            body += "<div>Please contact "+mailManager+" if detail need to be corrected.</div>";
+            body += "<div><br><br>    iPAN Admin Team </div>";
+            Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(),subject,body);
+        }catch (Exception ex){}
+    }
+
+    private void sendApproveMail(IUser user){
+        try {
+            String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Your iPAN membershipPropertySale has been approved!";
+            String body = "<div>Congratulations, your membership has been approved by the international Property Agent network(iPAN)\n</div>";
+            body += "<div>Your member ID:" + user.getCode() + "</div>";
+            body += "<div>Your iPan Mailbox:" + user.getEmail() + "</div>";
+            body += "<div>Initial Mailbox password is :" + defaultPassword + "</div>";
+            body += "<div>Please contact " + mailManager + " if there's any question.</div>";
+            body += "<div>Enjoy!</div>";
+            body += "<div><br><br>    iPAN Admin Team </div>";
+            Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(), subject, body);
+        }catch (Exception ex){}
+    }
+
+
+    @Override
+    public IUser findExternalByCode(String code){
+        //todo://
+//        String url = "";
+//        JSONObject jsonObject = restTemplate.getForObject(url+"?code="+code, JSONObject.class);
+        IUser user = new IUser();
+        user.setLastName("lastname");
+        user.setFirstName("firstname");
+        user.setPrivateEmail("xx@xx.com");
+        user.setMobile("mobile");
+        user.setStreet("street");
+        //occupation
+        user.setPosition("postition");
+        user.setCompany("company");
+        user.setCountry("country");
+        user.setState("state");
+        user.setCity("city");
+        return user;
     }
 }

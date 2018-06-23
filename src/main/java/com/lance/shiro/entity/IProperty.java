@@ -86,6 +86,8 @@ public class IProperty {
     @Column(name = "sale_status", type = MySqlTypeConstant.VARCHAR, length = 60)
     private String sale_status;
 
+    @Column(name = "sale_note", type = MySqlTypeConstant.TEXT)
+    private String sale_note;
 
     public int getId() {
         return id;
@@ -396,4 +398,11 @@ public class IProperty {
         return ReflectionToStringBuilder.toString(this);
     }
 
+    public String getSale_note() {
+        return sale_note;
+    }
+
+    public void setSale_note(String sale_note) {
+        this.sale_note = sale_note;
+    }
 }
