@@ -22,9 +22,9 @@ public class IPropertyList {
     private String state;
     @Column(name = "country",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String country;
-    @Column(name = "x",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 8)
+    @Column(name = "x",type = MySqlTypeConstant.VARCHAR,length = 20)
     private double x;
-    @Column(name = "y",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 8)
+    @Column(name = "y",type = MySqlTypeConstant.VARCHAR,length = 20)
     private double y;
     @Column(name = "buildingOverview",type = MySqlTypeConstant.TEXT)
     private String buildingOverview;
