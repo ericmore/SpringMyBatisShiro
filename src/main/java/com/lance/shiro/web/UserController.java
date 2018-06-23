@@ -164,4 +164,10 @@ public class UserController extends BaseController {
         return success("Operation success!", list);
     }
 
+    @RequestMapping(value = "external", method = RequestMethod.GET)
+    public ResponseEntity findByRole(@RequestParam(name="code") String code) {
+        IUser user = userService.findExternalByCode(code);
+        return success("Operation success!", user);
+    }
+
 }

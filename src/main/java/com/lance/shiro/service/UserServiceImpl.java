@@ -6,12 +6,14 @@ import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
 import com.lance.shiro.utils.ConvertUtils;
 import com.lance.shiro.utils.UserStatus;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.lang.reflect.Field;
 import java.sql.Date;
@@ -31,6 +33,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UMailService uMailService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Value("${mail.domain}")
     private String mailDomain;
@@ -81,6 +86,7 @@ public class UserServiceImpl implements UserService {
         }
         return aUsers;
     }
+
 
     @Override
     public ArrayList<Map> findAllByAttr(Map<String, String> reqMap) {
@@ -319,5 +325,26 @@ public class UserServiceImpl implements UserService {
             body += "<div><br><br>    iPAN Admin Team </div>";
             Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(), subject, body);
         }catch (Exception ex){}
+    }
+
+
+    @Override
+    public IUser findExternalByCode(String code){
+        //todo://
+//        String url = "";
+//        JSONObject jsonObject = restTemplate.getForObject(url+"?code="+code, JSONObject.class);
+        IUser user = new IUser();
+        user.setLastName("lastname");
+        user.setFirstName("firstname");
+        user.setPrivateEmail("xx@xx.com");
+        user.setMobile("mobile");
+        user.setStreet("street");
+        //occupation
+        user.setPosition("postition");
+        user.setCompany("company");
+        user.setCountry("country");
+        user.setState("state");
+        user.setCity("city");
+        return user;
     }
 }

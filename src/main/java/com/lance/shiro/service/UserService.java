@@ -21,6 +21,8 @@ public interface UserService {
 
     ArrayList<Map> findAllByRoles(List<String> role);
 
+    IUser findExternalByCode(String code);
+
     ArrayList<Map> findAllByAttr(Map<String, String> reqMap);
 
     void deleteAllByIds(ArrayList<Integer> id);

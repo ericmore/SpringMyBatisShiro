@@ -30,4 +30,6 @@ public class ConstantVariable {
     public static String BELONG_TO_CATEGORY_PROPERTY_OTHERS = "property_others";
     //property_main_image
     public static String BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE = "property_main_image";
+    //property_bank_card_picture
+    public static String BELONG_TO_CATEGORY_PROPERTY_BANK_CARD_PICTURE = "property_bank_card_picture";
 }
