@@ -203,8 +203,7 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Not "+UserStatus.PENDING+" status cannot be Approval!");
         }
         user.setStatus(UserStatus.ACTIVE);
-        String email = createMail(user);
-        user.setEmail(email);
+
         String code = "";
         if(type.equals("internal")){
             Map map = userMapper.findMaxCode(" code <= 'i8000100' ");
@@ -225,6 +224,9 @@ public class UserServiceImpl implements UserService {
             }
         }
         user.setCode(code);
+
+        String email = createMail(user);
+        user.setEmail(email);
         userMapper.update(user);
         return setAttachment(user);
     }
