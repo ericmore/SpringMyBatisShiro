@@ -50,8 +50,8 @@ public class IUser {
     private String position;
     @Column(name = "company",type = MySqlTypeConstant.VARCHAR,length = 80)
     private String company;
-    @Column(name = "experience",type = MySqlTypeConstant.DOUBLE,length = 10,decimalLength = 2)
-    private double experience;
+    @Column(name = "experience",type = MySqlTypeConstant.VARCHAR,length = 10)
+    private String experience;
     @Column(name = "createTime",type = MySqlTypeConstant.DATETIME,length = 80)
     private Date createTime;
     @Column(name = "updateTime",type = MySqlTypeConstant.DATETIME,length = 80)
@@ -228,11 +228,11 @@ public class IUser {
         this.company = company;
     }
 
-    public double getExperience() {
+    public String getExperience() {
         return experience;
     }
 
-    public void setExperience(double experience) {
+    public void setExperience(String experience) {
         this.experience = experience;
     }
 
