@@ -32,18 +32,18 @@ public interface UserMapper {
     int deleteAllByIds(@Param("ids") List<Integer> ids);
 
     //查询所有用户
-    @Select("SELECT* FROM i_user  where status not in ('inactive','draft') ")
+    @Select("SELECT* FROM i_user  where status not in ('inactive') ")
     ArrayList<IUser> findAll();
 
     //根据role查询
-    @Select("SELECT* FROM i_user where status  not in ('inactive','draft')  and  role in (${roles})  ")
+    @Select("SELECT* FROM i_user where status  not in ('inactive')  and  role in (${roles})  ")
     ArrayList<IUser> findAllByRoles(@Param("roles") String roles);
 
     //获取
     @Select("select * from i_user where id = #{id} ")
     IUser get(@Param("id") int id);
 
-    @Select("SELECT * FROM i_user where status  not in ('inactive','draft')  and ${attributes}")
+    @Select("SELECT * FROM i_user where status  not in ('inactive')  and ${attributes}")
     ArrayList<IUser> findAllByAttr(@Param("attributes") String attributes);
 
     @Select("SELECT * FROM i_user where 1=1 and ${attributes} limit 1")

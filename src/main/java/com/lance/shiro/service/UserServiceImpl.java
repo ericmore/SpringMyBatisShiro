@@ -342,9 +342,9 @@ public class UserServiceImpl implements UserService {
         //occupation
         user.setPosition("postition");
         user.setCompany("company");
-        user.setCountry("country");
-        user.setState("state");
-        user.setCity("city");
+        user.setCountry("Australia");
+        user.setState("New South Wales");
+        user.setCity("Yeoval");
         return user;
     }
 }

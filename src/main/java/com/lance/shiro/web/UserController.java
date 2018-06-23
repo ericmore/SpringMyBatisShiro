@@ -128,6 +128,16 @@ public class UserController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "{id}", method = RequestMethod.PATCH)
+    public ResponseEntity patch(@PathVariable("id") int id, @RequestBody Map<String, String> reqMap)  throws Exception {
+        if (null != reqMap) {
+            Map obj = userService.updateAttribute(id, reqMap);
+            return success("Operation success!", obj);
+        } else {
+            return success("Operation success!", null);
+        }
+    }
+
     @RequestMapping(value = "apply/{id}", method = RequestMethod.PUT)
     public ResponseEntity apply(@PathVariable("id") int id)  throws Exception{
         Map obj = userService.apply(id);
