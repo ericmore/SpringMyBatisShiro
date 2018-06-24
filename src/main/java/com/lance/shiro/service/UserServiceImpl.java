@@ -340,10 +340,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public IUser findExternalByCode(String code) {
         //test api http://localhost:8080/rest/user/external?code=i8000101
-        String url = externalHttpPath;
-        JSONObject jsonObject = restTemplate.getForObject(url + "?code=" + code, JSONObject.class);
+        String url = externalHttpPath+ "?code=" + code;
+        JSONObject jsonObject = restTemplate.getForObject(url , JSONObject.class);
         IUser user = new IUser();
-        if(jsonObject!=null) {
+        if(jsonObject!=null && jsonObject.size()>0) {
             user.setLastName(jsonObject.getString("surname") );
             user.setFirstName(jsonObject.getString("firstname") );
             user.setPrivateEmail(jsonObject.getString("email"));
