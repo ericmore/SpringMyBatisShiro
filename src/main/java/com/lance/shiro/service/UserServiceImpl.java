@@ -1,7 +1,6 @@
 package com.lance.shiro.service;
 
 import com.google.common.collect.Sets;
-import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.entity.IUser;
 import com.lance.shiro.mapper.UserMapper;
 import com.lance.shiro.utils.ConvertUtils;
@@ -10,6 +9,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
@@ -19,8 +19,8 @@ import java.lang.reflect.Field;
 import java.sql.Date;
 import java.util.*;
 
-import static com.lance.shiro.config.ConstantVariable.*;
-import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_PROPERTY_MAIN_IMAGE;
+import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_USER_ATTACHMENTS;
+import static com.lance.shiro.config.ConstantVariable.BELONG_TO_CATEGORY_USER_PORTRAIT;
 
 @Service
 @Transactional
@@ -36,6 +36,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private Environment environment;
 
     @Value("${mail.domain}")
     private String mailDomain;
@@ -60,8 +63,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IUser ckeckByCode(String code) {
-        return userMapper.findByAttrAndStatus(" code='"+code+"' and status = 'active'");
+        return userMapper.findByAttrAndStatus(" code='" + code + "' and status = 'active'");
     }
+
     @Override
     public Set<String> findPermissions(String code) {
         Set<String> set = Sets.newHashSet();
@@ -116,7 +120,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteAllByIds(ArrayList<Integer> ids) {
         userMapper.deleteAllByIds(ids);
-        for(int id : ids){
+        for (int id : ids) {
             IUser user = userMapper.get(id);
             deleteMail(user);
         }
@@ -124,7 +128,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map updateAttribute(int id, Map<String, String> reqMap) throws Exception {
-        IUser obj  = userMapper.get(id);
+        IUser obj = userMapper.get(id);
         if (null != obj) {
             Field fields[] = obj.getClass().getDeclaredFields();
             StringBuffer sb = new StringBuffer();
@@ -132,14 +136,14 @@ public class UserServiceImpl implements UserService {
                 String keyName = fields[i].getName();
                 String ketValue = reqMap.get(keyName);
                 if (null != reqMap.get(keyName)) {
-                    if(keyName.equals("password")){
+                    if (keyName.equals("password")) {
                         ketValue = md5Password(ketValue);
                     }
-                    if(keyName.equals("code") && !vaildCodeRepeatAndIncludeInActive(id,ketValue)){
+                    if (keyName.equals("code") && !vaildCodeRepeatAndIncludeInActive(id, ketValue)) {
                         throw new Exception("Code already exists!" + ketValue);
                     }
-                    if( keyName.equals("referID") && !vaildReferID( ketValue )){
-                        throw new Exception("Refer ID does not exist!" + ketValue );
+                    if (keyName.equals("referID") && !vaildReferID(ketValue)) {
+                        throw new Exception("Refer ID does not exist!" + ketValue);
                     }
                     sb.append("  ").append(keyName).append("=").append("'").append(ketValue).append("'").append("  ").append(",");
                 }
@@ -148,7 +152,7 @@ public class UserServiceImpl implements UserService {
                 String s = sb.toString();
                 userMapper.updateAttribute(id, s.substring(0, s.length() - 1));
                 obj = userMapper.get(id);
-                return  setAttachment(obj);
+                return setAttachment(obj);
             }
         }
         return null;
@@ -156,13 +160,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Map save(IUser user) throws Exception {
-        if(!UserStatus.validate(user.getStatus())){
+        if (!UserStatus.validate(user.getStatus())) {
             throw new Exception("Status not valid!" + user.getStatus());
         }
-        if( !vaildReferID( user.getReferID())){
+        if (!vaildReferID(user.getReferID())) {
             throw new Exception("Refer ID does not exist!" + user.getReferID());
         }
-        if( !vaildCodeRepeatAndIncludeInActive(user.getId(),user.getCode())){
+        if (!vaildCodeRepeatAndIncludeInActive(user.getId(), user.getCode())) {
             throw new Exception("Code already exists!" + user.getCode());
         }
         if (user.getId() == 0) {
@@ -186,8 +190,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map apply(int id) throws Exception {
         IUser user = userMapper.get(id);
-        if(!user.getStatus().equals(UserStatus.DRAFT)){
-            throw new Exception("Not "+UserStatus.DRAFT+" status cannot be applied!");
+        if (!user.getStatus().equals(UserStatus.DRAFT)) {
+            throw new Exception("Not " + UserStatus.DRAFT + " status cannot be applied!");
         }
         user.setStatus(UserStatus.PENDING);
         userMapper.update(user);
@@ -199,27 +203,27 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map approve(int id, String type) throws Exception {
         IUser user = userMapper.get(id);
-        if(!user.getStatus().equals(UserStatus.PENDING)){
-            throw new Exception("Not "+UserStatus.PENDING+" status cannot be Approval!");
+        if (!user.getStatus().equals(UserStatus.PENDING)) {
+            throw new Exception("Not " + UserStatus.PENDING + " status cannot be Approval!");
         }
         user.setStatus(UserStatus.ACTIVE);
 
         String code = "";
-        if(type.equals("internal")){
+        if (type.equals("internal")) {
             Map map = userMapper.findMaxCode(" code <= 'i8000100' ");
-            if(map!=null && map.get("code")!=null && !map.get("code").equals("") ){
-                if(map.get("code").equals("i8000100")){
-                    throw new Exception("Internal employee number is full!" );
+            if (map != null && map.get("code") != null && !map.get("code").equals("")) {
+                if (map.get("code").equals("i8000100")) {
+                    throw new Exception("Internal employee number is full!");
                 }
-                code = "i" + (  Integer.parseInt(map.get("code").toString().substring(1))+1 );
-            }else{
+                code = "i" + (Integer.parseInt(map.get("code").toString().substring(1)) + 1);
+            } else {
                 code = "i8000001";
             }
-        }else{
+        } else {
             Map map = userMapper.findMaxCode(" code > 'i8000100' ");
-            if(map!=null &&  map.get("code")!=null  && !map.get("code").equals("") ){
-                code = "i" + (  Integer.parseInt(map.get("code").toString().substring(1))+1 );
-            }else{
+            if (map != null && map.get("code") != null && !map.get("code").equals("")) {
+                code = "i" + (Integer.parseInt(map.get("code").toString().substring(1)) + 1);
+            } else {
                 code = "i8000101";
             }
         }
@@ -230,26 +234,27 @@ public class UserServiceImpl implements UserService {
         userMapper.update(user);
         return setAttachment(user);
     }
-    private String md5Password(String password){
-        return DigestUtils.md5DigestAsHex(password.getBytes()) ;
+
+    private String md5Password(String password) {
+        return DigestUtils.md5DigestAsHex(password.getBytes());
     }
 
     private boolean vaildReferID(String referId) {
-        IUser user = userMapper.findByAttrAndStatus(" code is not null and code !='' and  code = '"+ referId +"'");
-        if(user != null){
+        IUser user = userMapper.findByAttrAndStatus(" code is not null and code !='' and  code = '" + referId + "'");
+        if (user != null) {
             return true;
         }
         return false;
     }
 
 
-    private boolean vaildCodeRepeatAndIncludeInActive(int id ,String value) {
-        String sql =  "code is not null and code !='' and code ='"+value+"' " ;
-        if(id>0){
+    private boolean vaildCodeRepeatAndIncludeInActive(int id, String value) {
+        String sql = "code is not null and code !='' and code ='" + value + "' ";
+        if (id > 0) {
             sql += " and id != " + id;
         }
         IUser user = userMapper.findByAttrAndStatus(sql);
-        if(user == null){
+        if (user == null) {
             return true;
         }
         return false;
@@ -266,7 +271,7 @@ public class UserServiceImpl implements UserService {
 
     private Map setAttachment(IUser user) {
         Map muser = ConvertUtils.beanToMap(user);
-        if(user != null){
+        if (user != null) {
             String id = String.valueOf(user.getId());
             muser.put(BELONG_TO_CATEGORY_USER_PORTRAIT, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_PORTRAIT));
             muser.put(BELONG_TO_CATEGORY_USER_ATTACHMENTS, commonService.findListAttachmentByBelong(id, BELONG_TO_CATEGORY_USER_ATTACHMENTS));
@@ -275,47 +280,48 @@ public class UserServiceImpl implements UserService {
     }
 
 
-
-    private void deleteMail(IUser user){
+    private void deleteMail(IUser user) {
         try {
-            if( !StringUtils.isBlank( user.getEmail() ) ) {
+            if (!StringUtils.isBlank(user.getEmail())) {
                 Map<String, String> ret = uMailService.delMailbox(user.getEmail().replaceAll("@" + mailDomain, ""));
             }
-        }catch (Exception ex){ }
+        } catch (Exception ex) {
+        }
     }
 
     private String createMail(IUser user) throws Exception {
-        String email = ( user.getFirstName()+"."+user.getLastName() ).replaceAll(" ","");
-        int cMap = userMapper.findCountByAttr("  email regexp '^"+email+"([0-9]*)@"+mailDomain+"$'  ");
-        if(cMap>0  ) {
-            email += cMap ;
+        String email = (user.getFirstName() + "." + user.getLastName()).replaceAll(" ", "");
+        int cMap = userMapper.findCountByAttr("  email regexp '^" + email + "([0-9]*)@" + mailDomain + "$'  ");
+        if (cMap > 0) {
+            email += cMap;
         }
-        Map<String, String> ret = uMailService.addMailBox(email,user.getFirstName()+" "+user.getLastName(),defaultPassword);
-        email += "@" + mailDomain ;
+        Map<String, String> ret = uMailService.addMailBox(email, user.getFirstName() + " " + user.getLastName(), defaultPassword);
+        email += "@" + mailDomain;
         user.setEmail(email);
 
         sendApproveMail(user);
 
-        return  email ;
+        return email;
     }
 
-    private void sendApplyMail(IUser user){
+    private void sendApplyMail(IUser user) {
         try {
-            String subject = "Dear "+user.getFirstName() +" "+ user.getLastName()+", Welcome To the iPAN!";
+            String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Welcome To the iPAN!";
             String body = "<div>Welcome to the international Property Agent network(iPAN)</div>";
             body += "<div>Please confirm your detail below</div>";
-            body += "<div>Mobile Number:" + (user.getMobile()==null?"none":user.getMobile()) + "</div>";
+            body += "<div>Mobile Number:" + (user.getMobile() == null ? "none" : user.getMobile()) + "</div>";
             body += "<div>Country/Region:" + user.getCountry() + "</div>";
-            body += "<div>State/Province:" + (user.getState()==null?"none":user.getState()) + "</div>";
-            body += "<div>City:" + (user.getCity()==null?"none":user.getCity()) + "</div>";
-            body += "<div>Street:" + (user.getStreet()==null?"none":user.getStreet()) + "</div>";
-            body += "<div>Please contact "+mailManager+" if detail need to be corrected.</div>";
+            body += "<div>State/Province:" + (user.getState() == null ? "none" : user.getState()) + "</div>";
+            body += "<div>City:" + (user.getCity() == null ? "none" : user.getCity()) + "</div>";
+            body += "<div>Street:" + (user.getStreet() == null ? "none" : user.getStreet()) + "</div>";
+            body += "<div>Please contact " + mailManager + " if detail need to be corrected.</div>";
             body += "<div><br><br>    iPAN Admin Team </div>";
-            Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(),subject,body);
-        }catch (Exception ex){}
+            Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(), subject, body);
+        } catch (Exception ex) {
+        }
     }
 
-    private void sendApproveMail(IUser user){
+    private void sendApproveMail(IUser user) {
         try {
             String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Your iPAN membershipPropertySale has been approved!";
             String body = "<div>Congratulations, your membership has been approved by the international Property Agent network(iPAN)\n</div>";
@@ -326,15 +332,18 @@ public class UserServiceImpl implements UserService {
             body += "<div>Enjoy!</div>";
             body += "<div><br><br>    iPAN Admin Team </div>";
             Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(), subject, body);
-        }catch (Exception ex){}
+        } catch (Exception ex) {
+        }
     }
 
 
     @Override
-    public IUser findExternalByCode(String code){
+    public IUser findExternalByCode(String code) {
         //todo://
 //        String url = "";
-//        JSONObject jsonObject = restTemplate.getForObject(url+"?code="+code, JSONObject.class);
+        // 查询访问根地址
+        String url = environment.getProperty("externalHttpPath");
+        JSONObject jsonObject = restTemplate.getForObject(url + "?code=" + code, JSONObject.class);
         IUser user = new IUser();
         user.setLastName("lastname");
         user.setFirstName("firstname");
