@@ -344,7 +344,7 @@ public class UserServiceImpl implements UserService {
         JSONObject jsonObject = restTemplate.getForObject(url + "?code=" + code, JSONObject.class);
         IUser user = new IUser();
         if(jsonObject!=null) {
-            user.setLastName(jsonObject.getString("lastname") );
+            user.setLastName(jsonObject.getString("surname") );
             user.setFirstName(jsonObject.getString("firstname") );
             user.setPrivateEmail(jsonObject.getString("email"));
             user.setMobile(jsonObject.getString("mobile"));
