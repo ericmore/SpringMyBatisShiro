@@ -37,9 +37,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    private Environment environment;
-
     @Value("${mail.domain}")
     private String mailDomain;
 
@@ -48,6 +45,9 @@ public class UserServiceImpl implements UserService {
 
     @Value("${mail.manager.username}")
     private String mailManager;
+
+    @Value("${externalHttpPath}")
+    private String externalHttpPath;
 
     @Override
     public Map get(int id) {
@@ -339,23 +339,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public IUser findExternalByCode(String code) {
-        //todo://
-//        String url = "";
-        // 查询访问根地址
-        String url = environment.getProperty("externalHttpPath");
+        //test api http://localhost:8080/rest/user/external?code=i8000101
+        String url = externalHttpPath;
         JSONObject jsonObject = restTemplate.getForObject(url + "?code=" + code, JSONObject.class);
         IUser user = new IUser();
-        user.setLastName("lastname");
-        user.setFirstName("firstname");
-        user.setPrivateEmail("xx@xx.com");
-        user.setMobile("mobile");
-        user.setStreet("street");
-        //occupation
-        user.setPosition("postition");
-        user.setCompany("company");
-        user.setCountry("Australia");
-        user.setState("New South Wales");
-        user.setCity("Yeoval");
+        if(jsonObject!=null) {
+            user.setLastName(jsonObject.getString("lastname") );
+            user.setFirstName(jsonObject.getString("firstname") );
+            user.setPrivateEmail(jsonObject.getString("email"));
+            user.setMobile(jsonObject.getString("mobile"));
+            user.setStreet(jsonObject.getString("street"));
+            user.setPosition(jsonObject.getString("position") );
+            user.setCompany(jsonObject.getString("company"));
+            user.setCountry(jsonObject.getString("country"));
+            user.setState(jsonObject.getString("state"));
+            user.setCity(jsonObject.getString("city"));
+        }
         return user;
     }
 }
