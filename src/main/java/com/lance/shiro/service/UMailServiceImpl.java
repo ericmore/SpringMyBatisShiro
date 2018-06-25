@@ -217,4 +217,28 @@ public class UMailServiceImpl implements UMailService{
         return ret;
 
     }
+
+    @Override
+    public String randomPwd(){
+        int len =10;
+        StringBuffer password = new StringBuffer();
+
+        double rand = Math.random();
+        password.append((char) (rand * ('z' - 'a') + 'a'));
+        password.append((char) (rand * ('Z' - 'A') + 'A'));
+        password.append((char) (rand * ('9' - '0') + '0'));
+
+        for (int i = 3 ; i< len; i++) {
+            double randi = Math.random();
+            double randTri = Math.random() * 3;
+            if (randTri >= 0 && randTri < 1) {
+                password.append((char) (randi * ('9' - '0') + '0'));
+            } else if (randTri >= 1 && randTri < 2) {
+                password.append((char) (randi * ('Z' - 'A') + 'A'));
+            } else {
+                password.append((char) (randi * ('z' - 'a') + 'a'));
+            }
+        }
+        return password.toString();
+    }
 }

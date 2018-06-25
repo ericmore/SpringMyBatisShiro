@@ -229,7 +229,10 @@ public class UserServiceImpl implements UserService {
         }
         user.setCode(code);
 
-        String email = createMail(user);
+        String password = uMailService.randomPwd();
+        user.setPassword(  md5Password(password) );
+
+        String email = createMail(user,password);
         user.setEmail(email);
         userMapper.update(user);
         return setAttachment(user);
@@ -289,17 +292,17 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private String createMail(IUser user) throws Exception {
+    private String createMail(IUser user,String password) throws Exception {
         String email = (user.getFirstName() + "." + user.getLastName()).replaceAll(" ", "");
         int cMap = userMapper.findCountByAttr("  email regexp '^" + email + "([0-9]*)@" + mailDomain + "$'  ");
         if (cMap > 0) {
             email += cMap;
         }
-        Map<String, String> ret = uMailService.addMailBox(email, user.getFirstName() + " " + user.getLastName(), defaultPassword);
+        Map<String, String> ret = uMailService.addMailBox(email, user.getFirstName() + " " + user.getLastName(), password);
         email += "@" + mailDomain;
         user.setEmail(email);
 
-        sendApproveMail(user);
+        sendApproveMail(user,password);
 
         return email;
     }
@@ -321,13 +324,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void sendApproveMail(IUser user) {
+    private void sendApproveMail(IUser user,String password) {
         try {
             String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Your iPAN membershipPropertySale has been approved!";
             String body = "<div>Congratulations, your membership has been approved by the international Property Agent network(iPAN)\n</div>";
             body += "<div>Your member ID:" + user.getCode() + "</div>";
+            body += "<div>Your iPan Portal password:" + password + "</div>";
             body += "<div>Your iPan Mailbox:" + user.getEmail() + "</div>";
-            body += "<div>Initial Mailbox password is :" + defaultPassword + "</div>";
+            body += "<div>Initial Mailbox password is :" + password + "</div>";
+            body += "<div>To access your mailbox via web,please log into http://mail.ipanproperty.com with your password provided above.</div>";
             body += "<div>Please contact " + mailManager + " if there's any question.</div>";
             body += "<div>Enjoy!</div>";
             body += "<div><br><br>    iPAN Admin Team </div>";
