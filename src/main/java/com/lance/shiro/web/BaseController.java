@@ -47,6 +47,6 @@ public class BaseController {
         log.error(req.getRequestURL());
         log.error(e);
         e.printStackTrace();
-        return error(e.getMessage(),e);
+        return error(e.getMessage(),null);
     }
 }

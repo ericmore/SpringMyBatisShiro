@@ -137,7 +137,11 @@ public class UserServiceImpl implements UserService {
                 String ketValue = reqMap.get(keyName);
                 if (null != reqMap.get(keyName)) {
                     if (keyName.equals("password")) {
-                        ketValue = md5Password(ketValue);
+                        if (ketValue != null && !ketValue.equals("") && !ketValue.equals(obj.getPassword())) {
+                            ketValue = md5Password(ketValue);
+                        } else {
+                            continue;
+                        }
                     }
                     if (keyName.equals("code") && !vaildCodeRepeatAndIncludeInActive(id, ketValue)) {
                         throw new Exception("Code already exists!" + ketValue);
