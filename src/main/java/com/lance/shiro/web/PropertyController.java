@@ -87,4 +87,18 @@ public class PropertyController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "notify-sale/{id}", method = RequestMethod.PUT)
+    public ResponseEntity notifysale(@PathVariable("id") int id, @RequestBody() Map<String, String> reqMap){
+        try {
+            if (null != reqMap) {
+                IProperty iProperty = propertyService.notifysale(id, reqMap);
+                return success("Operation success!", iProperty);
+            } else {
+                return success("Operation success!", null);
+            }
+        } catch (Exception e) {
+            return error("Update Attribute Exception,Pls Contact Administrators!");
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package com.lance.shiro.service;
 import com.gitee.sunchenbin.mybatis.actable.manager.common.BaseMysqlCRUDManager;
 import com.lance.shiro.entity.IProperty;
 import com.lance.shiro.mapper.PropertyMapper;
+import com.lance.shiro.mapper.UserMapper;
 import com.lance.shiro.utils.ConvertUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,12 @@ public class PropertyServiceImpl implements PropertyService {
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private UMailService uMailService;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Autowired
     private BaseMysqlCRUDManager baseMysqlCRUDManager;
@@ -147,6 +154,23 @@ public class PropertyServiceImpl implements PropertyService {
             }
         }
         return null;
+    }
+
+    @Override
+    public IProperty notifysale(int id, Map<String, String> reqMap) throws Exception {
+        IProperty iProperty = updateAttribute(id, reqMap);
+
+        String to = userMapper.getAdminEmail();
+        if(to != null && !to.equals("")){
+            String subject = "property "+iProperty.getPropertyList().getBuildingName() + " "+ iProperty.getLot() +" has received a deposit";
+            String body = "<div>Agent: "+iProperty.getAgent().getCode()+" "+
+                    iProperty.getAgent().getFirstName() +" "+iProperty.getAgent().getLastName()+
+                    " has submitted a property  deposit request for property: "+iProperty.getPropertyList().getBuildingName() + " "+ iProperty.getLot() +
+                    " at time: "+ iProperty.getUpdateTime() +"</div>";
+            body += "<div> http://www.ipanproperty.com</div>";
+            uMailService.sendManagerMail(to, subject, body);
+        }
+        return iProperty;
     }
 
 

@@ -24,4 +24,6 @@ public interface PropertyService {
     ArrayList<Map> findAllByPropertyLists(Map<String, String> reqMap);
 
     IProperty updateAttribute(int id, Map<String, String> reqMap);
+
+    IProperty notifysale(int id, Map<String,String> reqMap) throws Exception;
 }
