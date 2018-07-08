@@ -22,12 +22,16 @@ public class TestController {
     @Value("${rootHttpPath}")
     private String rootHttpPath;
 
+    @Value("${logging.config}")
+    private String logging;
+
     @RequestMapping(value = "env", method = RequestMethod.GET)
     public ResponseEntity getEnv(){
         Map<String, Object> env = new HashMap<>();
         env.put("spring.datasource.url", url);
         env.put("rootFilePath", rootFilePath);
         env.put("rootHttpPath", rootHttpPath);
+        env.put("logging.config", logging);
         return ResponseEntity.ok(env);
     }
 
