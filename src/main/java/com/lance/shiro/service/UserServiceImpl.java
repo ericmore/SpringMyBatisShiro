@@ -316,11 +316,11 @@ public class UserServiceImpl implements UserService {
             String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Welcome To the iPAN!";
             String body = "<div>Welcome to the international Property Agent network(iPAN)</div>";
             body += "<div>Please confirm your detail below</div>";
-            body += "<div>Mobile Number:" + (user.getMobile() == null ? "none" : user.getMobile()) + "</div>";
-            body += "<div>Country/Region:" + user.getCountry() + "</div>";
-            body += "<div>State/Province:" + (user.getState() == null ? "none" : user.getState()) + "</div>";
-            body += "<div>City:" + (user.getCity() == null ? "none" : user.getCity()) + "</div>";
-            body += "<div>Street:" + (user.getStreet() == null ? "none" : user.getStreet()) + "</div>";
+            body += "<div>Mobile Number: " + (user.getMobile() == null ? "none" : user.getMobile()) + "</div>";
+            body += "<div>Country/Region: " + user.getCountry() + "</div>";
+            body += "<div>State/Province: " + (user.getState() == null ? "none" : user.getState()) + "</div>";
+            body += "<div>City: " + (user.getCity() == null ? "none" : user.getCity()) + "</div>";
+            body += "<div>Street: " + (user.getStreet() == null ? "none" : user.getStreet()) + "</div>";
             body += "<div>Please contact " + mailManager + " if detail need to be corrected.</div>";
             body += "<div><br><br>    iPAN Admin Team </div>";
             Map<String, String> ret = uMailService.sendManagerMail(user.getPrivateEmail(), subject, body);
@@ -330,13 +330,13 @@ public class UserServiceImpl implements UserService {
 
     private void sendApproveMail(IUser user,String password) {
         try {
-            String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Your iPAN membershipPropertySale has been approved!";
-            String body = "<div>Congratulations, your membership has been approved by the international Property Agent network(iPAN)\n</div>";
-            body += "<div>Your member ID:" + user.getCode() + "</div>";
-            body += "<div>Your iPan Portal password:" + password + "</div>";
-            body += "<div>Your iPan Mailbox:" + user.getEmail() + "</div>";
-            body += "<div>Initial Mailbox password is :" + password + "</div>";
-            body += "<div>To access your mailbox via web,please log into http://mail.ipanproperty.com with your password provided above.</div>";
+            String subject = "Dear " + user.getFirstName() + " " + user.getLastName() + ", Your iPAN membership Property Sale has been approved!";
+            String body = "<div>Congratulations, your membership has been approved by the International Property Agent network(iPAN)\n</div>";
+            body += "<div>Your member ID: " + user.getCode() + "</div>";
+            body += "<div>Your iPan Portal password: " + password + "</div>";
+            body += "<div>Your iPan Mailbox: " + user.getEmail() + "</div>";
+            body += "<div>Initial Mailbox password is: " + password + "</div>";
+            body += "<div>To access your mailbox via web, please log into <a href=\"http://mail.ipanproperty.com\" target='_blank'>http://mail.ipanproperty.com</a> with your password provided above.</div>";
             body += "<div>Please contact " + mailManager + " if there's any question.</div>";
             body += "<div>Enjoy!</div>";
             body += "<div><br><br>    iPAN Admin Team </div>";

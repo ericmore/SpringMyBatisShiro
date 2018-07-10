@@ -167,7 +167,8 @@ public class PropertyServiceImpl implements PropertyService {
                     iProperty.getAgent().getFirstName() +" "+iProperty.getAgent().getLastName()+
                     " has submitted a property  deposit request for property: "+iProperty.getPropertyList().getBuildingName() + " "+ iProperty.getLot() +
                     " at time: "+ iProperty.getUpdateTime() +"</div>";
-            body += "<div> http://www.ipanproperty.com</div>";
+            body += "<div>Sales Notes: "+iProperty.getSale_note()+"</div>";
+            body += "<div><a href=\"http://www.ipanproperty.com\" target='_blank'>http://www.ipanproperty.com</a></div>";
             uMailService.sendManagerMail(to, subject, body);
         }
         return iProperty;

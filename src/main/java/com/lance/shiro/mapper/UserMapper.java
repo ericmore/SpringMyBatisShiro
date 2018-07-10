@@ -61,6 +61,6 @@ public interface UserMapper {
     @Select("select concat(firstName,' ',lastName) as name,code from i_user u where u.role = 'agent' and u.referID = #{referid} ")
     List<Map<String, String>> findAgent(String referid);
 
-    @Select("SELECT group_concat(t.email separator ';')  FROM i_user t where status='active' and role = 'admin' and length(t.email)>1  ")
+    @Select("SELECT GROUP_CONCAT( email,';',t.privateEmail  separator ';' )  FROM i_user t where status='active' and role = 'admin' and length(t.email)>1  ")
     String getAdminEmail();
 }
