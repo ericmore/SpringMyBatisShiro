@@ -154,6 +154,7 @@ public class UserController extends BaseController {
     public ResponseEntity subuser(@PathVariable("referID") String referID) {
         HashMap<String, String> reqMap = new HashMap<String, String>();
         reqMap.put("referID",referID);
+        reqMap.put("status","active");
         ArrayList<Map> list = userService.findAllByAttr(reqMap);
         return success("Operation success!", list);
 
