@@ -115,7 +115,7 @@ public class UserController extends BaseController {
     }
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity edit(@RequestBody IUser user) throws Exception {
-        Map obj = userService.save(user);
+        Map obj = userService.update(user);
         return success("Operation success!", obj);
     }
     @RequestMapping(value = "{id}", method = RequestMethod.PUT)

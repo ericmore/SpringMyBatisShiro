@@ -192,6 +192,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Map update(IUser user) throws Exception {
+        if (!UserStatus.validate(user.getStatus())) {
+            throw new Exception("Status not valid!" + user.getStatus());
+        }
+        if (!vaildReferID(user.getReferID())) {
+            throw new Exception("Refer ID does not exist!" + user.getReferID());
+        }
+
+        IUser oUser = userMapper.get(user.getId());
+        user.setUsername(oUser.getUsername());
+        user.setCreateTime(oUser.getCreateTime());
+        user.setUpdateTime(new Date(Calendar.getInstance().getTimeInMillis()));
+        if (user.getPassword() != null && !user.getPassword().equals("") && !user.getPassword().equals(oUser.getPassword())) {
+            String password = md5Password(user.getPassword());
+            user.setPassword(password);
+        } else {
+            user.setPassword(oUser.getPassword());
+        }
+        userMapper.update(user);
+
+        return setAttachment(user);
+    }
+
+    @Override
     public Map apply(int id) throws Exception {
         IUser user = userMapper.get(id);
         if (!user.getStatus().equals(UserStatus.DRAFT)) {

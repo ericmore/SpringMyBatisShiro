@@ -29,6 +29,8 @@ public interface UserService {
 
     Map save(IUser user) throws Exception;
 
+    Map update(IUser user) throws Exception;
+
     Map updateAttribute(int id, Map<String, String> reqMap) throws Exception;
 
     Map apply(int id) throws Exception;
